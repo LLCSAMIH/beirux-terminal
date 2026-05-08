@@ -39,7 +39,7 @@ function NewsCard({ item, index }: { item: typeof NEWS_ITEMS[0]; index: number }
 
   return (
     <a
-      ref={ref}
+      ref={ref as React.Ref<HTMLAnchorElement>}
       href="#"
       className={`${styles.card} ${isVisible ? styles.cardVisible : ''}`}
       style={{ transitionDelay: `${index * 100}ms` }}

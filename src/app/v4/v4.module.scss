@@ -90,6 +90,258 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   to { opacity: 1; transform: translateX(0); }
 }
 
+/* ─── NEW: Phosphor flash ─── */
+@keyframes phosphorFlash {
+  0% {
+    text-shadow: 0 0 12px rgba($green, 0.9), 0 0 24px rgba($green, 0.5), 0 0 40px rgba($green, 0.2);
+  }
+  100% {
+    text-shadow: 0 0 2px rgba($green, 0.15);
+  }
+}
+
+@keyframes phosphorFlashAmber {
+  0% {
+    text-shadow: 0 0 12px rgba($amber, 0.9), 0 0 24px rgba($amber, 0.5), 0 0 40px rgba($amber, 0.2);
+  }
+  100% {
+    text-shadow: 0 0 2px rgba($amber, 0.15);
+  }
+}
+
+@keyframes phosphorFlashCyan {
+  0% {
+    text-shadow: 0 0 12px rgba($cyan, 0.9), 0 0 24px rgba($cyan, 0.5), 0 0 40px rgba($cyan, 0.2);
+  }
+  100% {
+    text-shadow: 0 0 2px rgba($cyan, 0.15);
+  }
+}
+
+/* ─── NEW: CRT power-on sequence ─── */
+@keyframes crtPowerOn {
+  0% {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.8);
+  }
+  30% {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    background: rgba($green, 0.08);
+  }
+  80% {
+    background: rgba($green, 0.02);
+  }
+  100% {
+    opacity: 0;
+    background: transparent;
+    pointer-events: none;
+  }
+}
+
+/* ─── NEW: CRT horizontal scan line ─── */
+@keyframes crtScanMove {
+  0% { top: -2px; }
+  100% { top: 100vh; }
+}
+
+/* ─── NEW: ASCII logo radial glow entrance ─── */
+@keyframes asciiGlowBurst {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  30% {
+    opacity: 0.3;
+    transform: scale(1.5);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.5);
+  }
+}
+
+/* ─── NEW: Vim file loading flicker ─── */
+@keyframes fileLoadFlicker {
+  0% { opacity: 0.8; }
+  25% { opacity: 1; }
+  50% { opacity: 0.9; }
+  75% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+/* ─── NEW: Rain-down from above ─── */
+@keyframes vimRainDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── NEW: Vim line number illuminate ─── */
+@keyframes lineNumIlluminate {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ─── NEW: Vim status bar slide up ─── */
+@keyframes slideUpIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── NEW: Tilde breathing ─── */
+@keyframes tildeBreathe {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.5; }
+}
+
+/* ─── NEW: Slide from left ─── */
+@keyframes slideFromLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ─── NEW: Packet pulse across row ─── */
+@keyframes packetPulse {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ─── NEW: Traceroute resolve snap ─── */
+@keyframes resolveSnap {
+  0% { opacity: 0; transform: scale(0.97); }
+  50% { opacity: 1; transform: scale(1.01); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ─── NEW: Border draw left to right ─── */
+@keyframes borderDraw {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+/* ─── NEW: SQL active pulse ─── */
+@keyframes activePulse {
+  0%, 100% { text-shadow: 0 0 4px rgba($green, 0.3); }
+  50% { text-shadow: 0 0 10px rgba($green, 0.7), 0 0 20px rgba($green, 0.3); }
+}
+
+/* ─── NEW: Cron execution sweep ─── */
+@keyframes cronExecSweep {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ─── NEW: Running dot pulse ─── */
+@keyframes runningDotPulse {
+  0%, 100% {
+    text-shadow: 0 0 4px rgba($green, 0.3);
+    opacity: 0.6;
+  }
+  50% {
+    text-shadow: 0 0 12px rgba($green, 0.9), 0 0 20px rgba($green, 0.4);
+    opacity: 1;
+  }
+}
+
+/* ─── NEW: Dashboard box draw sequence ─── */
+@keyframes drawTopLine {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes drawSides {
+  from { clip-path: inset(0 0 100% 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes drawBottomLine {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+/* ─── NEW: Bar fill with phosphor leading edge ─── */
+@keyframes barLeadingGlow {
+  0% { box-shadow: 0 0 12px currentColor, 0 0 24px currentColor; }
+  100% { box-shadow: 0 0 4px currentColor; }
+}
+
+/* ─── NEW: Tail log phosphor bloom ─── */
+@keyframes logPhosphorBloom {
+  0% {
+    text-shadow: 0 0 20px $green, 0 0 40px rgba($green, 0.3);
+    opacity: 1;
+  }
+  100% {
+    text-shadow: 0 0 2px rgba($green, 0.1);
+    opacity: 1;
+  }
+}
+
+@keyframes logPhosphorBloomAmber {
+  0% {
+    text-shadow: 0 0 20px $amber, 0 0 40px rgba($amber, 0.3);
+    opacity: 1;
+  }
+  100% {
+    text-shadow: 0 0 2px rgba($amber, 0.1);
+    opacity: 1;
+  }
+}
+
+/* ─── NEW: CTA screen flash ─── */
+@keyframes screenFlash {
+  0% { opacity: 0; }
+  20% { opacity: 0.12; }
+  100% { opacity: 0; pointer-events: none; }
+}
+
+/* ─── NEW: CTA ok-line shake ─── */
+@keyframes okShake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-1px); }
+  40% { transform: translateX(1px); }
+  60% { transform: translateX(-1px); }
+  80% { transform: translateX(1px); }
+  100% { transform: translateX(0); }
+}
+
+/* ─── NEW: CTA button halo pulse ─── */
+@keyframes buttonHaloPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba($green, 0.3), 0 0 20px rgba($green, 0.15); }
+  50% { box-shadow: 0 0 16px rgba($green, 0.5), 0 0 30px rgba($green, 0.25); }
+}
+
+/* ─── NEW: Footer EOF draw ─── */
+@keyframes eofDraw {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+/* ─── NEW: Footer dim out ─── */
+@keyframes footerDimOut {
+  from { filter: brightness(1); }
+  to { filter: brightness(0.6); }
+}
+
+/* ─── NEW: Footer disconnect flicker ─── */
+@keyframes disconnectFlicker {
+  0% { opacity: 0; }
+  30% { opacity: 0.6; }
+  50% { opacity: 0.3; }
+  70% { opacity: 0.8; }
+  100% { opacity: 1; }
+}
+
 /* ─── Page wrapper ─── */
 .page {
   @include scanlines;
@@ -99,6 +351,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   min-height: 100vh;
   position: relative;
   animation: flicker 8s infinite;
+
   /* Subtle CRT vignette */
   &::before {
     content: '';
@@ -108,6 +361,40 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
     z-index: 9998;
     background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.5) 100%);
   }
+}
+
+/* ─── CRT power-on overlay ─── */
+.crtPowerOn {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  pointer-events: none;
+  animation: crtPowerOn 0.8s ease-out forwards;
+}
+
+/* ─── Global CRT scan line ─── */
+.crtScanLine {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba($green, 0.06);
+  z-index: 9997;
+  pointer-events: none;
+  animation: crtScanMove 8s linear infinite;
+}
+
+/* ─── Phosphor flash utility class ─── */
+.phosphorFlash {
+  animation: phosphorFlash 0.6s ease-out forwards;
+}
+
+.phosphorFlashAmber {
+  animation: phosphorFlashAmber 0.6s ease-out forwards;
+}
+
+.phosphorFlashCyan {
+  animation: phosphorFlashCyan 0.6s ease-out forwards;
 }
 
 /* ─── Shared typography ─── */
@@ -177,6 +464,11 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   &.visible {
     opacity: 1;
   }
+
+  /* Phosphor flash on newly visible lines */
+  &.justAppeared {
+    animation: phosphorFlash 0.6s ease-out forwards;
+  }
 }
 
 .asciiLogo {
@@ -185,10 +477,25 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   line-height: 1.3;
   letter-spacing: 0.05em;
   animation: glowPulse 4s ease-in-out infinite;
+  position: relative;
 
   @media (max-width: 600px) {
     font-size: 0.7rem;
   }
+}
+
+/* Radial glow burst behind ASCII logo */
+.asciiLogoGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 200px;
+  background: radial-gradient(ellipse, rgba($green, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: asciiGlowBurst 1.2s ease-out forwards;
 }
 
 .taglineLine {
@@ -201,6 +508,11 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   @media (max-width: 600px) {
     font-size: 1.4rem;
   }
+}
+
+.taglineWord {
+  display: inline;
+  animation: phosphorFlash 0.6s ease-out forwards;
 }
 
 .separator {
@@ -222,6 +534,11 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   border: 1px solid rgba($green-dim, 0.4);
   background: rgba(0, 5, 0, 0.6);
   overflow: hidden;
+
+  /* File loading flicker */
+  &.vimLoading {
+    animation: fileLoadFlicker 0.3s ease-out;
+  }
 }
 
 .vimTitleBar {
@@ -243,12 +560,10 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 .vimLine {
   display: flex;
   opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  transform: translateY(4px);
+  transform: translateY(-20px);
 
   &.vimLineVisible {
-    opacity: 1;
-    transform: translateY(0);
+    animation: vimRainDown 0.35s ease-out forwards, phosphorFlash 0.6s ease-out forwards;
   }
 }
 
@@ -261,6 +576,12 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   margin-right: 1.2rem;
   user-select: none;
   flex-shrink: 0;
+  opacity: 0;
+
+  /* Line numbers illuminate slightly before content */
+  .vimLineVisible & {
+    animation: lineNumIlluminate 0.2s ease-out forwards;
+  }
 
   @media (max-width: 600px) {
     min-width: 3rem;
@@ -308,6 +629,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   margin-right: 1.2rem;
   user-select: none;
   flex-shrink: 0;
+  animation: tildeBreathe 3s ease-in-out infinite;
 
   @media (max-width: 600px) {
     min-width: 3rem;
@@ -324,6 +646,12 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   padding: 0.3rem 1.2rem;
   font-size: 1.1rem;
   border-top: 1px solid rgba($green-dim, 0.3);
+  opacity: 0;
+  transform: translateY(10px);
+
+  &.vimStatusVisible {
+    animation: slideUpIn 0.4s ease-out forwards;
+  }
 }
 
 .vimMode {
@@ -347,6 +675,11 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   color: $green;
   display: flex;
   align-items: center;
+  opacity: 0;
+
+  &.vimCommandVisible {
+    animation: slideUpIn 0.3s ease-out 0.2s forwards;
+  }
 }
 
 /* ═══════════════════════════════════════════════
@@ -397,6 +730,16 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   font-size: 1.3rem;
 }
 
+/* Help output lines with cascade animation */
+.helpOutputLine {
+  opacity: 0;
+  transform: translateX(-20px);
+
+  &.helpLineVisible {
+    animation: slideFromLeft 0.35s ease-out forwards, phosphorFlash 0.6s ease-out forwards;
+  }
+}
+
 .helpCommand {
   display: flex;
   gap: 2.4rem;
@@ -418,6 +761,11 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   @media (max-width: 600px) {
     min-width: auto;
   }
+}
+
+/* Flag flash on appearance */
+.helpFlagFlash {
+  animation: phosphorFlashCyan 0.6s ease-out forwards;
 }
 
 .helpFlagDesc {
@@ -482,14 +830,32 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 
 .tracerouteHop {
   opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
   margin-bottom: 0.4rem;
+  position: relative;
+  overflow: hidden;
 
-  &.tracerouteHopVisible {
+  &.tracerouteHopResolving {
     opacity: 1;
-    transform: translateY(0);
   }
+
+  &.tracerouteHopResolved {
+    opacity: 1;
+  }
+}
+
+/* Packet pulse overlay */
+.tracerouteHop.tracerouteHopResolved::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba($green, 0.15) 40%, rgba($green, 0.25) 50%, rgba($green, 0.15) 60%, transparent 100%);
+  background-size: 200% 100%;
+  animation: packetPulse 0.3s ease-out forwards;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .tracerouteHopMain {
@@ -499,6 +865,8 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   align-items: baseline;
   white-space: pre;
   overflow-x: auto;
+  position: relative;
+  z-index: 2;
 
   @media (max-width: 600px) {
     font-size: 1.1rem;
@@ -521,8 +889,19 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   color: $green-dim;
 }
 
+/* Resolving state: stars */
+.tracerouteStars {
+  color: $green-dim;
+  opacity: 0.5;
+}
+
 .tracerouteLatency {
   color: $amber;
+
+  /* Flash amber on resolve */
+  .tracerouteHopResolved & {
+    animation: phosphorFlashAmber 0.6s ease-out forwards;
+  }
 }
 
 .tracerouteDesc {
@@ -531,6 +910,8 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   font-size: 1.2rem;
   font-style: italic;
   margin-bottom: 1.2rem;
+  position: relative;
+  z-index: 2;
 
   @media (max-width: 600px) {
     padding-left: 2rem;
@@ -586,6 +967,11 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   font-weight: 700;
 }
 
+/* SQL keyword flash when typed */
+.sqlKeywordFlash {
+  animation: phosphorFlashCyan 0.4s ease-out forwards;
+}
+
 .sqlTable {
   white-space: pre;
   font-size: 1.3rem;
@@ -598,8 +984,15 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   }
 }
 
+/* Border draws itself left to right */
 .sqlBorder {
   color: $green-dim;
+}
+
+.sqlBorderAnimated {
+  color: $green-dim;
+  display: inline-block;
+  animation: borderDraw 0.4s ease-out forwards;
 }
 
 .sqlHeader {
@@ -607,13 +1000,25 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   font-weight: 700;
 }
 
+/* Flash on header appearance */
+.sqlHeaderFlash {
+  animation: phosphorFlash 0.5s ease-out forwards;
+}
+
 .sqlRow {
   color: $white;
+}
+
+/* Row entrance with phosphor flash */
+.sqlRowAnimated {
+  display: inline;
+  animation: phosphorFlash 0.5s ease-out forwards;
 }
 
 .sqlActive {
   color: $green;
   font-weight: 700;
+  animation: activePulse 2s ease-in-out infinite;
 }
 
 .sqlRowCount {
@@ -657,6 +1062,17 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   overflow-x: auto;
 }
 
+/* Crontab line entrance */
+.crontabLineWrapper {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+
+  &.crontabLineVisible {
+    opacity: 1;
+    animation: phosphorFlash 0.6s ease-out forwards;
+  }
+}
+
 .crontabComment {
   color: $green-dim;
 }
@@ -672,6 +1088,30 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   gap: 0;
   align-items: baseline;
   white-space: nowrap;
+  position: relative;
+}
+
+/* Execution sweep effect on RUNNING lines */
+.crontabLineRunning {
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba($green, 0.08) 45%, rgba($green, 0.15) 50%, rgba($green, 0.08) 55%, transparent 100%);
+    background-size: 200% 100%;
+    animation: cronExecSweep 0.6s ease-out;
+    animation-delay: 4.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    animation-duration: 5s;
+    pointer-events: none;
+  }
 }
 
 .crontabSchedule {
@@ -679,6 +1119,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   min-width: 16rem;
   flex-shrink: 0;
   font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 4px rgba($cyan, 0.2);
 
   @media (max-width: 600px) {
     min-width: 12rem;
@@ -693,11 +1134,16 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   color: $amber;
 }
 
-.crontabRunning {
+.crontabRunningDot {
   color: $green;
   margin-left: 1.2rem;
-  animation: pulse 1.5s ease-in-out infinite;
   white-space: nowrap;
+  animation: runningDotPulse 1.5s ease-in-out infinite;
+}
+
+.crontabRunningText {
+  color: $green;
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
 .crontabSummary {
@@ -735,6 +1181,46 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 
 .dashHeader {
   margin-bottom: 2.4rem;
+}
+
+/* Box-drawing entrance */
+.dashHeaderTop {
+  color: $green;
+  font-weight: 700;
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0;
+
+  &.dashDrawTop {
+    opacity: 1;
+    animation: drawTopLine 0.5s ease-out forwards;
+  }
+}
+
+.dashHeaderMiddle {
+  color: $green-dim;
+  font-size: 1.3rem;
+  opacity: 0;
+
+  &.dashDrawMiddle {
+    opacity: 1;
+    animation: drawSides 0.4s ease-out forwards;
+  }
+}
+
+.dashHeaderBottom {
+  color: $green;
+  font-weight: 700;
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0;
+
+  &.dashDrawBottom {
+    opacity: 1;
+    animation: drawBottomLine 0.5s ease-out forwards;
+  }
 }
 
 .dashTitle {
@@ -847,15 +1333,23 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
 
+  /* Phosphor leading edge */
   &::after {
     content: '';
     position: absolute;
     right: 0;
     top: 0;
     bottom: 0;
-    width: 4px;
+    width: 6px;
+    background: rgba(#33ff6a, 0.9);
+    box-shadow: 0 0 12px $green, 0 0 24px $green;
+    transition: box-shadow 0.5s ease 1.5s, background 0.5s ease 1.5s;
+  }
+
+  /* After bar reaches target, dim the leading edge */
+  &.dashBarFilled::after {
     background: rgba($green, 0.8);
-    box-shadow: 0 0 8px $green;
+    box-shadow: 0 0 4px $green;
   }
 }
 
@@ -864,8 +1358,13 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   background: $amber;
 
   &::after {
+    background: rgba(#ffc333, 0.9);
+    box-shadow: 0 0 12px $amber, 0 0 24px $amber;
+  }
+
+  &.dashBarFilled::after {
     background: rgba($amber, 0.8);
-    box-shadow: 0 0 8px $amber;
+    box-shadow: 0 0 4px $amber;
   }
 }
 
@@ -874,8 +1373,13 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   background: $cyan;
 
   &::after {
+    background: rgba(#33e0ff, 0.9);
+    box-shadow: 0 0 12px $cyan, 0 0 24px $cyan;
+  }
+
+  &.dashBarFilled::after {
     background: rgba($cyan, 0.8);
-    box-shadow: 0 0 8px $cyan;
+    box-shadow: 0 0 4px $cyan;
   }
 }
 
@@ -952,7 +1456,18 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   gap: 0.4rem;
   white-space: nowrap;
   opacity: 0;
-  animation: logSlideIn 0.4s ease forwards;
+  transform: translateX(-10px);
+
+  &.tailLineVisible {
+    opacity: 1;
+    transform: translateX(0);
+    animation: logSlideIn 0.4s ease forwards, logPhosphorBloom 0.8s ease-out forwards;
+  }
+
+  /* WARN entries bloom amber */
+  &.tailLineWarn.tailLineVisible {
+    animation: logSlideIn 0.4s ease forwards, logPhosphorBloomAmber 0.8s ease-out forwards;
+  }
 
   @media (max-width: 600px) {
     font-size: 1.1rem;
@@ -1011,6 +1526,16 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   }
 }
 
+/* Screen-wide flash on CTA execute */
+.ctaScreenFlash {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.12);
+  z-index: 10000;
+  pointer-events: none;
+  animation: screenFlash 0.15s ease-out forwards;
+}
+
 .ctaBox {
   border: 1px solid $green-dim;
   padding: 4rem 4.8rem;
@@ -1058,6 +1583,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 
 .ctaOutputLine {
   display: block;
+  animation: okShake 0.1s ease-out, phosphorFlash 0.6s ease-out forwards;
 }
 
 .ctaCheck {
@@ -1068,6 +1594,13 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 .ctaPrompt {
   font-size: 1.6rem;
   margin-top: 2.4rem;
+}
+
+/* Exaggerated amber cursor glow halo */
+.cursorAmberGlow {
+  composes: cursor;
+  background: $amber;
+  box-shadow: 0 0 8px $amber, 0 0 16px rgba($amber, 0.4), 0 0 24px rgba($amber, 0.2);
 }
 
 .ctaEnter {
@@ -1084,11 +1617,12 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   text-decoration: none;
   border: none;
   margin-top: 1.6rem;
+  animation: buttonHaloPulse 2s ease-in-out infinite;
 
   &:hover {
     background: $amber;
     color: $black;
-    box-shadow: 0 0 20px rgba($amber, 0.4);
+    box-shadow: 0 0 30px rgba($amber, 0.5), 0 0 60px rgba($amber, 0.3);
   }
 }
 
@@ -1127,19 +1661,47 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 .footerEof {
   color: $green-dim;
   margin-bottom: 1.2rem;
+  opacity: 0;
+
+  &.footerEofVisible {
+    opacity: 1;
+    animation: eofDraw 0.8s ease-out forwards;
+  }
 }
 
 .footerDisconnect {
   color: $white;
   margin-bottom: 0.4rem;
+  opacity: 0;
+
+  &.footerDisconnectVisible {
+    animation: disconnectFlicker 0.5s ease-out forwards;
+  }
 }
 
 .footerLogout {
   color: $green-dim;
   margin-bottom: 1.6rem;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+
+  &.footerLogoutVisible {
+    opacity: 1;
+  }
 }
 
 .footerHint {
   color: $green-mid;
   font-size: 1.2rem;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+
+  &.footerHintVisible {
+    opacity: 0.5;
+  }
+}
+
+/* Footer area dims like CRT losing signal */
+.footerDimmed {
+  animation: footerDimOut 1s ease-out 0.5s forwards;
 }
