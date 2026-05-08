@@ -259,16 +259,55 @@ function pad(str: string, width: number): string {
   return str + ' '.repeat(Math.max(0, width - str.length));
 }
 
+/* ─── Helper: animated counter hook ─── */
+
+function useCountUp(target: number, duration: number, start: boolean): number {
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (!start) { setValue(0); return; }
+
+    const startTime = Date.now();
+    const id = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setValue(Math.round(eased * target));
+      if (progress >= 1) clearInterval(id);
+    }, 16);
+
+    return () => clearInterval(id);
+  }, [target, duration, start]);
+
+  return value;
+}
+
 /* ═══════════════════════════════════════════════
    HERO SECTION
    ═══════════════════════════════════════════════ */
 
 function HeroSection() {
   const { wrapperRef, progress } = useStickyScroll();
+  const [prevCount, setPrevCount] = useState(0);
+  const [asciiShown, setAsciiShown] = useState(false);
 
   // Map progress to number of visible boot lines
   const totalLines = BOOT_SEQUENCE.length;
   const visibleCount = Math.floor(progress * totalLines * 1.4); // 1.4 to finish before end of scroll
+
+  // Track which line just appeared for phosphor flash
+  useEffect(() => {
+    setPrevCount(visibleCount);
+  }, [visibleCount]);
+
+  // Track ASCII logo first appearance
+  useEffect(() => {
+    const asciiIdx = BOOT_SEQUENCE.findIndex(l => l.type === 'ascii');
+    if (visibleCount > asciiIdx && !asciiShown) {
+      setAsciiShown(true);
+    }
+  }, [visibleCount, asciiShown]);
 
   return (
     <div className={s.heroWrapper} ref={wrapperRef} id="hero">
@@ -276,21 +315,38 @@ function HeroSection() {
         <div className={s.terminal}>
           {BOOT_SEQUENCE.map((line, i) => {
             const isVisible = i < visibleCount;
-            const classes = `${s.bootLine} ${isVisible ? s.visible : ''}`;
+            const justAppeared = isVisible && i >= prevCount - 1 && i === visibleCount - 1;
+            const classes = [
+              s.bootLine,
+              isVisible ? s.visible : '',
+              justAppeared ? s.phosphorFlash : '',
+            ].filter(Boolean).join(' ');
 
             if (line.type === 'ascii') {
               return (
-                <pre key={i} className={classes}>
+                <pre key={i} className={classes} style={{ position: 'relative' }}>
                   <span className={s.asciiLogo}>{line.text}</span>
+                  {isVisible && asciiShown && (
+                    <span className={s.asciiLogoGlow} />
+                  )}
                 </pre>
               );
             }
 
             if (line.type === 'tagline') {
+              const words = line.text.split(' ');
               return (
                 <div key={i} className={classes}>
                   <span className={s.taglineLine}>
-                    {isVisible ? line.text : ''}
+                    {isVisible ? words.map((word, wi) => (
+                      <span
+                        key={wi}
+                        className={s.taglineWord}
+                        style={{ animationDelay: `${wi * 100}ms` }}
+                      >
+                        {word}{wi < words.length - 1 ? ' ' : ''}
+                      </span>
+                    )) : ''}
                     {isVisible && i === visibleCount - 1 && (
                       <span className={s.cursor} />
                     )}
@@ -339,7 +395,6 @@ function renderManifestoLine(line: ManifestoLine) {
   }
 
   if (type === 'heading') {
-    // Render the # in dim, the rest in bright green bold
     const hashEnd = text.indexOf(' ');
     return (
       <>
@@ -354,8 +409,6 @@ function renderManifestoLine(line: ManifestoLine) {
   }
 
   if (type === 'principle-num') {
-    // e.g. "#   1. Ship > Slide decks"
-    // Render # in dim, number in amber, rest in cyan
     const match = text.match(/^(#\s+)(\d+\.)(.*)$/);
     if (match) {
       return (
@@ -370,7 +423,6 @@ function renderManifestoLine(line: ManifestoLine) {
   }
 
   if (type === 'principle-body') {
-    // # in dim, body text in cyan (emphasis)
     const hashEnd = text.indexOf(' ');
     return (
       <>
@@ -390,24 +442,35 @@ function renderManifestoLine(line: ManifestoLine) {
     );
   }
 
-  // Default: plain comment
   return <span className={s.vimComment}>{text}</span>;
 }
 
 function VimSection() {
   const { ref, isVisible } = useInView();
   const [visibleLines, setVisibleLines] = useState(0);
+  const [editorLoaded, setEditorLoaded] = useState(false);
+  const [statusVisible, setStatusVisible] = useState(false);
+  const [commandVisible, setCommandVisible] = useState(false);
 
   useEffect(() => {
     if (!isVisible) return;
+
+    // Brief file-loading flicker
+    setEditorLoaded(true);
 
     let count = 0;
     const total = MANIFESTO_LINES.length;
     const id = setInterval(() => {
       count++;
       setVisibleLines(count);
-      if (count >= total) clearInterval(id);
-    }, 30);
+      if (count >= total) {
+        clearInterval(id);
+        // Status bar slides up after all lines loaded
+        setTimeout(() => setStatusVisible(true), 200);
+        // Command line fades in after status bar
+        setTimeout(() => setCommandVisible(true), 500);
+      }
+    }, 40);
 
     return () => clearInterval(id);
   }, [isVisible]);
@@ -417,7 +480,7 @@ function VimSection() {
 
   return (
     <section className={s.vimSection} ref={ref} id="vim">
-      <div className={s.vimEditor}>
+      <div className={`${s.vimEditor} ${editorLoaded ? s.vimLoading : ''}`}>
         <div className={s.vimTitleBar}>
           manifesto.md [+] - VIM
         </div>
@@ -427,9 +490,14 @@ function VimSection() {
             <div
               key={i}
               className={`${s.vimLine} ${i < visibleLines ? s.vimLineVisible : ''}`}
-              style={{ transitionDelay: `${i * 30}ms` }}
+              style={{ animationDelay: `${i * 40}ms` }}
             >
-              <span className={s.vimLineNumber}>{i + 1}</span>
+              <span
+                className={s.vimLineNumber}
+                style={{ animationDelay: `${i * 40 - 20}ms` }}
+              >
+                {i + 1}
+              </span>
               <span className={s.vimLineContent}>
                 {renderManifestoLine(line)}
               </span>
@@ -438,13 +506,18 @@ function VimSection() {
 
           {Array.from({ length: tildeCount }).map((_, i) => (
             <div key={`tilde-${i}`} className={s.vimTilde}>
-              <span className={s.vimTildeChar}>~</span>
+              <span
+                className={s.vimTildeChar}
+                style={{ animationDelay: `${i * 500}ms` }}
+              >
+                ~
+              </span>
               <span />
             </div>
           ))}
         </div>
 
-        <div className={s.vimStatusBar}>
+        <div className={`${s.vimStatusBar} ${statusVisible ? s.vimStatusVisible : ''}`}>
           <span className={s.vimMode}>-- NORMAL --</span>
           <div className={s.vimFileInfo}>
             <span>manifesto.md [+]</span>
@@ -455,7 +528,7 @@ function VimSection() {
           </div>
         </div>
 
-        <div className={s.vimCommandLine}>
+        <div className={`${s.vimCommandLine} ${commandVisible ? s.vimCommandVisible : ''}`}>
           :<span className={s.cursor} />
         </div>
       </div>
@@ -470,53 +543,126 @@ function VimSection() {
 function ServicesSection() {
   const { ref, isVisible } = useInView();
 
+  const command = '$ beirux --help';
+  const { displayed: cmdDisplayed, done: cmdDone } = useTypewriter(command, 50, isVisible);
+
+  // Cascade the help output lines after command finishes
+  const [visibleOutputLines, setVisibleOutputLines] = useState(0);
+  // Total output lines: header(4) + commands title(1) + SERVICES(5) + footer options(8)
+  const totalOutputLines = 4 + 1 + SERVICES.length + 8;
+
+  useEffect(() => {
+    if (!cmdDone) return;
+
+    let count = 0;
+    const id = setInterval(() => {
+      count++;
+      setVisibleOutputLines(count);
+      if (count >= totalOutputLines) clearInterval(id);
+    }, 80);
+
+    return () => clearInterval(id);
+  }, [cmdDone, totalOutputLines]);
+
+  const lineClass = (idx: number) =>
+    `${s.helpOutputLine} ${idx < visibleOutputLines ? s.helpLineVisible : ''}`;
+
   return (
     <section className={s.servicesSection} ref={ref} id="services">
       <div className={`${s.helpBlock} ${isVisible ? s.visible : ''}`}>
-        <div className={s.helpHeader}>
-          <div className={s.dim}>$ beirux --help</div>
-          <div>&nbsp;</div>
-          <div className={s.helpUsage}>
-            Usage: beirux {'<command>'} [options]
-          </div>
-          <div className={s.helpDesc}>
-            Full-service digital agency. We build, ship, and scale products with
-            AI-powered systems and zero templates.
-          </div>
+        {/* Typewriter command */}
+        <div className={s.dim}>
+          {cmdDisplayed}
+          {!cmdDone && <span className={s.cursor} />}
         </div>
 
-        <div className={s.helpCommandsTitle}>Available Commands:</div>
+        {cmdDone && (
+          <>
+            <div className={s.helpHeader}>
+              <div
+                className={lineClass(0)}
+                style={{ animationDelay: '0ms' }}
+              >
+                &nbsp;
+              </div>
+              <div
+                className={lineClass(1)}
+                style={{ animationDelay: '80ms' }}
+              >
+                <span className={s.helpUsage}>
+                  Usage: beirux {'<command>'} [options]
+                </span>
+              </div>
+              <div
+                className={lineClass(2)}
+                style={{ animationDelay: '160ms' }}
+              >
+                <span className={s.helpDesc}>
+                  Full-service digital agency. We build, ship, and scale products with
+                  AI-powered systems and zero templates.
+                </span>
+              </div>
+            </div>
 
-        {SERVICES.map((svc) => (
-          <div key={svc.flag} className={s.helpCommand}>
-            <span className={s.helpFlag}>
-              {svc.flag}, {svc.alias}
-            </span>
-            <span className={s.helpFlagDesc}>{svc.desc}</span>
-            <span className={s.helpStat}>[{svc.stat}]</span>
-          </div>
-        ))}
+            <div
+              className={lineClass(3)}
+              style={{ animationDelay: '240ms' }}
+            >
+              <span className={s.helpCommandsTitle}>Available Commands:</span>
+            </div>
 
-        <div className={s.helpFooter}>
-          <div>&nbsp;</div>
-          <div className={s.dim}>Options:</div>
-          <div>
-            <span className={s.cyan}>  --verbose</span>
-            <span className={s.white}>        Show the work. Always.</span>
-          </div>
-          <div>
-            <span className={s.cyan}>  --no-templates</span>
-            <span className={s.white}>   Everything custom. Every time.</span>
-          </div>
-          <div>
-            <span className={s.cyan}>  --ship-fast</span>
-            <span className={s.white}>       Average delivery: 4 weeks.</span>
-          </div>
-          <div>&nbsp;</div>
-          <div className={s.dim}>
-            Run `beirux {'<command>'} --help` for more information on a specific command.
-          </div>
-        </div>
+            {SERVICES.map((svc, i) => {
+              const lineIdx = 4 + i;
+              return (
+                <div
+                  key={svc.flag}
+                  className={`${s.helpCommand} ${lineClass(lineIdx)}`}
+                  style={{ animationDelay: `${lineIdx * 80}ms` }}
+                >
+                  <span className={`${s.helpFlag} ${lineIdx < visibleOutputLines ? s.helpFlagFlash : ''}`}>
+                    {svc.flag}, {svc.alias}
+                  </span>
+                  <span className={s.helpFlagDesc}>{svc.desc}</span>
+                  <span className={s.helpStat}>[{svc.stat}]</span>
+                </div>
+              );
+            })}
+
+            <div className={s.helpFooter}>
+              {[
+                <div key="f0">&nbsp;</div>,
+                <div key="f1" className={s.dim}>Options:</div>,
+                <div key="f2">
+                  <span className={s.cyan}>  --verbose</span>
+                  <span className={s.white}>        Show the work. Always.</span>
+                </div>,
+                <div key="f3">
+                  <span className={s.cyan}>  --no-templates</span>
+                  <span className={s.white}>   Everything custom. Every time.</span>
+                </div>,
+                <div key="f4">
+                  <span className={s.cyan}>  --ship-fast</span>
+                  <span className={s.white}>       Average delivery: 4 weeks.</span>
+                </div>,
+                <div key="f5">&nbsp;</div>,
+                <div key="f6" className={s.dim}>
+                  Run `beirux {'<command>'} --help` for more information on a specific command.
+                </div>,
+              ].map((el, fi) => {
+                const lineIdx = 4 + SERVICES.length + fi;
+                return (
+                  <div
+                    key={`footer-${fi}`}
+                    className={lineClass(lineIdx)}
+                    style={{ animationDelay: `${lineIdx * 80}ms` }}
+                  >
+                    {el}
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
     </section>
   );
@@ -528,24 +674,48 @@ function ServicesSection() {
 
 function TracerouteSection() {
   const { ref, isVisible } = useInView();
-  const [visibleHops, setVisibleHops] = useState(0);
+  // Track hop states: 'hidden' | 'resolving' | 'resolved'
+  const [hopStates, setHopStates] = useState<('hidden' | 'resolving' | 'resolved')[]>(
+    TRACEROUTE_HOPS.map(() => 'hidden')
+  );
   const [showSummary, setShowSummary] = useState(false);
+  const summaryText = '8 hops traversed. Average project delivery: 4 weeks. Packet loss: 0%.';
+  const { displayed: summaryDisplayed, done: summaryDone } = useTypewriter(summaryText, 20, showSummary);
 
   useEffect(() => {
     if (!isVisible) return;
 
-    let count = 0;
     const total = TRACEROUTE_HOPS.length;
-    const id = setInterval(() => {
-      count++;
-      setVisibleHops(count);
-      if (count >= total) {
-        clearInterval(id);
-        setTimeout(() => setShowSummary(true), 400);
-      }
-    }, 250);
+    let hopIdx = 0;
 
-    return () => clearInterval(id);
+    const advanceHop = () => {
+      if (hopIdx >= total) {
+        setTimeout(() => setShowSummary(true), 400);
+        return;
+      }
+
+      // Phase 1: resolving (show * * *)
+      setHopStates(prev => {
+        const next = [...prev];
+        next[hopIdx] = 'resolving';
+        return next;
+      });
+
+      const currentIdx = hopIdx;
+      // Phase 2: resolved after 300ms
+      setTimeout(() => {
+        setHopStates(prev => {
+          const next = [...prev];
+          next[currentIdx] = 'resolved';
+          return next;
+        });
+      }, 300);
+
+      hopIdx++;
+      setTimeout(advanceHop, 350);
+    };
+
+    advanceHop();
   }, [isVisible]);
 
   return (
@@ -558,27 +728,42 @@ function TracerouteSection() {
           </div>
         </div>
 
-        {TRACEROUTE_HOPS.map((hop) => (
-          <div
-            key={hop.num}
-            className={`${s.tracerouteHop} ${hop.num <= visibleHops ? s.tracerouteHopVisible : ''}`}
-          >
-            <div className={s.tracerouteHopMain}>
-              <span className={s.tracerouteHopNum}>{String(hop.num).padStart(2, ' ')}</span>
-              <span className={s.tracerouteHostname}>{hop.host}</span>
-              {'  '}
-              <span className={s.tracerouteIp}>({hop.ip})</span>
-              {'    '}
-              <span className={s.tracerouteLatency}>
-                {hop.times.map((t) => `${t} ms`).join('   ')}
-              </span>
+        {TRACEROUTE_HOPS.map((hop, i) => {
+          const state = hopStates[i];
+          const hopClass = [
+            s.tracerouteHop,
+            state === 'resolving' ? s.tracerouteHopResolving : '',
+            state === 'resolved' ? s.tracerouteHopResolved : '',
+          ].filter(Boolean).join(' ');
+
+          return (
+            <div key={hop.num} className={hopClass}>
+              <div className={s.tracerouteHopMain}>
+                <span className={s.tracerouteHopNum}>{String(hop.num).padStart(2, ' ')}</span>
+                {state === 'resolving' ? (
+                  <span className={s.tracerouteStars}>* * *</span>
+                ) : state === 'resolved' ? (
+                  <>
+                    <span className={s.tracerouteHostname}>{hop.host}</span>
+                    {'  '}
+                    <span className={s.tracerouteIp}>({hop.ip})</span>
+                    {'    '}
+                    <span className={s.tracerouteLatency}>
+                      {hop.times.map((t) => `${t} ms`).join('   ')}
+                    </span>
+                  </>
+                ) : null}
+              </div>
+              {state === 'resolved' && (
+                <div className={s.tracerouteDesc}>{hop.desc}</div>
+              )}
             </div>
-            <div className={s.tracerouteDesc}>{hop.desc}</div>
-          </div>
-        ))}
+          );
+        })}
 
         <div className={`${s.tracerouteSummary} ${showSummary ? s.tracerouteSummaryVisible : ''}`}>
-          8 hops traversed. Average project delivery: 4 weeks. Packet loss: 0%.
+          {summaryDisplayed}
+          {showSummary && !summaryDone && <span className={s.cursor} />}
         </div>
       </div>
     </section>
@@ -592,6 +777,28 @@ function TracerouteSection() {
 function ClientsSection() {
   const { ref, isVisible } = useInView();
 
+  // Typewriter for SQL query
+  const sqlText = "SELECT * FROM clients WHERE status = 'active' ORDER BY since ASC;";
+  const { displayed: sqlDisplayed, done: sqlDone } = useTypewriter(sqlText, 30, isVisible);
+
+  // Table construction phases
+  const [phase, setPhase] = useState(0);
+  // 0: nothing, 1: top border, 2: header, 3: separator, 4-8: rows, 9: bottom border, 10: row count
+
+  useEffect(() => {
+    if (!sqlDone) return;
+
+    let current = 0;
+    const maxPhase = 4 + CLIENTS.length + 2; // border + header + sep + N rows + bottom border + count
+    const id = setInterval(() => {
+      current++;
+      setPhase(current);
+      if (current >= maxPhase) clearInterval(id);
+    }, 150);
+
+    return () => clearInterval(id);
+  }, [sqlDone]);
+
   // Column widths
   const colId = 4;
   const colName = 24;
@@ -602,40 +809,99 @@ function ClientsSection() {
   const hr = `+${'-'.repeat(colId + 2)}+${'-'.repeat(colName + 2)}+${'-'.repeat(colType + 2)}+${'-'.repeat(colStatus + 2)}+${'-'.repeat(colSince + 2)}+`;
   const header = `| ${pad('ID', colId)} | ${pad('CLIENT', colName)} | ${pad('TYPE', colType)} | ${pad('STATUS', colStatus)} | ${pad('SINCE', colSince)} |`;
 
+  // Parse SQL keywords for flash effect during typewriting
+  const renderSqlTyped = () => {
+    const keywords = ['SELECT', 'FROM', 'WHERE', 'ORDER BY', 'ASC'];
+    const parts: { text: string; isKeyword: boolean }[] = [];
+    let remaining = sqlDisplayed;
+    let pos = 0;
+
+    while (pos < remaining.length) {
+      let matched = false;
+      for (const kw of keywords) {
+        if (remaining.slice(pos).startsWith(kw)) {
+          if (pos > 0) {
+            parts.push({ text: remaining.slice(0, pos), isKeyword: false });
+            remaining = remaining.slice(pos);
+            pos = 0;
+          }
+          parts.push({ text: kw, isKeyword: true });
+          remaining = remaining.slice(kw.length);
+          pos = 0;
+          matched = true;
+          break;
+        }
+      }
+      if (!matched) pos++;
+    }
+    if (remaining.length > 0) {
+      parts.push({ text: remaining, isKeyword: false });
+    }
+
+    return parts.map((part, pi) => (
+      part.isKeyword ? (
+        <span key={pi} className={`${s.sqlKeyword} ${s.phosphorFlashCyan}`}>{part.text}</span>
+      ) : (
+        <span key={pi}>{part.text}</span>
+      )
+    ));
+  };
+
   return (
     <section className={s.clientsSection} ref={ref} id="clients">
       <div className={`${s.sqlBlock} ${isVisible ? s.visible : ''}`}>
         <div className={s.sqlQuery}>
           <span className={s.dim}>beirux=# </span>
-          <span className={s.sqlKeyword}>SELECT</span> * <span className={s.sqlKeyword}>FROM</span> clients <span className={s.sqlKeyword}>WHERE</span> status = <span className={s.amber}>&apos;active&apos;</span> <span className={s.sqlKeyword}>ORDER BY</span> since <span className={s.sqlKeyword}>ASC</span>;
+          {renderSqlTyped()}
+          {!sqlDone && <span className={s.cursor} />}
         </div>
 
-        <pre className={s.sqlTable}>
-          <span className={s.sqlBorder}>{hr}{'\n'}</span>
-          <span className={s.sqlHeader}>{header}{'\n'}</span>
-          <span className={s.sqlBorder}>{hr}{'\n'}</span>
-          {CLIENTS.map((client, i) => (
-            <span key={i}>
-              <span className={s.sqlRow}>
-                {'| '}{pad(String(i + 1), colId)}{' | '}{pad(client.name, colName)}{' | '}{pad(client.type, colType)}{' | '}
-              </span>
-              <span className={s.sqlActive}>{pad(client.status, colStatus)}</span>
-              <span className={s.sqlRow}>
-                {' | '}{pad(client.since, colSince)}{' |'}
-              </span>
-              {'\n'}
-            </span>
-          ))}
-          <span className={s.sqlBorder}>{hr}</span>
-        </pre>
+        {sqlDone && (
+          <>
+            <pre className={s.sqlTable}>
+              {phase >= 1 && (
+                <span className={s.sqlBorderAnimated}>{hr}{'\n'}</span>
+              )}
+              {phase >= 2 && (
+                <span className={`${s.sqlHeader} ${s.sqlHeaderFlash}`}>{header}{'\n'}</span>
+              )}
+              {phase >= 3 && (
+                <span className={s.sqlBorderAnimated}>{hr}{'\n'}</span>
+              )}
+              {CLIENTS.map((client, i) => {
+                const rowPhase = 4 + i;
+                if (phase < rowPhase) return null;
+                return (
+                  <span key={i} className={s.sqlRowAnimated}>
+                    <span className={s.sqlRow}>
+                      {'| '}{pad(String(i + 1), colId)}{' | '}{pad(client.name, colName)}{' | '}{pad(client.type, colType)}{' | '}
+                    </span>
+                    <span className={s.sqlActive}>{pad(client.status, colStatus)}</span>
+                    <span className={s.sqlRow}>
+                      {' | '}{pad(client.since, colSince)}{' |'}
+                    </span>
+                    {'\n'}
+                  </span>
+                );
+              })}
+              {phase >= 4 + CLIENTS.length && (
+                <span className={s.sqlBorderAnimated}>{hr}</span>
+              )}
+            </pre>
 
-        <div className={s.sqlRowCount}>
-          ({CLIENTS.length} rows)
-        </div>
-        <div>&nbsp;</div>
-        <div className={s.dim}>
-          Time: 0.042ms
-        </div>
+            {phase >= 4 + CLIENTS.length + 1 && (
+              <>
+                <div className={s.sqlRowCount}>
+                  ({CLIENTS.length} rows)
+                </div>
+                <div>&nbsp;</div>
+                <div className={s.dim}>
+                  Time: 0.042ms
+                </div>
+              </>
+            )}
+          </>
+        )}
       </div>
     </section>
   );
@@ -647,6 +913,50 @@ function ClientsSection() {
 
 function CrontabSection() {
   const { ref, isVisible } = useInView();
+  const [visibleLines, setVisibleLines] = useState(0);
+  const [summaryReady, setSummaryReady] = useState(false);
+  const [summaryText, setSummaryText] = useState('');
+  const finalSummary = '12 scheduled jobs | 4 agents active | 0 failures (last 30d) | next run: 14:30:00 EST';
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let count = 0;
+    const total = CRONTAB_LINES.length;
+    const id = setInterval(() => {
+      count++;
+      setVisibleLines(count);
+      if (count >= total) {
+        clearInterval(id);
+        setTimeout(() => setSummaryReady(true), 200);
+      }
+    }, 50);
+
+    return () => clearInterval(id);
+  }, [isVisible]);
+
+  // Summary count-up effect
+  useEffect(() => {
+    if (!summaryReady) return;
+
+    // Rapidly cycle through numbers before settling
+    let frame = 0;
+    const totalFrames = 20;
+    const id = setInterval(() => {
+      frame++;
+      if (frame >= totalFrames) {
+        clearInterval(id);
+        setSummaryText(finalSummary);
+        return;
+      }
+      const jobs = Math.round((frame / totalFrames) * 12);
+      const agents = Math.round((frame / totalFrames) * 4);
+      const failures = 0;
+      setSummaryText(`${jobs} scheduled jobs | ${agents} agents active | ${failures} failures (last 30d) | next run: 14:30:00 EST`);
+    }, 40);
+
+    return () => clearInterval(id);
+  }, [summaryReady, finalSummary]);
 
   return (
     <section className={s.crontabSection} ref={ref} id="crontab">
@@ -657,45 +967,67 @@ function CrontabSection() {
 
         <div className={s.crontabContent}>
           {CRONTAB_LINES.map((entry, i) => {
+            const wrapperClass = `${s.crontabLineWrapper} ${i < visibleLines ? s.crontabLineVisible : ''}`;
+
             if (entry.type === 'blank') {
-              return <div key={i}>&nbsp;</div>;
+              return (
+                <div key={i} className={wrapperClass}>
+                  &nbsp;
+                </div>
+              );
             }
 
             if (entry.type === 'comment') {
               return (
-                <div key={i} className={s.crontabComment}>{entry.text}</div>
+                <div key={i} className={wrapperClass}>
+                  <span className={s.crontabComment}>{entry.text}</span>
+                </div>
               );
             }
 
             if (entry.type === 'commentBold') {
               return (
-                <div key={i} className={s.crontabCommentBold}>{entry.text}</div>
+                <div key={i} className={wrapperClass}>
+                  <span className={s.crontabCommentBold}>{entry.text}</span>
+                </div>
               );
             }
 
             if (entry.type === 'sectionHeader') {
               return (
-                <div key={i} className={s.crontabComment}>{entry.text}</div>
+                <div key={i} className={wrapperClass}>
+                  <span className={s.crontabComment}>{entry.text}</span>
+                </div>
               );
             }
 
             // job line
             return (
-              <div key={i} className={s.crontabLine}>
-                <span className={s.crontabSchedule}>{entry.schedule}</span>
-                <span className={s.crontabPath}>{entry.path}</span>
-                <span className={s.crontabFlags}>{entry.flags}</span>
-                {entry.running && (
-                  <span className={s.crontabRunning}>{'  '}● RUNNING</span>
-                )}
+              <div
+                key={i}
+                className={`${wrapperClass} ${entry.running ? s.crontabLineRunning : ''}`}
+              >
+                <div className={s.crontabLine}>
+                  <span className={s.crontabSchedule}>{entry.schedule}</span>
+                  <span className={s.crontabPath}>{entry.path}</span>
+                  <span className={s.crontabFlags}>{entry.flags}</span>
+                  {entry.running && (
+                    <>
+                      <span className={s.crontabRunningDot}>{'  '}&bull;</span>
+                      <span className={s.crontabRunningText}> RUNNING</span>
+                    </>
+                  )}
+                </div>
               </div>
             );
           })}
         </div>
 
-        <div className={s.crontabSummary}>
-          12 scheduled jobs | 4 agents active | 0 failures (last 30d) | next run: 14:30:00 EST
-        </div>
+        {summaryReady && (
+          <div className={s.crontabSummary}>
+            {summaryText}
+          </div>
+        )}
       </div>
     </section>
   );
@@ -707,6 +1039,47 @@ function CrontabSection() {
 
 function ProofSection() {
   const { ref, isVisible } = useInView();
+  const [drawPhase, setDrawPhase] = useState(0); // 0: hidden, 1: top, 2: middle, 3: bottom
+  const [barsFilled, setBarsFilled] = useState(false);
+
+  // Box-drawing entrance
+  useEffect(() => {
+    if (!isVisible) return;
+
+    const timers = [
+      setTimeout(() => setDrawPhase(1), 100),
+      setTimeout(() => setDrawPhase(2), 600),
+      setTimeout(() => setDrawPhase(3), 1000),
+      setTimeout(() => setBarsFilled(true), 2700), // After bars finish filling (~1.5s after they start at ~1.2s)
+    ];
+
+    return () => timers.forEach(clearTimeout);
+  }, [isVisible]);
+
+  // Count-up for numeric stat values
+  const projectsShipped = useCountUp(12, 1000, isVisible);
+  const activeClients = useCountUp(5, 1000, isVisible);
+  const aiAgents = useCountUp(4, 1000, isVisible);
+  const clientRetention = useCountUp(92, 1000, isVisible);
+  const templatesUsed = useCountUp(0, 1000, isVisible);
+  const customBuilt = useCountUp(100, 1000, isVisible);
+  const uptimeCount = useCountUp(1247, 1500, isVisible);
+
+  const getAnimatedValue = (stat: typeof DASH_STATS[0]) => {
+    if (!isVisible) return stat.value;
+    switch (stat.label) {
+      case 'Projects Shipped': return String(projectsShipped);
+      case 'Active Clients': return String(activeClients);
+      case 'AI Agents Running': return String(aiAgents);
+      case 'Client Retention': return `${clientRetention}%`;
+      case 'Templates Used': return String(templatesUsed);
+      case 'Custom Built': return `${customBuilt}%`;
+      // Non-numeric: just flash in
+      case 'Avg Delivery': return stat.value;
+      case 'Response Time': return stat.value;
+      default: return stat.value;
+    }
+  };
 
   const getValueClass = (color: string) => {
     switch (color) {
@@ -728,13 +1101,13 @@ function ProofSection() {
     <section className={s.proofSection} ref={ref} id="proof">
       <div className={`${s.dashBlock} ${isVisible ? s.visible : ''}`}>
         <div className={s.dashHeader}>
-          <div className={s.dashTitle}>
+          <div className={`${s.dashHeaderTop} ${drawPhase >= 1 ? s.dashDrawTop : ''}`}>
             {'┌─ BEIRUX System Monitor ────────────────────────┐'}
           </div>
-          <div className={s.dashHostname}>
+          <div className={`${s.dashHeaderMiddle} ${drawPhase >= 2 ? s.dashDrawMiddle : ''}`}>
             {'│'} hostname: beirux.com {'|'} pid: 4201 {'|'} load: 0.42 0.38 0.35 {'│'}
           </div>
-          <div className={s.dashTitle}>
+          <div className={`${s.dashHeaderBottom} ${drawPhase >= 3 ? s.dashDrawBottom : ''}`}>
             {'└────────────────────────────────────────────────┘'}
           </div>
         </div>
@@ -743,7 +1116,7 @@ function ProofSection() {
           {DASH_STATS.map((stat) => (
             <div key={stat.label} className={s.dashRow}>
               <span className={s.dashLabel}>{stat.label}</span>
-              <span className={getValueClass(stat.color)}>{stat.value}</span>
+              <span className={getValueClass(stat.color)}>{getAnimatedValue(stat)}</span>
             </div>
           ))}
         </div>
@@ -755,7 +1128,7 @@ function ProofSection() {
             <span className={s.dashBarLabel}>{bar.label}</span>
             <div className={s.dashBarTrack}>
               <div
-                className={getFillClass(bar.color)}
+                className={`${getFillClass(bar.color)} ${barsFilled ? s.dashBarFilled : ''}`}
                 style={{ width: isVisible ? `${bar.percent}%` : '0%' }}
               />
             </div>
@@ -765,7 +1138,9 @@ function ProofSection() {
 
         <div className={s.dashUptime}>
           <span className={s.dashUptimeLabel}>System Uptime</span>
-          <span className={s.dashUptimeValue}>1,247 days</span>
+          <span className={s.dashUptimeValue}>
+            {isVisible ? uptimeCount.toLocaleString() : '0'} days
+          </span>
         </div>
       </div>
     </section>
@@ -778,10 +1153,28 @@ function ProofSection() {
 
 function TailLogSection() {
   const { ref, isVisible } = useInView();
+
+  // Typewriter for the tail command
+  const tailCmd = '$ tail -f /var/log/client-feedback.log';
+  const { displayed: cmdDisplayed, done: cmdDone } = useTypewriter(tailCmd, 40, isVisible);
+
+  // Stream log entries after a pause
   const [visibleLogs, setVisibleLogs] = useState(0);
+  const [streamStarted, setStreamStarted] = useState(false);
 
   useEffect(() => {
-    if (!isVisible) return;
+    if (!cmdDone) return;
+
+    // 0.8s pause simulating tail starting
+    const pauseTimer = setTimeout(() => {
+      setStreamStarted(true);
+    }, 800);
+
+    return () => clearTimeout(pauseTimer);
+  }, [cmdDone]);
+
+  useEffect(() => {
+    if (!streamStarted) return;
 
     let count = 0;
     const total = TAIL_LOGS.length;
@@ -789,30 +1182,34 @@ function TailLogSection() {
       count++;
       setVisibleLogs(count);
       if (count >= total) clearInterval(id);
-    }, 500);
+    }, 600);
 
     return () => clearInterval(id);
-  }, [isVisible]);
+  }, [streamStarted]);
 
   return (
     <section className={s.tailSection} ref={ref} id="tail">
       <div className={`${s.tailBlock} ${isVisible ? s.visible : ''}`}>
         <div className={s.tailCmd}>
-          <span className={s.dim}>$</span> tail -f /var/log/client-feedback.log
+          {cmdDisplayed}
+          {!cmdDone && <span className={s.cursor} />}
         </div>
 
         <div className={s.tailLog}>
           {TAIL_LOGS.map((log, i) => {
             if (i >= visibleLogs) return null;
 
+            const isWarn = log.level === 'WARN';
+            const lineClass = [
+              s.tailLine,
+              s.tailLineVisible,
+              isWarn ? s.tailLineWarn : '',
+            ].filter(Boolean).join(' ');
+
             return (
-              <div
-                key={i}
-                className={s.tailLine}
-                style={{ animationDelay: `${i * 100}ms` }}
-              >
+              <div key={i} className={lineClass}>
                 <span className={s.tailTimestamp}>[{log.time}]</span>
-                <span className={log.level === 'WARN' ? s.tailWarn : s.tailInfo}>
+                <span className={isWarn ? s.tailWarn : s.tailInfo}>
                   [{log.level}]
                 </span>
                 <span className={s.tailClient}>[{log.client}]</span>
@@ -842,8 +1239,47 @@ function CtaSection() {
   const command = '$ beirux init --project "yours"';
   const { displayed, done } = useTypewriter(command, 60, isVisible);
 
+  // Screen flash when command "executes"
+  const [showFlash, setShowFlash] = useState(false);
+  // Stagger the [OK] lines
+  const [okLines, setOkLines] = useState(0);
+  const [showPrompt, setShowPrompt] = useState(false);
+
+  useEffect(() => {
+    if (!done) return;
+
+    // Flash the screen
+    setShowFlash(true);
+    const flashTimer = setTimeout(() => setShowFlash(false), 150);
+
+    // Stagger [OK] lines
+    let count = 0;
+    const okTimer = setInterval(() => {
+      count++;
+      setOkLines(count);
+      if (count >= 4) {
+        clearInterval(okTimer);
+        setTimeout(() => setShowPrompt(true), 400);
+      }
+    }, 200);
+
+    return () => {
+      clearTimeout(flashTimer);
+      clearInterval(okTimer);
+    };
+  }, [done]);
+
+  const okData = [
+    'Initializing project workspace...',
+    'Assigning dedicated team...',
+    'Deploying AI agents...',
+    'Ready to ship.',
+  ];
+
   return (
     <section className={s.ctaSection} ref={ref} id="cta">
+      {showFlash && <div className={s.ctaScreenFlash} />}
+
       <div className={`${s.ctaBlock} ${isVisible ? s.visible : ''}`}>
         <div className={s.ctaBox}>
           <span className={s.ctaBoxTitle}>{'[ NEW PROJECT ]'}</span>
@@ -856,45 +1292,85 @@ function CtaSection() {
           {done && (
             <>
               <div className={s.ctaOutput}>
-                <span className={s.ctaOutputLine}>
-                  <span className={s.ctaCheck}>{'[OK]'}</span>
-                  <span className={s.white}>Initializing project workspace...</span>
-                </span>
-                <span className={s.ctaOutputLine}>
-                  <span className={s.ctaCheck}>{'[OK]'}</span>
-                  <span className={s.white}>Assigning dedicated team...</span>
-                </span>
-                <span className={s.ctaOutputLine}>
-                  <span className={s.ctaCheck}>{'[OK]'}</span>
-                  <span className={s.white}>Deploying AI agents...</span>
-                </span>
-                <span className={s.ctaOutputLine}>
-                  <span className={s.ctaCheck}>{'[OK]'}</span>
-                  <span className={s.white}>Ready to ship.</span>
-                </span>
+                {okData.map((text, i) => {
+                  if (i >= okLines) return null;
+                  return (
+                    <span
+                      key={i}
+                      className={s.ctaOutputLine}
+                      style={{ animationDelay: `${i * 50}ms` }}
+                    >
+                      <span className={s.ctaCheck}>{'[OK]'}</span>
+                      <span className={s.white}>{text}</span>
+                    </span>
+                  );
+                })}
               </div>
 
-              <div className={s.ctaPrompt}>
-                <span className={s.dim}>Press ENTER to start</span>
-                <span className={s.cursorAmber} />
-              </div>
+              {showPrompt && (
+                <>
+                  <div className={s.ctaPrompt}>
+                    <span className={s.dim}>Press ENTER to start</span>
+                    <span className={s.cursorAmberGlow} />
+                  </div>
 
-              <a
-                href="mailto:samih@beirux.com?subject=New%20Project%20Inquiry"
-                className={s.ctaEnter}
-              >
-                START PROJECT
-              </a>
+                  <a
+                    href="mailto:samih@beirux.com?subject=New%20Project%20Inquiry"
+                    className={s.ctaEnter}
+                  >
+                    START PROJECT
+                  </a>
 
-              <div className={s.ctaEmail}>
-                or reach us directly at{' '}
-                <a href="mailto:samih@beirux.com">samih@beirux.com</a>
-              </div>
+                  <div className={s.ctaEmail}>
+                    or reach us directly at{' '}
+                    <a href="mailto:samih@beirux.com">samih@beirux.com</a>
+                  </div>
+                </>
+              )}
             </>
           )}
         </div>
       </div>
     </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════ */
+
+function FooterSection() {
+  const { ref, isVisible } = useInView();
+  const [phase, setPhase] = useState(0);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    const timers = [
+      setTimeout(() => setPhase(1), 100),   // EOF line draws
+      setTimeout(() => setPhase(2), 900),   // "Connection closed" flickers in
+      setTimeout(() => setPhase(3), 1400),  // "logout" appears
+      setTimeout(() => setPhase(4), 1900),  // "[Process completed]" fades in dim
+    ];
+
+    return () => timers.forEach(clearTimeout);
+  }, [isVisible]);
+
+  return (
+    <footer className={`${s.footer} ${phase >= 3 ? s.footerDimmed : ''}`} ref={ref}>
+      <div className={`${s.footerEof} ${phase >= 1 ? s.footerEofVisible : ''}`}>
+        --- EOF ----------------------------------------------------------
+      </div>
+      <div className={`${s.footerDisconnect} ${phase >= 2 ? s.footerDisconnectVisible : ''}`}>
+        Connection to beirux.com closed.
+      </div>
+      <div className={`${s.footerLogout} ${phase >= 3 ? s.footerLogoutVisible : ''}`}>
+        logout
+      </div>
+      <div className={`${s.footerHint} ${phase >= 4 ? s.footerHintVisible : ''}`}>
+        [Process completed - press &uarr; to reconnect]
+      </div>
+    </footer>
   );
 }
 
@@ -905,6 +1381,11 @@ function CtaSection() {
 export default function V4Page() {
   return (
     <div className={s.page}>
+      {/* CRT power-on flash */}
+      <div className={s.crtPowerOn} />
+      {/* Global CRT scan line */}
+      <div className={s.crtScanLine} />
+
       <HeroSection />
       <VimSection />
       <ServicesSection />
@@ -914,18 +1395,7 @@ export default function V4Page() {
       <ProofSection />
       <TailLogSection />
       <CtaSection />
-      <footer className={s.footer}>
-        <div className={s.footerEof}>
-          --- EOF ----------------------------------------------------------
-        </div>
-        <div className={s.footerDisconnect}>
-          Connection to beirux.com closed.
-        </div>
-        <div className={s.footerLogout}>logout</div>
-        <div className={s.footerHint}>
-          [Process completed - press &uarr; to reconnect]
-        </div>
-      </footer>
+      <FooterSection />
     </div>
   );
 }
