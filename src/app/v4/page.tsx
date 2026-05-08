@@ -1083,7 +1083,7 @@ function ProofSection() {
 
   const getValueClass = (color: string) => {
     switch (color) {
-      case 'pink': return s.dashValueAmber;
+      case 'pink': return s.dashValuePink;
       case 'cyan': return s.dashValueCyan;
       default: return s.dashValue;
     }
@@ -1091,7 +1091,7 @@ function ProofSection() {
 
   const getFillClass = (color: string) => {
     switch (color) {
-      case 'pink': return s.dashBarFillAmber;
+      case 'pink': return s.dashBarFillPink;
       case 'cyan': return s.dashBarFillCyan;
       default: return s.dashBarFill;
     }
@@ -1311,7 +1311,7 @@ function CtaSection() {
                 <>
                   <div className={s.ctaPrompt}>
                     <span className={s.dim}>Press ENTER to start</span>
-                    <span className={s.cursorAmberGlow} />
+                    <span className={s.cursorPinkGlow} />
                   </div>
 
                   <a
