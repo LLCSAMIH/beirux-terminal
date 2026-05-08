@@ -99,22 +99,22 @@ const CLIENTS: Client[] = [
 /* ─── Dashboard stats ─── */
 
 const DASH_STATS = [
-  { label: 'Projects Shipped', value: '12', color: 'green' },
-  { label: 'Active Clients', value: '5', color: 'green' },
+  { label: 'Projects Shipped', value: '12', color: 'cyan' },
+  { label: 'Active Clients', value: '5', color: 'cyan' },
   { label: 'AI Agents Running', value: '4', color: 'cyan' },
-  { label: 'Avg Delivery', value: '4 wks', color: 'amber' },
-  { label: 'Client Retention', value: '92%', color: 'green' },
-  { label: 'Templates Used', value: '0', color: 'green' },
+  { label: 'Avg Delivery', value: '4 wks', color: 'pink' },
+  { label: 'Client Retention', value: '92%', color: 'cyan' },
+  { label: 'Templates Used', value: '0', color: 'cyan' },
   { label: 'Response Time', value: '<2h', color: 'cyan' },
-  { label: 'Custom Built', value: '100%', color: 'amber' },
+  { label: 'Custom Built', value: '100%', color: 'pink' },
 ];
 
 const DASH_BARS = [
-  { label: 'Client Satisfaction', percent: 92, color: 'green' },
-  { label: 'On-Time Delivery', percent: 96, color: 'green' },
+  { label: 'Client Satisfaction', percent: 92, color: 'cyan' },
+  { label: 'On-Time Delivery', percent: 96, color: 'cyan' },
   { label: 'Code Quality Score', percent: 88, color: 'cyan' },
-  { label: 'System Uptime', percent: 99, color: 'green' },
-  { label: 'Agent Autonomy', percent: 74, color: 'amber' },
+  { label: 'System Uptime', percent: 99, color: 'cyan' },
+  { label: 'Agent Autonomy', percent: 74, color: 'pink' },
 ];
 
 /* ─── Traceroute data ─── */
@@ -1083,7 +1083,7 @@ function ProofSection() {
 
   const getValueClass = (color: string) => {
     switch (color) {
-      case 'amber': return s.dashValueAmber;
+      case 'pink': return s.dashValueAmber;
       case 'cyan': return s.dashValueCyan;
       default: return s.dashValue;
     }
@@ -1091,7 +1091,7 @@ function ProofSection() {
 
   const getFillClass = (color: string) => {
     switch (color) {
-      case 'amber': return s.dashBarFillAmber;
+      case 'pink': return s.dashBarFillAmber;
       case 'cyan': return s.dashBarFillCyan;
       default: return s.dashBarFill;
     }
@@ -1385,6 +1385,10 @@ export default function V4Page() {
       <div className={s.crtPowerOn} />
       {/* Global CRT scan line */}
       <div className={s.crtScanLine} />
+      {/* Background gradient blobs */}
+      <div className={s.blob1} />
+      <div className={s.blob2} />
+      <div className={s.blob3} />
 
       <HeroSection />
       <VimSection />

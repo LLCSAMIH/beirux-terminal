@@ -4,13 +4,12 @@
    ═══════════════════════════════════════════════ */
 
 $black: #000000;
-$green: #00ff41;
-$green-dim: #1a6b2d;
-$green-mid: #0a8f35;
-$amber: #ffb000;
 $cyan: #00d4ff;
+$cyan-dim: #0a4a6b;
+$cyan-mid: #0a7fa5;
+$pink: #ff2d8a;
 $red: #ff3333;
-$white: #c0c0c0;
+$white: #e8e8e8;
 
 $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 
@@ -51,8 +50,8 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 @keyframes glowPulse {
-  0%, 100% { text-shadow: 0 0 8px rgba($green, 0.4); }
-  50% { text-shadow: 0 0 16px rgba($green, 0.7), 0 0 30px rgba($green, 0.3); }
+  0%, 100% { text-shadow: 0 0 8px rgba($cyan, 0.4); }
+  50% { text-shadow: 0 0 16px rgba($cyan, 0.7), 0 0 30px rgba($cyan, 0.3); }
 }
 
 @keyframes typewriter {
@@ -70,7 +69,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 @keyframes bootFlash {
-  0% { background: $green; }
+  0% { background: $cyan; }
   10% { background: $black; }
   100% { background: $black; }
 }
@@ -93,19 +92,19 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 /* ─── NEW: Phosphor flash ─── */
 @keyframes phosphorFlash {
   0% {
-    text-shadow: 0 0 12px rgba($green, 0.9), 0 0 24px rgba($green, 0.5), 0 0 40px rgba($green, 0.2);
+    text-shadow: 0 0 12px rgba($cyan, 0.9), 0 0 24px rgba($cyan, 0.5), 0 0 40px rgba($cyan, 0.2);
   }
   100% {
-    text-shadow: 0 0 2px rgba($green, 0.15);
+    text-shadow: 0 0 2px rgba($cyan, 0.15);
   }
 }
 
 @keyframes phosphorFlashAmber {
   0% {
-    text-shadow: 0 0 12px rgba($amber, 0.9), 0 0 24px rgba($amber, 0.5), 0 0 40px rgba($amber, 0.2);
+    text-shadow: 0 0 12px rgba($pink, 0.9), 0 0 24px rgba($pink, 0.5), 0 0 40px rgba($pink, 0.2);
   }
   100% {
-    text-shadow: 0 0 2px rgba($amber, 0.15);
+    text-shadow: 0 0 2px rgba($pink, 0.15);
   }
 }
 
@@ -129,10 +128,10 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
     background: rgba(255, 255, 255, 0.1);
   }
   50% {
-    background: rgba($green, 0.08);
+    background: rgba($cyan, 0.08);
   }
   80% {
-    background: rgba($green, 0.02);
+    background: rgba($cyan, 0.02);
   }
   100% {
     opacity: 0;
@@ -227,8 +226,8 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 
 /* ─── NEW: SQL active pulse ─── */
 @keyframes activePulse {
-  0%, 100% { text-shadow: 0 0 4px rgba($green, 0.3); }
-  50% { text-shadow: 0 0 10px rgba($green, 0.7), 0 0 20px rgba($green, 0.3); }
+  0%, 100% { text-shadow: 0 0 4px rgba($cyan, 0.3); }
+  50% { text-shadow: 0 0 10px rgba($cyan, 0.7), 0 0 20px rgba($cyan, 0.3); }
 }
 
 /* ─── NEW: Cron execution sweep ─── */
@@ -244,11 +243,11 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 /* ─── NEW: Running dot pulse ─── */
 @keyframes runningDotPulse {
   0%, 100% {
-    text-shadow: 0 0 4px rgba($green, 0.3);
+    text-shadow: 0 0 4px rgba($cyan, 0.3);
     opacity: 0.6;
   }
   50% {
-    text-shadow: 0 0 12px rgba($green, 0.9), 0 0 20px rgba($green, 0.4);
+    text-shadow: 0 0 12px rgba($cyan, 0.9), 0 0 20px rgba($cyan, 0.4);
     opacity: 1;
   }
 }
@@ -278,22 +277,22 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 /* ─── NEW: Tail log phosphor bloom ─── */
 @keyframes logPhosphorBloom {
   0% {
-    text-shadow: 0 0 20px $green, 0 0 40px rgba($green, 0.3);
+    text-shadow: 0 0 20px $cyan, 0 0 40px rgba($cyan, 0.3);
     opacity: 1;
   }
   100% {
-    text-shadow: 0 0 2px rgba($green, 0.1);
+    text-shadow: 0 0 2px rgba($cyan, 0.1);
     opacity: 1;
   }
 }
 
 @keyframes logPhosphorBloomAmber {
   0% {
-    text-shadow: 0 0 20px $amber, 0 0 40px rgba($amber, 0.3);
+    text-shadow: 0 0 20px $pink, 0 0 40px rgba($pink, 0.3);
     opacity: 1;
   }
   100% {
-    text-shadow: 0 0 2px rgba($amber, 0.1);
+    text-shadow: 0 0 2px rgba($pink, 0.1);
     opacity: 1;
   }
 }
@@ -317,8 +316,8 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 
 /* ─── NEW: CTA button halo pulse ─── */
 @keyframes buttonHaloPulse {
-  0%, 100% { box-shadow: 0 0 10px rgba($green, 0.3), 0 0 20px rgba($green, 0.15); }
-  50% { box-shadow: 0 0 16px rgba($green, 0.5), 0 0 30px rgba($green, 0.25); }
+  0%, 100% { box-shadow: 0 0 10px rgba($cyan, 0.3), 0 0 20px rgba($cyan, 0.15); }
+  50% { box-shadow: 0 0 16px rgba($cyan, 0.5), 0 0 30px rgba($cyan, 0.25); }
 }
 
 /* ─── NEW: Footer EOF draw ─── */
@@ -346,7 +345,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 .page {
   @include scanlines;
   background: $black;
-  color: $green;
+  color: $cyan;
   font-family: $font;
   min-height: 100vh;
   position: relative;
@@ -378,7 +377,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   left: 0;
   width: 100%;
   height: 2px;
-  background: rgba($green, 0.06);
+  background: rgba($cyan, 0.06);
   z-index: 9997;
   pointer-events: none;
   animation: crtScanMove 8s linear infinite;
@@ -399,7 +398,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 
 /* ─── Shared typography ─── */
 .prompt {
-  color: $green-dim;
+  color: $cyan-dim;
   user-select: none;
 }
 
@@ -407,7 +406,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   display: inline-block;
   width: 0.6em;
   height: 1.1em;
-  background: $green;
+  background: $cyan;
   vertical-align: text-bottom;
   animation: blink 1s step-end infinite;
   margin-left: 2px;
@@ -415,13 +414,13 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 
 .cursorAmber {
   composes: cursor;
-  background: $amber;
+  background: $pink;
 }
 
-.green { color: $green; }
-.dim { color: $green-dim; }
-.mid { color: $green-mid; }
-.amber { color: $amber; }
+.green { color: $cyan; }
+.dim { color: $cyan-dim; }
+.mid { color: $cyan-mid; }
+.amber { color: $pink; }
 .cyan { color: $cyan; }
 .red { color: $red; }
 .white { color: $white; }
@@ -443,14 +442,14 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 3.2rem;
+  padding: 4rem;
   overflow: hidden;
 }
 
 .terminal {
   width: 100%;
-  max-width: 90rem;
-  font-size: 1.5rem;
+  max-width: 100rem;
+  font-size: 1.9rem;
   line-height: 1.8;
   letter-spacing: 0.02em;
 }
@@ -472,15 +471,15 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .asciiLogo {
-  color: $green;
-  font-size: 1.2rem;
+  color: $cyan;
+  font-size: 1.5rem;
   line-height: 1.3;
   letter-spacing: 0.05em;
   animation: glowPulse 4s ease-in-out infinite;
   position: relative;
 
   @media (max-width: 600px) {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -492,21 +491,21 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   transform: translate(-50%, -50%);
   width: 300px;
   height: 200px;
-  background: radial-gradient(ellipse, rgba($green, 0.3) 0%, transparent 70%);
+  background: radial-gradient(ellipse, rgba($cyan, 0.3) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
   animation: asciiGlowBurst 1.2s ease-out forwards;
 }
 
 .taglineLine {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  color: $green;
-  margin-top: 0.8rem;
-  text-shadow: 0 0 10px rgba($green, 0.5);
+  color: $cyan;
+  margin-top: 1rem;
+  text-shadow: 0 0 10px rgba($cyan, 0.5);
 
   @media (max-width: 600px) {
-    font-size: 1.4rem;
+    font-size: 1.7rem;
   }
 }
 
@@ -516,7 +515,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .separator {
-  color: $green-dim;
+  color: $cyan-dim;
   user-select: none;
 }
 
@@ -525,14 +524,14 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
    ═══════════════════════════════════════════════ */
 
 .vimSection {
-  padding: 4rem 3.2rem 8rem;
-  max-width: 90rem;
+  padding: 5rem 4rem 10rem;
+  max-width: 100rem;
   margin: 0 auto;
 }
 
 .vimEditor {
-  border: 1px solid rgba($green-dim, 0.4);
-  background: rgba(0, 5, 0, 0.6);
+  border: 1px solid rgba($cyan-dim, 0.4);
+  background: rgba(0, 3, 10, 0.6);
   overflow: hidden;
 
   /* File loading flicker */
@@ -542,17 +541,17 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .vimTitleBar {
-  background: rgba($green-dim, 0.15);
-  padding: 0.3rem 1.2rem;
-  font-size: 1.1rem;
-  color: $green-dim;
-  border-bottom: 1px solid rgba($green-dim, 0.3);
+  background: rgba($cyan-dim, 0.15);
+  padding: 0.4rem 1.5rem;
+  font-size: 1.4rem;
+  color: $cyan-dim;
+  border-bottom: 1px solid rgba($cyan-dim, 0.3);
   text-align: center;
 }
 
 .vimContent {
-  padding: 1.2rem 0;
-  font-size: 1.35rem;
+  padding: 1.5rem 0;
+  font-size: 1.7rem;
   line-height: 1.8;
   overflow-x: auto;
 }
@@ -568,12 +567,12 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .vimLineNumber {
-  color: rgba($green-dim, 0.5);
+  color: rgba($cyan-dim, 0.5);
   text-align: right;
-  min-width: 4rem;
-  padding-right: 1.2rem;
-  border-right: 1px solid rgba($green-dim, 0.2);
-  margin-right: 1.2rem;
+  min-width: 5rem;
+  padding-right: 1.5rem;
+  border-right: 1px solid rgba($cyan-dim, 0.2);
+  margin-right: 1.5rem;
   user-select: none;
   flex-shrink: 0;
   opacity: 0;
@@ -596,16 +595,16 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .vimComment {
-  color: $green-dim;
+  color: $cyan-dim;
 }
 
 .vimHeading {
-  color: $green;
+  color: $cyan;
   font-weight: 700;
 }
 
 .vimNumber {
-  color: $amber;
+  color: $pink;
 }
 
 .vimEmphasis {
@@ -622,11 +621,11 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 
 .vimTildeChar {
   color: #1a4a6b;
-  min-width: 4rem;
+  min-width: 5rem;
   text-align: right;
-  padding-right: 1.2rem;
-  border-right: 1px solid rgba($green-dim, 0.2);
-  margin-right: 1.2rem;
+  padding-right: 1.5rem;
+  border-right: 1px solid rgba($cyan-dim, 0.2);
+  margin-right: 1.5rem;
   user-select: none;
   flex-shrink: 0;
   animation: tildeBreathe 3s ease-in-out infinite;
@@ -642,10 +641,10 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba($green-dim, 0.15);
-  padding: 0.3rem 1.2rem;
-  font-size: 1.1rem;
-  border-top: 1px solid rgba($green-dim, 0.3);
+  background: rgba($cyan-dim, 0.15);
+  padding: 0.4rem 1.5rem;
+  font-size: 1.4rem;
+  border-top: 1px solid rgba($cyan-dim, 0.3);
   opacity: 0;
   transform: translateY(10px);
 
@@ -655,7 +654,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .vimMode {
-  color: $green;
+  color: $cyan;
   font-weight: 700;
 }
 
@@ -666,13 +665,13 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .vimPosition {
-  color: $amber;
+  color: $pink;
 }
 
 .vimCommandLine {
-  padding: 0.3rem 1.2rem;
-  font-size: 1.1rem;
-  color: $green;
+  padding: 0.4rem 1.5rem;
+  font-size: 1.4rem;
+  color: $cyan;
   display: flex;
   align-items: center;
   opacity: 0;
@@ -687,13 +686,13 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
    ═══════════════════════════════════════════════ */
 
 .servicesSection {
-  padding: 8rem 3.2rem;
-  max-width: 90rem;
+  padding: 10rem 4rem;
+  max-width: 100rem;
   margin: 0 auto;
 }
 
 .helpBlock {
-  font-size: 1.5rem;
+  font-size: 1.9rem;
   line-height: 2;
   letter-spacing: 0.02em;
 
@@ -712,7 +711,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .helpUsage {
-  color: $amber;
+  color: $pink;
   margin-bottom: 0.4rem;
 }
 
@@ -722,12 +721,12 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .helpCommandsTitle {
-  color: $green;
+  color: $cyan;
   font-weight: 700;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.5rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  font-size: 1.3rem;
+  font-size: 1.6rem;
 }
 
 /* Help output lines with cascade animation */
@@ -744,7 +743,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   display: flex;
   gap: 2.4rem;
   padding: 0.4rem 0;
-  border-bottom: 1px solid rgba($green-dim, 0.2);
+  border-bottom: 1px solid rgba($cyan-dim, 0.2);
 
   @media (max-width: 600px) {
     flex-direction: column;
@@ -773,7 +772,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .helpStat {
-  color: $amber;
+  color: $pink;
   margin-left: auto;
   white-space: nowrap;
   font-size: 1.3rem;
@@ -785,7 +784,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 
 .helpFooter {
   margin-top: 2.4rem;
-  color: $green-dim;
+  color: $cyan-dim;
   font-size: 1.3rem;
 }
 
@@ -819,12 +818,12 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .tracerouteCmd {
-  color: $green;
+  color: $cyan;
   margin-bottom: 0.4rem;
 }
 
 .tracerouteInfo {
-  color: $green-dim;
+  color: $cyan-dim;
   font-size: 1.2rem;
 }
 
@@ -851,7 +850,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   left: 0;
   right: 0;
   height: 100%;
-  background: linear-gradient(90deg, transparent 0%, rgba($green, 0.15) 40%, rgba($green, 0.25) 50%, rgba($green, 0.15) 60%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba($cyan, 0.15) 40%, rgba($cyan, 0.25) 50%, rgba($cyan, 0.15) 60%, transparent 100%);
   background-size: 200% 100%;
   animation: packetPulse 0.3s ease-out forwards;
   pointer-events: none;
@@ -882,21 +881,21 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .tracerouteHostname {
-  color: $green;
+  color: $cyan;
 }
 
 .tracerouteIp {
-  color: $green-dim;
+  color: $cyan-dim;
 }
 
 /* Resolving state: stars */
 .tracerouteStars {
-  color: $green-dim;
+  color: $cyan-dim;
   opacity: 0.5;
 }
 
 .tracerouteLatency {
-  color: $amber;
+  color: $pink;
 
   /* Flash amber on resolve */
   .tracerouteHopResolved & {
@@ -921,8 +920,8 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 .tracerouteSummary {
   margin-top: 2.4rem;
   padding-top: 1.2rem;
-  border-top: 1px solid rgba($green-dim, 0.2);
-  color: $green;
+  border-top: 1px solid rgba($cyan-dim, 0.2);
+  color: $cyan;
   font-size: 1.3rem;
   opacity: 0;
   transition: opacity 0.5s ease;
@@ -958,7 +957,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .sqlQuery {
-  color: $amber;
+  color: $pink;
   margin-bottom: 1.6rem;
 }
 
@@ -986,17 +985,17 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 
 /* Border draws itself left to right */
 .sqlBorder {
-  color: $green-dim;
+  color: $cyan-dim;
 }
 
 .sqlBorderAnimated {
-  color: $green-dim;
+  color: $cyan-dim;
   display: inline-block;
   animation: borderDraw 0.4s ease-out forwards;
 }
 
 .sqlHeader {
-  color: $green;
+  color: $cyan;
   font-weight: 700;
 }
 
@@ -1016,13 +1015,13 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .sqlActive {
-  color: $green;
+  color: $cyan;
   font-weight: 700;
   animation: activePulse 2s ease-in-out infinite;
 }
 
 .sqlRowCount {
-  color: $green-dim;
+  color: $cyan-dim;
   margin-top: 1.2rem;
   font-size: 1.3rem;
 }
@@ -1053,7 +1052,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .crontabCmd {
-  color: $green;
+  color: $cyan;
   margin-bottom: 1.6rem;
   font-size: 1.4rem;
 }
@@ -1074,11 +1073,11 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .crontabComment {
-  color: $green-dim;
+  color: $cyan-dim;
 }
 
 .crontabCommentBold {
-  color: $green-dim;
+  color: $cyan-dim;
   font-weight: 700;
 }
 
@@ -1103,7 +1102,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(90deg, transparent 0%, rgba($green, 0.08) 45%, rgba($green, 0.15) 50%, rgba($green, 0.08) 55%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, rgba($cyan, 0.08) 45%, rgba($cyan, 0.15) 50%, rgba($cyan, 0.08) 55%, transparent 100%);
     background-size: 200% 100%;
     animation: cronExecSweep 0.6s ease-out;
     animation-delay: 4.5s;
@@ -1127,30 +1126,30 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .crontabPath {
-  color: $green;
+  color: $cyan;
 }
 
 .crontabFlags {
-  color: $amber;
+  color: $pink;
 }
 
 .crontabRunningDot {
-  color: $green;
+  color: $cyan;
   margin-left: 1.2rem;
   white-space: nowrap;
   animation: runningDotPulse 1.5s ease-in-out infinite;
 }
 
 .crontabRunningText {
-  color: $green;
+  color: $cyan;
   animation: pulse 1.5s ease-in-out infinite;
 }
 
 .crontabSummary {
   margin-top: 2.4rem;
   padding-top: 1.2rem;
-  border-top: 1px solid rgba($green-dim, 0.2);
-  color: $green-dim;
+  border-top: 1px solid rgba($cyan-dim, 0.2);
+  color: $cyan-dim;
   font-size: 1.2rem;
 }
 
@@ -1185,7 +1184,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 
 /* Box-drawing entrance */
 .dashHeaderTop {
-  color: $green;
+  color: $cyan;
   font-weight: 700;
   font-size: 1.6rem;
   text-transform: uppercase;
@@ -1199,7 +1198,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .dashHeaderMiddle {
-  color: $green-dim;
+  color: $cyan-dim;
   font-size: 1.3rem;
   opacity: 0;
 
@@ -1210,7 +1209,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .dashHeaderBottom {
-  color: $green;
+  color: $cyan;
   font-weight: 700;
   font-size: 1.6rem;
   text-transform: uppercase;
@@ -1224,7 +1223,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .dashTitle {
-  color: $green;
+  color: $cyan;
   font-weight: 700;
   font-size: 1.6rem;
   text-transform: uppercase;
@@ -1232,7 +1231,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .dashHostname {
-  color: $green-dim;
+  color: $cyan-dim;
   font-size: 1.3rem;
 }
 
@@ -1252,25 +1251,25 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   justify-content: space-between;
   align-items: center;
   padding: 0.4rem 0;
-  border-bottom: 1px solid rgba($green-dim, 0.15);
+  border-bottom: 1px solid rgba($cyan-dim, 0.15);
 }
 
 .dashLabel {
-  color: $green-dim;
+  color: $cyan-dim;
   font-size: 1.3rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .dashValue {
-  color: $green;
+  color: $cyan;
   font-weight: 700;
   font-size: 1.5rem;
 }
 
 .dashValueAmber {
   composes: dashValue;
-  color: $amber;
+  color: $pink;
 }
 
 .dashValueCyan {
@@ -1279,7 +1278,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .dashBarsTitle {
-  color: $green;
+  color: $cyan;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -1301,7 +1300,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .dashBarLabel {
-  color: $green-dim;
+  color: $cyan-dim;
   min-width: 18rem;
   font-size: 1.3rem;
   text-transform: uppercase;
@@ -1316,7 +1315,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 .dashBarTrack {
   flex: 1;
   height: 1.6rem;
-  background: rgba($green-dim, 0.15);
+  background: rgba($cyan-dim, 0.15);
   position: relative;
   overflow: hidden;
   min-width: 20rem;
@@ -1329,7 +1328,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 
 .dashBarFill {
   height: 100%;
-  background: $green;
+  background: $cyan;
   transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
 
@@ -1341,30 +1340,30 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
     top: 0;
     bottom: 0;
     width: 6px;
-    background: rgba(#33ff6a, 0.9);
-    box-shadow: 0 0 12px $green, 0 0 24px $green;
+    background: rgba(#33e0ff, 0.9);
+    box-shadow: 0 0 12px $cyan, 0 0 24px $cyan;
     transition: box-shadow 0.5s ease 1.5s, background 0.5s ease 1.5s;
   }
 
   /* After bar reaches target, dim the leading edge */
   &.dashBarFilled::after {
-    background: rgba($green, 0.8);
-    box-shadow: 0 0 4px $green;
+    background: rgba($cyan, 0.8);
+    box-shadow: 0 0 4px $cyan;
   }
 }
 
 .dashBarFillAmber {
   composes: dashBarFill;
-  background: $amber;
+  background: $pink;
 
   &::after {
-    background: rgba(#ffc333, 0.9);
-    box-shadow: 0 0 12px $amber, 0 0 24px $amber;
+    background: rgba(#ff5aa5, 0.9);
+    box-shadow: 0 0 12px $pink, 0 0 24px $pink;
   }
 
   &.dashBarFilled::after {
-    background: rgba($amber, 0.8);
-    box-shadow: 0 0 4px $amber;
+    background: rgba($pink, 0.8);
+    box-shadow: 0 0 4px $pink;
   }
 }
 
@@ -1393,7 +1392,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 .dashUptime {
   margin-top: 2.4rem;
   padding-top: 1.6rem;
-  border-top: 1px solid rgba($green-dim, 0.3);
+  border-top: 1px solid rgba($cyan-dim, 0.3);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1402,17 +1401,17 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .dashUptimeLabel {
-  color: $green-dim;
+  color: $cyan-dim;
   font-size: 1.3rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .dashUptimeValue {
-  color: $green;
+  color: $cyan;
   font-weight: 700;
   font-size: 2rem;
-  text-shadow: 0 0 12px rgba($green, 0.5);
+  text-shadow: 0 0 12px rgba($cyan, 0.5);
 }
 
 /* ═══════════════════════════════════════════════
@@ -1441,7 +1440,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .tailCmd {
-  color: $green;
+  color: $cyan;
   margin-bottom: 1.6rem;
   font-size: 1.4rem;
 }
@@ -1475,16 +1474,16 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .tailTimestamp {
-  color: rgba($green-dim, 0.7);
+  color: rgba($cyan-dim, 0.7);
 }
 
 .tailInfo {
-  color: $green;
+  color: $cyan;
   font-weight: 700;
 }
 
 .tailWarn {
-  color: $amber;
+  color: $pink;
   font-weight: 700;
 }
 
@@ -1537,7 +1536,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .ctaBox {
-  border: 1px solid $green-dim;
+  border: 1px solid $cyan-dim;
   padding: 4rem 4.8rem;
   position: relative;
   text-align: left;
@@ -1554,7 +1553,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   left: 1.6rem;
   background: $black;
   padding: 0 0.8rem;
-  color: $green-dim;
+  color: $cyan-dim;
   font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -1563,9 +1562,9 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 .ctaCommand {
   font-size: 2rem;
   font-weight: 700;
-  color: $green;
+  color: $cyan;
   margin-bottom: 2.4rem;
-  text-shadow: 0 0 12px rgba($green, 0.4);
+  text-shadow: 0 0 12px rgba($cyan, 0.4);
   white-space: pre-wrap;
   word-break: break-all;
 
@@ -1587,7 +1586,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .ctaCheck {
-  color: $green;
+  color: $cyan;
   margin-right: 0.8rem;
 }
 
@@ -1599,37 +1598,38 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 /* Exaggerated amber cursor glow halo */
 .cursorAmberGlow {
   composes: cursor;
-  background: $amber;
-  box-shadow: 0 0 8px $amber, 0 0 16px rgba($amber, 0.4), 0 0 24px rgba($amber, 0.2);
+  background: $pink;
+  box-shadow: 0 0 8px $pink, 0 0 16px rgba($pink, 0.4), 0 0 24px rgba($pink, 0.2);
 }
 
 .ctaEnter {
   display: inline-block;
-  color: $black;
-  background: $green;
-  padding: 0.8rem 2.4rem;
+  color: $white;
+  background: linear-gradient(135deg, $cyan 0%, $pink 100%);
+  padding: 1.2rem 3.6rem;
   font-family: $font;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   text-decoration: none;
   border: none;
-  margin-top: 1.6rem;
+  margin-top: 2rem;
+  box-shadow: 0 0 20px rgba($cyan, 0.3), 0 0 40px rgba($pink, 0.15);
   animation: buttonHaloPulse 2s ease-in-out infinite;
 
   &:hover {
-    background: $amber;
-    color: $black;
-    box-shadow: 0 0 30px rgba($amber, 0.5), 0 0 60px rgba($amber, 0.3);
+    background: linear-gradient(135deg, $pink 0%, $cyan 100%);
+    box-shadow: 0 0 40px rgba($pink, 0.5), 0 0 60px rgba($cyan, 0.3);
+    transform: scale(1.03);
   }
 }
 
 .ctaEmail {
   display: block;
   margin-top: 1.6rem;
-  color: $green-dim;
+  color: $cyan-dim;
   font-size: 1.3rem;
 
   a {
@@ -1638,8 +1638,8 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
     transition: color 0.2s ease;
 
     &:hover {
-      color: $green;
-      text-shadow: 0 0 8px rgba($green, 0.5);
+      color: $cyan;
+      text-shadow: 0 0 8px rgba($cyan, 0.5);
     }
   }
 }
@@ -1651,15 +1651,15 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 .footer {
   padding: 4rem 3.2rem;
   text-align: center;
-  color: $green-dim;
+  color: $cyan-dim;
   font-size: 1.3rem;
   letter-spacing: 0.05em;
-  border-top: 1px solid rgba($green-dim, 0.2);
+  border-top: 1px solid rgba($cyan-dim, 0.2);
   line-height: 2;
 }
 
 .footerEof {
-  color: $green-dim;
+  color: $cyan-dim;
   margin-bottom: 1.2rem;
   opacity: 0;
 
@@ -1680,7 +1680,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .footerLogout {
-  color: $green-dim;
+  color: $cyan-dim;
   margin-bottom: 1.6rem;
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -1691,7 +1691,7 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .footerHint {
-  color: $green-mid;
+  color: $cyan-mid;
   font-size: 1.2rem;
   opacity: 0;
   transition: opacity 0.6s ease;
@@ -1704,4 +1704,62 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 /* Footer area dims like CRT losing signal */
 .footerDimmed {
   animation: footerDimOut 1s ease-out 0.5s forwards;
+}
+
+/* ═══════════════════════════════════════════════
+   BACKGROUND GRADIENT BLOBS
+   ═══════════════════════════════════════════════ */
+
+@keyframes blobDrift1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(5rem, 8rem) scale(1.1); }
+  66% { transform: translate(-3rem, 4rem) scale(0.95); }
+}
+
+@keyframes blobDrift2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-8rem, -5rem) scale(1.05); }
+  66% { transform: translate(4rem, 6rem) scale(1.1); }
+}
+
+@keyframes blobDrift3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(6rem, -7rem) scale(1.08); }
+  66% { transform: translate(-5rem, 3rem) scale(0.97); }
+}
+
+.blob1, .blob2, .blob3 {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+
+.blob1 {
+  width: 60rem;
+  height: 60rem;
+  background: radial-gradient(circle, rgba($cyan, 0.08) 0%, transparent 70%);
+  top: -10%;
+  left: -15%;
+  animation: blobDrift1 25s ease-in-out infinite;
+}
+
+.blob2 {
+  width: 50rem;
+  height: 50rem;
+  background: radial-gradient(circle, rgba($pink, 0.06) 0%, transparent 70%);
+  top: 40%;
+  right: -20%;
+  animation: blobDrift2 30s ease-in-out infinite;
+}
+
+.blob3 {
+  width: 45rem;
+  height: 45rem;
+  background: radial-gradient(circle, rgba($cyan, 0.05) 0%, rgba($pink, 0.03) 50%, transparent 70%);
+  bottom: 10%;
+  left: 20%;
+  animation: blobDrift3 35s ease-in-out infinite;
 }
