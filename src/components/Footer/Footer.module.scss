@@ -1,0 +1,146 @@
+.footer {
+  background: var(--color-blue);
+  color: var(--color-white);
+  padding: 6rem var(--base-padding);
+}
+
+.top {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 4rem;
+  padding-bottom: 8rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.legal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+
+  a {
+    font-size: 1.3rem;
+    opacity: 0.7;
+    transition: opacity .3s var(--ease-out-cubic);
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.copyright {
+  font-size: 1.2rem;
+  opacity: 0.4;
+  margin-top: 1.6rem;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4rem;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+    gap: 3.2rem;
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+
+  h4 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.5;
+    margin-bottom: 0.4rem;
+  }
+
+  a {
+    font-size: 1.8rem;
+    font-weight: 500;
+    transition: opacity .3s var(--ease-out-cubic);
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
+
+.bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-top: 4rem;
+  border-top: 1px solid rgba(245, 244, 223, 0.15);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4rem;
+  }
+}
+
+.logoLarge {
+  opacity: 0.8;
+
+  svg {
+    width: 8rem;
+    height: auto;
+  }
+}
+
+.newsletter {
+  max-width: 40rem;
+
+  h3 {
+    font-size: 2.4rem;
+    font-weight: 600;
+    margin-bottom: 1.6rem;
+  }
+}
+
+.newsletterForm {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid var(--color-white);
+  padding-bottom: 0.8rem;
+  gap: 1rem;
+
+  input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--color-white);
+    font-size: 1.8rem;
+    font-family: inherit;
+
+    &::placeholder {
+      color: rgba(245, 244, 223, 0.5);
+    }
+  }
+
+  button {
+    color: var(--color-white);
+    padding: 0.4rem;
+    transition: transform .3s var(--ease-snappy);
+
+    &:hover {
+      transform: translateX(4px);
+    }
+  }
+}
+
+.newsletterDisclaimer {
+  font-size: 1.1rem;
+  opacity: 0.4;
+  margin-top: 1.2rem;
+  line-height: 1.5;
+}

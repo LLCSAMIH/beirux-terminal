@@ -1,0 +1,11 @@
+.text {
+  opacity: 0;
+  transform: translateY(var(--text-from-y));
+  transition: opacity var(--text-duration) var(--ease-out-cubic),
+              transform var(--text-duration) var(--ease-out-cubic);
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

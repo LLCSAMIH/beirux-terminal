@@ -1,7 +1,6 @@
 /* ═══════════════════════════════════════════════
    V4 — Terminal Direction
    BEIRUX Marketing Landing Page
-   Full tmux-framed showcase
    ═══════════════════════════════════════════════ */
 
 $black: #000000;
@@ -100,9 +99,6 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
   min-height: 100vh;
   position: relative;
   animation: flicker 8s infinite;
-  padding-top: 2.8rem;
-  padding-bottom: 2.8rem;
-
   /* Subtle CRT vignette */
   &::before {
     content: '';
@@ -145,131 +141,6 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 .bold { font-weight: 700; }
 
 /* ═══════════════════════════════════════════════
-   TMUX TOP BAR
-   ═══════════════════════════════════════════════ */
-
-.tmuxTop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2.8rem;
-  background: #0a140a;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 1.2rem;
-  font-family: $font;
-  font-size: 1.2rem;
-  z-index: 10000;
-  border-bottom: 1px solid rgba($green-dim, 0.3);
-}
-
-.tmuxLeft {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-.tmuxSession {
-  color: $black;
-  background: $green;
-  padding: 0.2rem 0.6rem;
-  font-weight: 700;
-  margin-right: 0.4rem;
-  flex-shrink: 0;
-}
-
-.tmuxTab {
-  color: $white;
-  padding: 0.2rem 0.8rem;
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: background 0.15s, color 0.15s;
-
-  &:hover {
-    background: rgba($green, 0.1);
-  }
-}
-
-.tmuxTabActive {
-  composes: tmuxTab;
-  color: $black;
-  background: $green;
-  font-weight: 700;
-
-  &:hover {
-    background: $green;
-  }
-}
-
-.tmuxRight {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-  flex-shrink: 0;
-  margin-left: 1.2rem;
-}
-
-.tmuxConnected {
-  color: $green;
-  white-space: nowrap;
-}
-
-.tmuxClock {
-  color: $amber;
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-
-/* ═══════════════════════════════════════════════
-   TMUX BOTTOM BAR
-   ═══════════════════════════════════════════════ */
-
-.tmuxBottom {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2.8rem;
-  background: #0a140a;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 1.2rem;
-  font-family: $font;
-  font-size: 1.2rem;
-  z-index: 10000;
-  border-top: 1px solid rgba($green-dim, 0.3);
-}
-
-.tmuxBottomLeft {
-  color: $green;
-}
-
-.tmuxBottomCenter {
-  color: $white;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.tmuxBottomRight {
-  display: flex;
-  align-items: center;
-  gap: 1.6rem;
-  color: $white;
-}
-
-/* ═══════════════════════════════════════════════
    SECTION 1 — HERO / BOOT SEQUENCE
    ═══════════════════════════════════════════════ */
 
@@ -280,11 +151,11 @@ $font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
 
 .heroSticky {
   position: sticky;
-  top: 2.8rem;
-  height: calc(100vh - 5.6rem);
+  top: 0;
+  height: 100vh;
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: center;
   padding: 3.2rem;
   overflow: hidden;
 }

@@ -1,0 +1,1023 @@
+/* =============================================
+   V2 — Liquid Glass
+   BEIRUX landing page
+   ============================================= */
+
+$bg-deep: #05070a;
+$glass-border: rgba(255, 255, 255, 0.08);
+$glass-fill: rgba(255, 255, 255, 0.04);
+$glass-fill-hover: rgba(255, 255, 255, 0.07);
+$text-primary: #e8eaed;
+$text-muted: rgba(255, 255, 255, 0.45);
+$text-dim: rgba(255, 255, 255, 0.25);
+
+/* Iridescent gradient tokens */
+$iridescent: linear-gradient(
+  135deg,
+  rgba(0, 220, 255, 0.5),
+  rgba(120, 80, 255, 0.5),
+  rgba(255, 60, 170, 0.5),
+  rgba(0, 220, 255, 0.5)
+);
+$iridescent-subtle: linear-gradient(
+  135deg,
+  rgba(0, 220, 255, 0.15),
+  rgba(120, 80, 255, 0.15),
+  rgba(255, 60, 170, 0.15),
+  rgba(0, 220, 255, 0.15)
+);
+
+/* ---- Shared keyframes ---- */
+@keyframes hueShift {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(4rem); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes panelGlow {
+  0%, 100% { box-shadow: inset 0 0 60px rgba(100, 180, 255, 0.03); }
+  50% { box-shadow: inset 0 0 80px rgba(180, 100, 255, 0.06); }
+}
+
+@keyframes orbitalFloat {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes flowScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes borderShimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ---- Reveal animation class ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(3rem);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Glass mixin ---- */
+@mixin glass($blur: 24px, $fill: $glass-fill, $radius: 2rem) {
+  background: $fill;
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  border: 1px solid $glass-border;
+  border-radius: $radius;
+  position: relative;
+  overflow: hidden;
+
+  /* Inner glow */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      ellipse at 30% 0%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 60%
+    );
+    pointer-events: none;
+  }
+}
+
+/* Iridescent border effect mixin */
+@mixin iridescentBorder() {
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: $iridescent;
+    background-size: 300% 300%;
+    animation: borderShimmer 6s ease infinite, hueShift 8s linear infinite;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    opacity: 0.35;
+    pointer-events: none;
+  }
+}
+
+/* =============================================
+   PAGE WRAPPER
+   ============================================= */
+.page {
+  background: $bg-deep;
+  color: $text-primary;
+  font-family: var(--font-sora), system-ui, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Subtle noise texture overlay */
+.page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* =============================================
+   HERO — full viewport, layered glass at depth
+   ============================================= */
+.hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.heroGlassField {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  perspective: 1200px;
+}
+
+.heroPanel {
+  position: absolute;
+  @include glass(30px, rgba(255, 255, 255, 0.03), 2.4rem);
+  animation: panelGlow 8s ease-in-out infinite;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  &:nth-child(1) {
+    width: 38vw;
+    height: 44vh;
+    top: 8%;
+    left: 5%;
+    transform: rotateY(4deg) rotateX(-2deg);
+    @include iridescentBorder();
+  }
+
+  &:nth-child(2) {
+    width: 32vw;
+    height: 36vh;
+    top: 14%;
+    right: 8%;
+    transform: rotateY(-6deg) rotateX(3deg);
+    border-color: rgba(120, 80, 255, 0.12);
+  }
+
+  &:nth-child(3) {
+    width: 28vw;
+    height: 28vh;
+    bottom: 12%;
+    left: 18%;
+    transform: rotateY(2deg) rotateX(4deg);
+  }
+
+  &:nth-child(4) {
+    width: 24vw;
+    height: 20vh;
+    bottom: 8%;
+    right: 12%;
+    transform: rotateY(-3deg) rotateX(-5deg);
+    @include iridescentBorder();
+  }
+
+  &:nth-child(5) {
+    width: 16vw;
+    height: 14vh;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotateY(8deg) rotateX(-4deg);
+    border-color: rgba(255, 60, 170, 0.1);
+  }
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 80rem;
+  padding: 0 2rem;
+}
+
+.heroLabel {
+  display: inline-block;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: $text-muted;
+  margin-bottom: 2.4rem;
+  padding: 0.6rem 2rem;
+  @include glass(16px, rgba(255, 255, 255, 0.04), 10rem);
+}
+
+.heroHeadline {
+  font-size: clamp(4rem, 7.5vw, 9rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  margin-bottom: 2.4rem;
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    rgba(255, 255, 255, 0.7) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.heroHeadlineAccent {
+  display: block;
+  background: $iridescent;
+  background-size: 200% 200%;
+  animation: borderShimmer 5s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+  font-size: 0.6em;
+  letter-spacing: -0.02em;
+  margin-top: 0.3em;
+}
+
+.heroSubtext {
+  font-size: clamp(1.6rem, 2vw, 2rem);
+  font-weight: 300;
+  color: $text-muted;
+  max-width: 48rem;
+  margin: 0 auto 3.6rem;
+  line-height: 1.6;
+}
+
+.heroCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.4rem 3.2rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: $text-primary;
+  @include glass(20px, rgba(255, 255, 255, 0.06), 10rem);
+  @include iridescentBorder();
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    background: $glass-fill-hover;
+    transform: translateY(-2px);
+  }
+
+  .ctaArrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover .ctaArrow {
+    transform: translateX(4px);
+  }
+}
+
+.heroScrollHint {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  color: $text-dim;
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.scrollLine {
+  width: 1px;
+  height: 4rem;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent);
+  animation: orbitalFloat 2s ease-in-out infinite;
+}
+
+/* =============================================
+   SERVICES — stacked vertical accordion
+   Each service is a wide glass panel that expands
+   ============================================= */
+.services {
+  position: relative;
+  z-index: 1;
+  padding: 14rem 0 10rem;
+}
+
+.sectionTag {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: $text-dim;
+  padding-left: 6vw;
+  margin-bottom: 3rem;
+}
+
+.servicesStack {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 0 4vw;
+}
+
+.serviceItem {
+  @include glass(20px, rgba(255, 255, 255, 0.025), 0);
+  border-radius: 0;
+  padding: 3.6rem 5vw;
+  display: grid;
+  grid-template-columns: 6rem 1fr auto;
+  align-items: center;
+  gap: 3rem;
+  cursor: pointer;
+  transition: background 0.5s ease, padding 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  border-left: none;
+  border-right: none;
+
+  &:first-child {
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+  }
+
+  &:last-child {
+    border-bottom-left-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &.serviceExpanded {
+    background: rgba(255, 255, 255, 0.06);
+    padding: 4.8rem 5vw;
+
+    .serviceDesc {
+      max-height: 12rem;
+      opacity: 1;
+      margin-top: 1.2rem;
+    }
+
+    .serviceIndex {
+      color: rgba(120, 180, 255, 0.7);
+    }
+
+    .serviceExpandIcon {
+      transform: rotate(45deg);
+    }
+  }
+}
+
+.serviceIndex {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: $text-dim;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.4s ease;
+}
+
+.serviceTitle {
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.serviceDesc {
+  grid-column: 2 / 3;
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: $text-muted;
+  line-height: 1.7;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.5s ease,
+              margin-top 0.3s ease;
+}
+
+.serviceExpandIcon {
+  font-size: 2rem;
+  color: $text-dim;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease;
+  font-weight: 300;
+}
+
+/* =============================================
+   CLIENTS — horizontal flowing glass strip
+   ============================================= */
+.clients {
+  position: relative;
+  z-index: 1;
+  padding: 10rem 0;
+  overflow: hidden;
+}
+
+.clientsInner {
+  padding: 0 6vw;
+  margin-bottom: 4rem;
+}
+
+.clientsHeadline {
+  font-size: clamp(2.8rem, 4vw, 4.8rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  max-width: 50rem;
+
+  .headlineGhost {
+    color: $text-dim;
+    font-weight: 300;
+  }
+}
+
+.clientsStrip {
+  @include glass(30px, rgba(255, 255, 255, 0.03), 0);
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Fade edges */
+.clientsStrip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    $bg-deep 0%,
+    transparent 8%,
+    transparent 92%,
+    $bg-deep 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+.clientsTrack {
+  display: flex;
+  animation: flowScroll 30s linear infinite;
+  width: max-content;
+}
+
+.clientName {
+  flex-shrink: 0;
+  padding: 3.6rem 5rem;
+  font-size: clamp(1.8rem, 2.5vw, 2.8rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.35);
+  transition: color 0.4s ease;
+  position: relative;
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* Subtle separator dot */
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* =============================================
+   PROOF — single large glass panel, big numbers
+   ============================================= */
+.proof {
+  position: relative;
+  z-index: 1;
+  padding: 10rem 4vw 12rem;
+}
+
+.proofPanel {
+  @include glass(32px, rgba(255, 255, 255, 0.035), 2.4rem);
+  @include iridescentBorder();
+  padding: 6rem 6vw;
+  animation: panelGlow 10s ease-in-out infinite;
+}
+
+.proofHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 6rem;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.proofTitle {
+  font-size: clamp(2.4rem, 3.5vw, 4rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.proofSubtitle {
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: $text-muted;
+  max-width: 32rem;
+  line-height: 1.6;
+}
+
+.proofGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 1.6rem;
+  overflow: hidden;
+}
+
+.proofStat {
+  background: rgba(5, 7, 10, 0.5);
+  padding: 4.8rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: background 0.4s ease;
+
+  &:hover {
+    background: rgba(5, 7, 10, 0.3);
+  }
+}
+
+.statNumber {
+  font-size: clamp(3.6rem, 6vw, 6.4rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    rgba(120, 180, 255, 0.8) 50%,
+    rgba(200, 120, 255, 0.8) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.statLabel {
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: $text-muted;
+  letter-spacing: 0.02em;
+}
+
+/* =============================================
+   APPROACH — sticky scroll section
+   ============================================= */
+.approach {
+  position: relative;
+  z-index: 1;
+}
+
+.approachWrapper {
+  height: 400vh;
+  position: relative;
+}
+
+.approachSticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.approachContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  padding: 0 6vw;
+  max-width: 120rem;
+  width: 100%;
+  align-items: center;
+}
+
+.approachLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.approachStep {
+  padding: 2.4rem 3rem;
+  border-radius: 1.6rem;
+  border: 1px solid transparent;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0.25;
+  transform: translateX(-1rem);
+
+  &.stepActive {
+    @include glass(16px, rgba(255, 255, 255, 0.05), 1.6rem);
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.stepNumber {
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $text-dim;
+  margin-bottom: 0.6rem;
+}
+
+.stepTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
+}
+
+.stepDesc {
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: $text-muted;
+  line-height: 1.6;
+}
+
+.approachVisual {
+  position: relative;
+  height: 48rem;
+  perspective: 800px;
+}
+
+.approachOrb {
+  position: absolute;
+  border-radius: 50%;
+  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.orbLarge {
+  width: 28rem;
+  height: 28rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(100, 180, 255, 0.15),
+    rgba(120, 80, 255, 0.08),
+    transparent 70%
+  );
+  backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.orbMedium {
+  width: 16rem;
+  height: 16rem;
+  top: 15%;
+  right: 10%;
+  background: radial-gradient(
+    circle at 40% 40%,
+    rgba(255, 60, 170, 0.12),
+    rgba(120, 80, 255, 0.06),
+    transparent 70%
+  );
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.orbSmall {
+  width: 8rem;
+  height: 8rem;
+  bottom: 20%;
+  left: 15%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(0, 220, 255, 0.2),
+    transparent 70%
+  );
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* =============================================
+   CTA — asymmetric split layout
+   ============================================= */
+.cta {
+  position: relative;
+  z-index: 1;
+  padding: 12rem 4vw 10rem;
+}
+
+.ctaSplit {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  max-width: 110rem;
+  margin: 0 auto;
+}
+
+.ctaTextSide {
+  padding-right: 4rem;
+}
+
+.ctaTag {
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: $text-dim;
+  margin-bottom: 2.4rem;
+}
+
+.ctaHeadline {
+  font-size: clamp(3.2rem, 5vw, 5.6rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+  margin-bottom: 2rem;
+}
+
+.ctaBody {
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: $text-muted;
+  line-height: 1.7;
+  max-width: 44rem;
+  margin-bottom: 3.6rem;
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.6rem 3.6rem;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: $bg-deep;
+  background: #ffffff;
+  border-radius: 10rem;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(100, 180, 255, 0.15),
+                0 4px 12px rgba(120, 80, 255, 0.1);
+  }
+
+  .ctaBtnArrow {
+    transition: transform 0.3s ease;
+  }
+
+  &:hover .ctaBtnArrow {
+    transform: translateX(4px);
+  }
+}
+
+.ctaPanelSide {
+  position: relative;
+  height: 44rem;
+  perspective: 1000px;
+}
+
+.ctaGlassPanel {
+  position: absolute;
+  @include glass(28px, rgba(255, 255, 255, 0.04), 2rem);
+  @include iridescentBorder();
+  animation: panelGlow 8s ease-in-out infinite;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3.6rem;
+
+  &:nth-child(1) {
+    width: 85%;
+    height: 65%;
+    top: 10%;
+    left: 0;
+    transform: rotateY(-4deg) rotateX(2deg);
+    z-index: 2;
+  }
+
+  &:nth-child(2) {
+    width: 70%;
+    height: 50%;
+    bottom: 5%;
+    right: 0;
+    transform: rotateY(6deg) rotateX(-3deg);
+    z-index: 1;
+  }
+}
+
+.ctaPanelLine {
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: $text-muted;
+  line-height: 2;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .panelDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  &:nth-child(1) .panelDot { background: rgba(0, 220, 255, 0.6); }
+  &:nth-child(2) .panelDot { background: rgba(120, 80, 255, 0.6); }
+  &:nth-child(3) .panelDot { background: rgba(255, 60, 170, 0.6); }
+  &:nth-child(4) .panelDot { background: rgba(100, 255, 180, 0.6); }
+}
+
+/* =============================================
+   FOOTER
+   ============================================= */
+.footer {
+  position: relative;
+  z-index: 1;
+  padding: 6rem 6vw;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.footerBrand {
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.footerLinks {
+  display: flex;
+  gap: 3rem;
+}
+
+.footerLink {
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: $text-muted;
+  transition: color 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    color: $text-primary;
+  }
+}
+
+.footerCopy {
+  font-size: 1.2rem;
+  color: $text-dim;
+  width: 100%;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 768px) {
+  .heroPanel {
+    &:nth-child(1) {
+      width: 60vw;
+      height: 30vh;
+      top: 10%;
+      left: -5%;
+    }
+    &:nth-child(2) {
+      width: 50vw;
+      height: 25vh;
+      top: 20%;
+      right: -5%;
+    }
+    &:nth-child(3) {
+      width: 55vw;
+      height: 22vh;
+      bottom: 15%;
+      left: 5%;
+    }
+    &:nth-child(4) {
+      width: 40vw;
+      height: 18vh;
+      bottom: 5%;
+      right: 5%;
+    }
+    &:nth-child(5) {
+      display: none;
+    }
+  }
+
+  .serviceItem {
+    grid-template-columns: 4rem 1fr auto;
+    padding: 2.8rem 4vw;
+    gap: 2rem;
+
+    &.serviceExpanded {
+      padding: 3.6rem 4vw;
+    }
+  }
+
+  .serviceTitle {
+    font-size: 2rem;
+  }
+
+  .serviceDesc {
+    grid-column: 1 / -1;
+  }
+
+  .proofGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .approachContent {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+
+  .approachVisual {
+    height: 28rem;
+  }
+
+  .orbLarge {
+    width: 18rem;
+    height: 18rem;
+  }
+
+  .orbMedium {
+    width: 10rem;
+    height: 10rem;
+  }
+
+  .orbSmall {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .ctaSplit {
+    grid-template-columns: 1fr;
+  }
+
+  .ctaTextSide {
+    padding-right: 0;
+  }
+
+  .ctaPanelSide {
+    height: 32rem;
+  }
+
+  .footer {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footerLinks {
+    justify-content: center;
+  }
+}

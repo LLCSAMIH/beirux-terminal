@@ -1,0 +1,201 @@
+.section {
+  position: relative;
+}
+
+.stickyWrapper {
+  position: relative;
+  height: 500vh;
+}
+
+.stickyElement {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Background layers
+.bgLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.gradientOrb1 {
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 70vw;
+  height: 70vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 70%);
+  filter: blur(60px);
+  will-change: transform;
+  transition: transform 0.2s linear;
+}
+
+.gradientOrb2 {
+  position: absolute;
+  bottom: -30%;
+  right: -15%;
+  width: 60vw;
+  height: 60vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+  filter: blur(60px);
+  will-change: transform;
+  transition: transform 0.2s linear;
+}
+
+.gridOverlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 6rem 6rem;
+  will-change: opacity;
+  transition: opacity 0.3s linear;
+}
+
+.noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+// Content
+.content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 80rem;
+  padding: 0 var(--base-padding);
+}
+
+.tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.3rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-cyan);
+  margin-bottom: 3.2rem;
+  will-change: opacity;
+}
+
+.taglineDot {
+  display: block;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--color-cyan);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: clamp(4.4rem, 8vw, 9rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+  will-change: opacity;
+}
+
+.titleLine {
+  display: block;
+}
+
+.titleAccent {
+  background: linear-gradient(135deg, var(--color-cyan), var(--color-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  margin-top: 2.4rem;
+  will-change: opacity;
+
+  p {
+    font-size: 1.8rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    max-width: 48rem;
+    margin: 0 auto;
+  }
+}
+
+// Text slides
+.textSlides {
+  position: absolute;
+  bottom: 12vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  width: 50rem;
+  text-align: center;
+
+  @media (max-width: 640px) {
+    width: calc(100% - 4rem);
+  }
+}
+
+.slide {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 1.6rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition: opacity .5s var(--ease-out-cubic),
+              transform .5s var(--ease-out-cubic);
+}
+
+.slideActive {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+// Scroll indicator
+.scrollIndicator {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  will-change: opacity;
+
+  span {
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+  }
+}
+
+.scrollLine {
+  width: 1px;
+  height: 3.2rem;
+  background: linear-gradient(to bottom, var(--color-cyan), transparent);
+  animation: scrollPulse 2s var(--ease-in-out-cubic) infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { transform: scaleY(1); opacity: 0.6; }
+  50% { transform: scaleY(0.4); opacity: 0.2; }
+}

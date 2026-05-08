@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useInView } from '@/hooks/useInView';
 import { useStickyScroll } from '@/hooks/useStickyScroll';
 import s from './v4.module.scss';
@@ -221,20 +221,6 @@ const MANIFESTO_LINES: ManifestoLine[] = [
   { text: '# -- Miami, FL | 2026', type: 'author' },
 ];
 
-/* ─── Tmux tab config ─── */
-
-const TMUX_TABS = [
-  { name: 'main', sectionId: 'hero' },
-  { name: 'manifesto', sectionId: 'vim' },
-  { name: 'services', sectionId: 'services' },
-  { name: 'process', sectionId: 'traceroute' },
-  { name: 'clients', sectionId: 'clients' },
-  { name: 'crontab', sectionId: 'crontab' },
-  { name: 'proof', sectionId: 'proof' },
-  { name: 'reviews', sectionId: 'tail' },
-  { name: 'contact', sectionId: 'cta' },
-];
-
 /* ─── Typewriter hook ─── */
 
 function useTypewriter(text: string, speed: number, startTyping: boolean) {
@@ -271,89 +257,6 @@ function useTypewriter(text: string, speed: number, startTyping: boolean) {
 
 function pad(str: string, width: number): string {
   return str + ' '.repeat(Math.max(0, width - str.length));
-}
-
-/* ═══════════════════════════════════════════════
-   TMUX TOP BAR
-   ═══════════════════════════════════════════════ */
-
-function TmuxTopBar({ activeSection }: { activeSection: string }) {
-  const [clock, setClock] = useState('');
-
-  useEffect(() => {
-    function tick() {
-      const now = new Date();
-      const h = String(now.getHours()).padStart(2, '0');
-      const m = String(now.getMinutes()).padStart(2, '0');
-      const sec = String(now.getSeconds()).padStart(2, '0');
-      setClock(`${h}:${m}:${sec}`);
-    }
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  const handleTabClick = useCallback((sectionId: string) => {
-    const el = document.getElementById(sectionId);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, []);
-
-  return (
-    <div className={s.tmuxTop}>
-      <div className={s.tmuxLeft}>
-        <span className={s.tmuxSession}>[0]</span>
-        {TMUX_TABS.map((tab) => (
-          <span
-            key={tab.sectionId}
-            className={activeSection === tab.sectionId ? s.tmuxTabActive : s.tmuxTab}
-            onClick={() => handleTabClick(tab.sectionId)}
-          >
-            {tab.name}
-          </span>
-        ))}
-      </div>
-      <div className={s.tmuxRight}>
-        <span className={s.tmuxConnected}>● connected</span>
-        <span className={s.tmuxClock}>{clock}</span>
-      </div>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════
-   TMUX BOTTOM BAR
-   ═══════════════════════════════════════════════ */
-
-function TmuxBottomBar() {
-  const [dateStr, setDateStr] = useState('');
-
-  useEffect(() => {
-    function tick() {
-      const now = new Date();
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      const month = months[now.getMonth()];
-      const day = String(now.getDate()).padStart(2, '0');
-      const h = String(now.getHours()).padStart(2, '0');
-      const m = String(now.getMinutes()).padStart(2, '0');
-      setDateStr(`${month} ${day} ${h}:${m}`);
-    }
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  return (
-    <div className={s.tmuxBottom}>
-      <span className={s.tmuxBottomLeft}>[beirux] 0:zsh*</span>
-      <span className={s.tmuxBottomCenter}>root@beirux.com</span>
-      <div className={s.tmuxBottomRight}>
-        <span>{dateStr}</span>
-        <span>UTF-8</span>
-      </div>
-    </div>
-  );
 }
 
 /* ═══════════════════════════════════════════════
@@ -1000,35 +903,8 @@ function CtaSection() {
    ═══════════════════════════════════════════════ */
 
 export default function V4Page() {
-  const [activeSection, setActiveSection] = useState('hero');
-
-  useEffect(() => {
-    const sectionIds = TMUX_TABS.map((t) => t.sectionId);
-    const observers: IntersectionObserver[] = [];
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setActiveSection(id);
-          }
-        },
-        { threshold: 0.2, rootMargin: '-10% 0px -10% 0px' }
-      );
-
-      observer.observe(el);
-      observers.push(observer);
-    });
-
-    return () => observers.forEach((o) => o.disconnect());
-  }, []);
-
   return (
     <div className={s.page}>
-      <TmuxTopBar activeSection={activeSection} />
       <HeroSection />
       <VimSection />
       <ServicesSection />
@@ -1050,7 +926,6 @@ export default function V4Page() {
           [Process completed - press &uarr; to reconnect]
         </div>
       </footer>
-      <TmuxBottomBar />
     </div>
   );
 }

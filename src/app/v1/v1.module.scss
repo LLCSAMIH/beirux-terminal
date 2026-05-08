@@ -1,0 +1,767 @@
+/* ═══════════════════════════════════════════
+   V1 — Brutalist Editorial
+   BEIRUX Landing Page
+   ═══════════════════════════════════════════ */
+
+$bg: #0a0a0a;
+$fg: #f0f0f0;
+$accent: #c8ff00;
+$dim: rgba(240, 240, 240, 0.25);
+$mono: var(--font-space-mono), 'Courier New', monospace;
+$display: var(--font-anton), Impact, sans-serif;
+
+/* ─── PAGE SHELL ─── */
+
+.page {
+  background: $bg;
+  color: $fg;
+  min-height: 100vh;
+  font-family: $mono;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ─── STATUS BAR (fixed terminal prompt) ─── */
+
+.statusBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 2.4rem;
+  background: $bg;
+  border-bottom: 1px solid rgba(240, 240, 240, 0.08);
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  backdrop-filter: none;
+}
+
+.statusLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: $accent;
+  font-weight: 700;
+}
+
+.statusBlink {
+  animation: blink 1s steps(1) infinite;
+  color: $accent;
+}
+
+.statusCenter {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  background: rgba(240, 240, 240, 0.15);
+  transition: background 0s; /* hard snap */
+}
+
+.statusDotActive {
+  background: $accent;
+}
+
+.statusRight {
+  color: $dim;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── HERO SECTION ─── */
+
+.heroWrapper {
+  height: 400vh;
+  position: relative;
+}
+
+.heroSticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.heroLayer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0s; /* hard snap */
+  pointer-events: none;
+}
+
+.heroLayerActive {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.heroTitle {
+  font-family: $display;
+  font-size: 25vw;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: $fg;
+  text-align: center;
+  user-select: none;
+  animation: heroSnap 0.15s steps(3) both;
+}
+
+.heroCornerTag {
+  position: absolute;
+  bottom: 12vh;
+  right: 4vw;
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  color: $dim;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.heroTagline {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0 4vw;
+}
+
+.heroTaglineText {
+  font-family: $mono;
+  font-size: clamp(2rem, 4vw, 5rem);
+  font-weight: 700;
+  color: $fg;
+  white-space: nowrap;
+}
+
+.heroCursor {
+  font-size: clamp(2rem, 4vw, 5rem);
+  color: $accent;
+  animation: blink 0.6s steps(1) infinite;
+}
+
+.heroStats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.heroStatLine {
+  font-family: $mono;
+  font-size: clamp(2.4rem, 5vw, 6rem);
+  font-weight: 700;
+  color: $accent;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  animation: statFlicker 0.3s steps(4) both;
+}
+
+.heroStatLine:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.heroStatLine:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.heroScroll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+.heroScrollArrow {
+  font-family: $mono;
+  font-size: 3rem;
+  color: $accent;
+  animation: bounce 0.8s steps(4) infinite;
+}
+
+.heroScrollText {
+  font-size: 1.1rem;
+  letter-spacing: 0.2em;
+  color: $dim;
+}
+
+.heroProgress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(240, 240, 240, 0.06);
+}
+
+.heroProgressFill {
+  height: 100%;
+  background: $accent;
+  transition: width 0s;
+}
+
+/* ─── GENERIC SECTION ─── */
+
+.section {
+  padding: 12rem 4vw 8rem;
+  position: relative;
+  border-top: 1px solid rgba(240, 240, 240, 0.06);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 3rem;
+  margin-bottom: 8rem;
+}
+
+.sectionIndex {
+  font-family: $mono;
+  font-size: 1.2rem;
+  color: $accent;
+  letter-spacing: 0.1em;
+  padding-top: 1.2rem;
+  flex-shrink: 0;
+}
+
+.sectionTitle {
+  font-family: $display;
+  font-size: clamp(8rem, 18vw, 22rem);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0s;
+}
+
+.titleReveal {
+  animation: clipReveal 0.6s steps(8) forwards;
+}
+
+/* ─── SERVICES ─── */
+
+.servicesSection {
+  padding-bottom: 0;
+}
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid rgba(240, 240, 240, 0.1);
+}
+
+.serviceCard {
+  padding: 4rem 3rem;
+  border-right: 1px solid rgba(240, 240, 240, 0.1);
+  border-bottom: 1px solid rgba(240, 240, 240, 0.1);
+  position: relative;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.serviceCard:last-child {
+  border-right: none;
+}
+
+.serviceCardVisible {
+  animation: snapIn 0.3s steps(4) forwards;
+}
+
+.serviceId {
+  font-size: 1rem;
+  color: $dim;
+  letter-spacing: 0.15em;
+  margin-bottom: 2rem;
+}
+
+.serviceName {
+  font-family: $display;
+  font-size: clamp(2.4rem, 3vw, 4rem);
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 1.6rem;
+}
+
+.serviceStat {
+  margin-bottom: 2rem;
+}
+
+.serviceStatValue {
+  font-family: $mono;
+  font-size: 1.4rem;
+  color: $accent;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid $accent;
+  display: inline-block;
+}
+
+.serviceDetail {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  color: rgba(240, 240, 240, 0.55);
+  max-width: 32ch;
+}
+
+.serviceBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: $accent;
+}
+
+.serviceCardVisible .serviceBar {
+  animation: barGrow 0.8s steps(12) 0.3s forwards;
+}
+
+/* data strip */
+
+.dataStrip {
+  overflow: hidden;
+  border-top: 1px solid rgba(240, 240, 240, 0.06);
+  border-bottom: 1px solid rgba(240, 240, 240, 0.06);
+  padding: 1.2rem 0;
+  margin-top: 6rem;
+}
+
+.dataStripScroll {
+  display: flex;
+  white-space: nowrap;
+  animation: ticker 20s linear infinite;
+}
+
+.dataStripContent {
+  font-size: 1.1rem;
+  color: $dim;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+
+/* ─── CLIENTS ─── */
+
+.clientsSection {
+  background: $bg;
+}
+
+.clientsList {
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+.clientRow {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 2.8rem 0;
+  border-bottom: 1px solid rgba(240, 240, 240, 0.06);
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+.clientRowVisible {
+  animation: slideInLeft 0.25s steps(4) forwards;
+}
+
+.clientNumber {
+  font-size: 1.1rem;
+  color: $dim;
+  letter-spacing: 0.1em;
+  flex-shrink: 0;
+  width: 3rem;
+}
+
+.clientName {
+  font-family: $display;
+  font-size: clamp(2.4rem, 4vw, 5rem);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  flex: 1;
+}
+
+.clientDivider {
+  flex: 1;
+  height: 1px;
+  background: rgba(240, 240, 240, 0.08);
+  min-width: 4rem;
+}
+
+.clientStatus {
+  font-size: 1rem;
+  color: $accent;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ─── PROOF / STATS ─── */
+
+.proofSection {
+  background: $bg;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid rgba(240, 240, 240, 0.1);
+  margin-bottom: 6rem;
+}
+
+.statBlock {
+  padding: 4rem 3rem;
+  border-right: 1px solid rgba(240, 240, 240, 0.1);
+  border-bottom: 1px solid rgba(240, 240, 240, 0.1);
+  text-align: center;
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.statBlock:nth-child(3n) {
+  border-right: none;
+}
+
+.statBlock:nth-child(n+4) {
+  border-bottom: none;
+}
+
+.statBlockVisible {
+  animation: snapScale 0.2s steps(3) forwards;
+}
+
+.statValue {
+  font-family: $display;
+  font-size: clamp(4rem, 8vw, 8rem);
+  line-height: 1;
+  color: $accent;
+  margin-bottom: 1rem;
+}
+
+.statLabel {
+  font-size: 1.1rem;
+  color: $dim;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.proofQuote {
+  font-family: $mono;
+  font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+  line-height: 1.5;
+  color: rgba(240, 240, 240, 0.6);
+  max-width: 60ch;
+  padding: 4rem 0;
+  border-top: 1px solid rgba(240, 240, 240, 0.06);
+}
+
+.proofQuoteMark {
+  color: $accent;
+  margin-right: 1rem;
+  font-weight: 700;
+}
+
+/* ─── CTA ─── */
+
+.ctaSection {
+  padding: 16rem 4vw 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  text-align: center;
+  border-top: none;
+}
+
+.ctaInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  opacity: 0;
+}
+
+.ctaVisible {
+  animation: snapIn 0.4s steps(6) forwards;
+}
+
+.ctaTitle {
+  font-family: $display;
+  font-size: clamp(10rem, 22vw, 28rem);
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.ctaMeta {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  font-size: 1.3rem;
+  color: $dim;
+  letter-spacing: 0.08em;
+}
+
+.ctaDivider {
+  color: rgba(240, 240, 240, 0.15);
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.6rem 3.2rem;
+  border: 2px solid $accent;
+  color: $accent;
+  font-family: $mono;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0s, color 0s;
+  margin-top: 1rem;
+
+  &:hover {
+    background: $accent;
+    color: $bg;
+  }
+}
+
+.ctaButtonText {
+  /* no extra styles needed */
+}
+
+.ctaButtonArrow {
+  font-size: 1.6rem;
+}
+
+.ctaTerminal {
+  font-size: 1.2rem;
+  color: $dim;
+  letter-spacing: 0.06em;
+  margin-top: 2rem;
+}
+
+.ctaPrompt {
+  color: $accent;
+  font-weight: 700;
+}
+
+/* ─── FOOTER ─── */
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2.4rem 4vw;
+  border-top: 1px solid rgba(240, 240, 240, 0.06);
+  font-size: 1rem;
+  color: $dim;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.footerRight {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.footerDot {
+  width: 4px;
+  height: 4px;
+  background: $dim;
+}
+
+/* ═══════════════════════════════════════════
+   KEYFRAMES — HARSH, STEPPED, NO SMOOTH EASING
+   ═══════════════════════════════════════════ */
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes heroSnap {
+  0% { opacity: 0; transform: scale(1.15); }
+  33% { opacity: 0.4; transform: scale(1.08); }
+  66% { opacity: 0.8; transform: scale(1.02); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes clipReveal {
+  0% { clip-path: inset(0 100% 0 0); }
+  12.5% { clip-path: inset(0 87.5% 0 0); }
+  25% { clip-path: inset(0 75% 0 0); }
+  37.5% { clip-path: inset(0 62.5% 0 0); }
+  50% { clip-path: inset(0 50% 0 0); }
+  62.5% { clip-path: inset(0 37.5% 0 0); }
+  75% { clip-path: inset(0 25% 0 0); }
+  87.5% { clip-path: inset(0 12.5% 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes snapIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  25% { opacity: 0.3; transform: translateY(15px); }
+  50% { opacity: 0.6; transform: translateY(8px); }
+  75% { opacity: 0.9; transform: translateY(2px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  0% { opacity: 0; transform: translateX(-40px); }
+  25% { opacity: 0.3; transform: translateX(-28px); }
+  50% { opacity: 0.6; transform: translateX(-14px); }
+  75% { opacity: 0.9; transform: translateX(-4px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes snapScale {
+  0% { opacity: 0; transform: scale(0.9); }
+  33% { opacity: 0.5; transform: scale(0.95); }
+  66% { opacity: 0.9; transform: scale(0.99); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes statFlicker {
+  0% { opacity: 0; }
+  25% { opacity: 0.8; }
+  50% { opacity: 0.3; }
+  75% { opacity: 0.9; }
+  100% { opacity: 1; }
+}
+
+@keyframes barGrow {
+  0% { width: 0; }
+  100% { width: 100%; }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — maintain brutalist feel at all sizes
+   ═══════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+  .servicesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .serviceCard {
+    border-right: none;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .statBlock:nth-child(2n) {
+    border-right: none;
+  }
+
+  .statBlock:nth-child(n+5) {
+    border-bottom: none;
+  }
+
+  /* reset the 3-col border rule */
+  .statBlock:nth-child(3n) {
+    border-right: 1px solid rgba(240, 240, 240, 0.1);
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 5rem;
+  }
+
+  .section {
+    padding: 8rem 4vw 6rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .statusBar {
+    padding: 1rem 1.6rem;
+    font-size: 0.9rem;
+  }
+
+  .statusCenter {
+    display: none;
+  }
+
+  .heroTitle {
+    font-size: 30vw;
+  }
+
+  .heroCornerTag {
+    display: none;
+  }
+
+  .clientRow {
+    gap: 1.2rem;
+  }
+
+  .clientDivider {
+    display: none;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statBlock {
+    border-right: none !important;
+  }
+
+  .statBlock:nth-child(n+1) {
+    border-bottom: 1px solid rgba(240, 240, 240, 0.1);
+  }
+
+  .statBlock:last-child {
+    border-bottom: none;
+  }
+
+  .ctaTitle {
+    font-size: 25vw;
+  }
+
+  .ctaMeta {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .ctaDivider {
+    display: none;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}

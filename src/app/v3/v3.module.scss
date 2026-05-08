@@ -1,0 +1,597 @@
+/* ═══════════════════════════════════════════════════════════════
+   V3 — Swiss Precision
+   Light theme, rigid grid, Urbanist, Muller-Brockmann poster feel
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── tokens ─── */
+$bg:      #f8f7f4;
+$fg:      #1a1a1a;
+$accent:  #06b6d4;
+$rule:    #e0ddd8;
+$grid:    #eee;
+$muted:   #888;
+$cols:    12;
+$gap:     1.5vw;
+$ease:    cubic-bezier(.77, 0, .175, 1);
+
+/* ─── page shell ─── */
+.page {
+  font-family: var(--font-urbanist), sans-serif;
+  background: $bg;
+  color: $fg;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── persistent grid overlay ─── */
+.gridOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: repeat($cols, 1fr);
+  gap: 0;
+  padding: 0 4vw;
+
+  span {
+    border-left: 1px solid $grid;
+    height: 100%;
+
+    &:last-child {
+      border-right: 1px solid $grid;
+    }
+  }
+}
+
+/* ─── section base ─── */
+.section {
+  position: relative;
+  z-index: 1;
+  padding: 0 4vw;
+}
+
+/* ─── section number (margin label) ─── */
+.sectionNum {
+  position: absolute;
+  top: 3rem;
+  left: 4vw;
+  font-size: 0.75rem;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  color: $muted;
+  font-variant-numeric: tabular-nums;
+  z-index: 2;
+}
+
+/* ─── reveal animation base ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(2rem);
+  transition: opacity 0.8s $ease, transform 0.8s $ease;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* stagger children */
+@for $i from 1 through 8 {
+  .stagger#{$i} {
+    transition-delay: #{$i * 50}ms;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO — full viewport, single massive line, subtitle at grid intersection
+   ═══════════════════════════════════════════════════════════════ */
+.hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  padding: 0 4vw;
+}
+
+.heroHeading {
+  font-size: clamp(3rem, 11vw, 14rem);
+  font-weight: 200;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: $fg;
+  margin: 0;
+  white-space: nowrap;
+
+  span {
+    color: $accent;
+  }
+}
+
+.heroSubtitle {
+  position: absolute;
+  bottom: 15vh;
+  left: calc(4vw + ((100vw - 8vw) / $cols) * 8);
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $muted;
+  max-width: 20ch;
+  line-height: 1.6;
+}
+
+.heroRule {
+  position: absolute;
+  bottom: 10vh;
+  left: 4vw;
+  right: 4vw;
+  height: 1px;
+  background: $rule;
+}
+
+.heroScrollHint {
+  position: absolute;
+  bottom: 4vh;
+  left: 4vw;
+  font-size: 0.7rem;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $muted;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background: $accent;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   SERVICES — horizontal, asymmetric column spans, text only
+   ═══════════════════════════════════════════════════════════════ */
+.services {
+  padding-top: 12rem;
+  padding-bottom: 10rem;
+}
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat($cols, 1fr);
+  gap: $gap;
+  align-items: start;
+}
+
+.serviceItem {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid $rule;
+}
+
+/* each service takes different column spans for asymmetry */
+.serviceItem:nth-child(1) {
+  grid-column: 1 / 5;
+}
+.serviceItem:nth-child(2) {
+  grid-column: 5 / 10;
+}
+.serviceItem:nth-child(3) {
+  grid-column: 10 / 13;
+}
+
+.serviceId {
+  font-size: 0.7rem;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  color: $muted;
+  font-variant-numeric: tabular-nums;
+}
+
+.serviceName {
+  font-size: clamp(1.5rem, 3vw, 3.5rem);
+  font-weight: 200;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.serviceStat {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: $accent;
+  letter-spacing: 0.05em;
+}
+
+.serviceDetail {
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.7;
+  color: $muted;
+  max-width: 28ch;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   CLIENTS — single horizontal line, vertical rules between names
+   ═══════════════════════════════════════════════════════════════ */
+.clients {
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 61.8vh; /* golden ratio of viewport */
+  justify-content: center;
+}
+
+.clientsLabel {
+  font-size: 0.7rem;
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: $muted;
+  margin-bottom: 3rem;
+}
+
+.clientsRow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.clientName {
+  font-size: clamp(0.8rem, 1.1vw, 1rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $fg;
+  padding: 0.75rem 2.5vw;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.clientDivider {
+  width: 1px;
+  height: 1.5rem;
+  background: $rule;
+  flex-shrink: 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   PROOF — two massive numbers, thin rule, dense paragraph
+   ═══════════════════════════════════════════════════════════════ */
+.proof {
+  padding-top: 12rem;
+  padding-bottom: 10rem;
+}
+
+.proofGrid {
+  display: grid;
+  grid-template-columns: repeat($cols, 1fr);
+  gap: $gap;
+}
+
+.proofStat {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.proofStatLeft {
+  grid-column: 1 / 7;
+}
+
+.proofStatRight {
+  grid-column: 7 / 13;
+  border-left: 1px solid $rule;
+  padding-left: $gap;
+}
+
+.proofNumber {
+  font-size: clamp(4rem, 10vw, 12rem);
+  font-weight: 200;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: $fg;
+
+  span {
+    color: $accent;
+  }
+}
+
+.proofLabel {
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $muted;
+}
+
+.proofBody {
+  grid-column: 5 / 9;
+  margin-top: 6rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.8;
+  color: $muted;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   APPROACH — stacked text blocks on different grid positions
+   ═══════════════════════════════════════════════════════════════ */
+.approach {
+  padding-top: 12rem;
+  padding-bottom: 10rem;
+}
+
+.approachGrid {
+  display: grid;
+  grid-template-columns: repeat($cols, 1fr);
+  gap: $gap;
+  row-gap: 6rem;
+}
+
+.approachHeadingWrap {
+  grid-column: 1 / 8;
+}
+
+.approachHeading {
+  font-size: clamp(2.5rem, 6vw, 7rem);
+  font-weight: 200;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.approachItems {
+  grid-column: 1 / 13;
+  display: grid;
+  grid-template-columns: repeat($cols, 1fr);
+  gap: $gap;
+  row-gap: 4rem;
+}
+
+.approachItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid $rule;
+}
+
+/* zigzag layout for each approach item */
+.approachItem:nth-child(1) {
+  grid-column: 1 / 5;
+}
+.approachItem:nth-child(2) {
+  grid-column: 6 / 10;
+}
+.approachItem:nth-child(3) {
+  grid-column: 9 / 13;
+}
+
+.approachNum {
+  font-size: 0.7rem;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  color: $accent;
+  font-variant-numeric: tabular-nums;
+}
+
+.approachTitle {
+  font-size: 1.25rem;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  color: $fg;
+  margin: 0;
+}
+
+.approachDesc {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.7;
+  color: $muted;
+  max-width: 32ch;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   CTA — asymmetric, heading flush left 8 cols, button flush right col 11
+   ═══════════════════════════════════════════════════════════════ */
+.cta {
+  padding-top: 14rem;
+  padding-bottom: 12rem;
+}
+
+.ctaGrid {
+  display: grid;
+  grid-template-columns: repeat($cols, 1fr);
+  gap: $gap;
+  align-items: end;
+}
+
+.ctaHeadingWrap {
+  grid-column: 1 / 9;
+}
+
+.ctaHeading {
+  font-size: clamp(2.5rem, 7vw, 9rem);
+  font-weight: 200;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.ctaRight {
+  grid-column: 10 / 13;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1.5rem;
+}
+
+.ctaSubtext {
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.7;
+  color: $muted;
+  text-align: right;
+  max-width: 24ch;
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2.5rem;
+  border: 1px solid $fg;
+  background: transparent;
+  color: $fg;
+  font-family: var(--font-urbanist), sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.4s $ease, color 0.4s $ease, border-color 0.4s $ease;
+
+  &:hover {
+    background: $fg;
+    color: $bg;
+    border-color: $fg;
+  }
+
+  &::after {
+    content: '\2192';
+    font-size: 1.1em;
+    transition: transform 0.4s $ease;
+  }
+
+  &:hover::after {
+    transform: translateX(4px);
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   FOOTER — minimal, bottom rule
+   ═══════════════════════════════════════════════════════════════ */
+.footer {
+  padding: 3rem 4vw 2rem;
+  border-top: 1px solid $rule;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footerLeft {
+  font-size: 0.7rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: $muted;
+}
+
+.footerRight {
+  font-size: 0.7rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: $muted;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE — maintain precision at smaller viewports
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .heroHeading {
+    font-size: clamp(2rem, 10vw, 6rem);
+    white-space: normal;
+  }
+
+  .heroSubtitle {
+    position: relative;
+    left: 0;
+    bottom: 0;
+    margin-top: 3rem;
+  }
+
+  .serviceItem:nth-child(1),
+  .serviceItem:nth-child(2),
+  .serviceItem:nth-child(3) {
+    grid-column: 1 / 13;
+  }
+
+  .servicesGrid {
+    row-gap: 4rem;
+  }
+
+  .clientsRow {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .clientDivider {
+    width: 3rem;
+    height: 1px;
+    margin: 0.5rem 0;
+  }
+
+  .proofStatLeft,
+  .proofStatRight {
+    grid-column: 1 / 13;
+  }
+
+  .proofStatRight {
+    border-left: none;
+    border-top: 1px solid $rule;
+    padding-left: 0;
+    padding-top: 2rem;
+    margin-top: 2rem;
+  }
+
+  .proofBody {
+    grid-column: 1 / 13;
+    margin-top: 3rem;
+  }
+
+  .approachHeadingWrap {
+    grid-column: 1 / 13;
+  }
+
+  .approachItem:nth-child(1),
+  .approachItem:nth-child(2),
+  .approachItem:nth-child(3) {
+    grid-column: 1 / 13;
+  }
+
+  .ctaHeadingWrap {
+    grid-column: 1 / 13;
+  }
+
+  .ctaRight {
+    grid-column: 1 / 13;
+    align-items: flex-start;
+    margin-top: 2rem;
+  }
+
+  .ctaSubtext {
+    text-align: left;
+  }
+}
