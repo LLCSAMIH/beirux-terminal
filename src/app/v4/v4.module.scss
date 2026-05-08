@@ -1,0 +1,1274 @@
+/* ═══════════════════════════════════════════════
+   V4 — Terminal Direction
+   BEIRUX Marketing Landing Page
+   Full tmux-framed showcase
+   ═══════════════════════════════════════════════ */
+
+$black: #000000;
+$green: #00ff41;
+$green-dim: #1a6b2d;
+$green-mid: #0a8f35;
+$amber: #ffb000;
+$cyan: #00d4ff;
+$red: #ff3333;
+$white: #c0c0c0;
+
+$font: var(--font-jetbrains), 'JetBrains Mono', 'Courier New', monospace;
+
+/* ─── CRT scanline overlay ─── */
+@mixin scanlines {
+  &::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 2px,
+      rgba(0, 0, 0, 0.15) 2px,
+      rgba(0, 0, 0, 0.15) 3px
+    );
+  }
+}
+
+/* ─── Keyframes ─── */
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes flicker {
+  0% { opacity: 1; }
+  3% { opacity: 0.95; }
+  6% { opacity: 1; }
+  7% { opacity: 0.9; }
+  8% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.95; }
+  94% { opacity: 1; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { text-shadow: 0 0 8px rgba($green, 0.4); }
+  50% { text-shadow: 0 0 16px rgba($green, 0.7), 0 0 30px rgba($green, 0.3); }
+}
+
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes fadeInLine {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes barFill {
+  from { width: 0; }
+}
+
+@keyframes bootFlash {
+  0% { background: $green; }
+  10% { background: $black; }
+  100% { background: $black; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes staggerIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes logSlideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ─── Page wrapper ─── */
+.page {
+  @include scanlines;
+  background: $black;
+  color: $green;
+  font-family: $font;
+  min-height: 100vh;
+  position: relative;
+  animation: flicker 8s infinite;
+  padding-top: 2.8rem;
+  padding-bottom: 2.8rem;
+
+  /* Subtle CRT vignette */
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9998;
+    background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.5) 100%);
+  }
+}
+
+/* ─── Shared typography ─── */
+.prompt {
+  color: $green-dim;
+  user-select: none;
+}
+
+.cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  background: $green;
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+  margin-left: 2px;
+}
+
+.cursorAmber {
+  composes: cursor;
+  background: $amber;
+}
+
+.green { color: $green; }
+.dim { color: $green-dim; }
+.mid { color: $green-mid; }
+.amber { color: $amber; }
+.cyan { color: $cyan; }
+.red { color: $red; }
+.white { color: $white; }
+.bold { font-weight: 700; }
+
+/* ═══════════════════════════════════════════════
+   TMUX TOP BAR
+   ═══════════════════════════════════════════════ */
+
+.tmuxTop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.8rem;
+  background: #0a140a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.2rem;
+  font-family: $font;
+  font-size: 1.2rem;
+  z-index: 10000;
+  border-bottom: 1px solid rgba($green-dim, 0.3);
+}
+
+.tmuxLeft {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tmuxSession {
+  color: $black;
+  background: $green;
+  padding: 0.2rem 0.6rem;
+  font-weight: 700;
+  margin-right: 0.4rem;
+  flex-shrink: 0;
+}
+
+.tmuxTab {
+  color: $white;
+  padding: 0.2rem 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    background: rgba($green, 0.1);
+  }
+}
+
+.tmuxTabActive {
+  composes: tmuxTab;
+  color: $black;
+  background: $green;
+  font-weight: 700;
+
+  &:hover {
+    background: $green;
+  }
+}
+
+.tmuxRight {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  flex-shrink: 0;
+  margin-left: 1.2rem;
+}
+
+.tmuxConnected {
+  color: $green;
+  white-space: nowrap;
+}
+
+.tmuxClock {
+  color: $amber;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ═══════════════════════════════════════════════
+   TMUX BOTTOM BAR
+   ═══════════════════════════════════════════════ */
+
+.tmuxBottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2.8rem;
+  background: #0a140a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.2rem;
+  font-family: $font;
+  font-size: 1.2rem;
+  z-index: 10000;
+  border-top: 1px solid rgba($green-dim, 0.3);
+}
+
+.tmuxBottomLeft {
+  color: $green;
+}
+
+.tmuxBottomCenter {
+  color: $white;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tmuxBottomRight {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  color: $white;
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION 1 — HERO / BOOT SEQUENCE
+   ═══════════════════════════════════════════════ */
+
+.heroWrapper {
+  height: 500vh;
+  position: relative;
+}
+
+.heroSticky {
+  position: sticky;
+  top: 2.8rem;
+  height: calc(100vh - 5.6rem);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 3.2rem;
+  overflow: hidden;
+}
+
+.terminal {
+  width: 100%;
+  max-width: 90rem;
+  font-size: 1.5rem;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+}
+
+.bootLine {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  white-space: pre-wrap;
+  word-break: break-all;
+
+  &.visible {
+    opacity: 1;
+  }
+}
+
+.asciiLogo {
+  color: $green;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  letter-spacing: 0.05em;
+  animation: glowPulse 4s ease-in-out infinite;
+
+  @media (max-width: 600px) {
+    font-size: 0.7rem;
+  }
+}
+
+.taglineLine {
+  font-size: 2rem;
+  font-weight: 700;
+  color: $green;
+  margin-top: 0.8rem;
+  text-shadow: 0 0 10px rgba($green, 0.5);
+
+  @media (max-width: 600px) {
+    font-size: 1.4rem;
+  }
+}
+
+.separator {
+  color: $green-dim;
+  user-select: none;
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION 2 — VIM / MANIFESTO
+   ═══════════════════════════════════════════════ */
+
+.vimSection {
+  padding: 4rem 3.2rem 8rem;
+  max-width: 90rem;
+  margin: 0 auto;
+}
+
+.vimEditor {
+  border: 1px solid rgba($green-dim, 0.4);
+  background: rgba(0, 5, 0, 0.6);
+  overflow: hidden;
+}
+
+.vimTitleBar {
+  background: rgba($green-dim, 0.15);
+  padding: 0.3rem 1.2rem;
+  font-size: 1.1rem;
+  color: $green-dim;
+  border-bottom: 1px solid rgba($green-dim, 0.3);
+  text-align: center;
+}
+
+.vimContent {
+  padding: 1.2rem 0;
+  font-size: 1.35rem;
+  line-height: 1.8;
+  overflow-x: auto;
+}
+
+.vimLine {
+  display: flex;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateY(4px);
+
+  &.vimLineVisible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.vimLineNumber {
+  color: rgba($green-dim, 0.5);
+  text-align: right;
+  min-width: 4rem;
+  padding-right: 1.2rem;
+  border-right: 1px solid rgba($green-dim, 0.2);
+  margin-right: 1.2rem;
+  user-select: none;
+  flex-shrink: 0;
+
+  @media (max-width: 600px) {
+    min-width: 3rem;
+    padding-right: 0.8rem;
+    margin-right: 0.8rem;
+  }
+}
+
+.vimLineContent {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.vimComment {
+  color: $green-dim;
+}
+
+.vimHeading {
+  color: $green;
+  font-weight: 700;
+}
+
+.vimNumber {
+  color: $amber;
+}
+
+.vimEmphasis {
+  color: $cyan;
+}
+
+.vimAuthor {
+  color: $white;
+}
+
+.vimTilde {
+  display: flex;
+}
+
+.vimTildeChar {
+  color: #1a4a6b;
+  min-width: 4rem;
+  text-align: right;
+  padding-right: 1.2rem;
+  border-right: 1px solid rgba($green-dim, 0.2);
+  margin-right: 1.2rem;
+  user-select: none;
+  flex-shrink: 0;
+
+  @media (max-width: 600px) {
+    min-width: 3rem;
+    padding-right: 0.8rem;
+    margin-right: 0.8rem;
+  }
+}
+
+.vimStatusBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba($green-dim, 0.15);
+  padding: 0.3rem 1.2rem;
+  font-size: 1.1rem;
+  border-top: 1px solid rgba($green-dim, 0.3);
+}
+
+.vimMode {
+  color: $green;
+  font-weight: 700;
+}
+
+.vimFileInfo {
+  color: $white;
+  display: flex;
+  gap: 1.6rem;
+}
+
+.vimPosition {
+  color: $amber;
+}
+
+.vimCommandLine {
+  padding: 0.3rem 1.2rem;
+  font-size: 1.1rem;
+  color: $green;
+  display: flex;
+  align-items: center;
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION 3 — SERVICES / CLI --help
+   ═══════════════════════════════════════════════ */
+
+.servicesSection {
+  padding: 8rem 3.2rem;
+  max-width: 90rem;
+  margin: 0 auto;
+}
+
+.helpBlock {
+  font-size: 1.5rem;
+  line-height: 2;
+  letter-spacing: 0.02em;
+
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.helpHeader {
+  margin-bottom: 2.4rem;
+}
+
+.helpUsage {
+  color: $amber;
+  margin-bottom: 0.4rem;
+}
+
+.helpDesc {
+  color: $white;
+  margin-bottom: 2.4rem;
+}
+
+.helpCommandsTitle {
+  color: $green;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 1.3rem;
+}
+
+.helpCommand {
+  display: flex;
+  gap: 2.4rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba($green-dim, 0.2);
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+}
+
+.helpFlag {
+  color: $cyan;
+  min-width: 26rem;
+  flex-shrink: 0;
+  font-weight: 700;
+
+  @media (max-width: 600px) {
+    min-width: auto;
+  }
+}
+
+.helpFlagDesc {
+  color: $white;
+}
+
+.helpStat {
+  color: $amber;
+  margin-left: auto;
+  white-space: nowrap;
+  font-size: 1.3rem;
+
+  @media (max-width: 600px) {
+    margin-left: 0;
+  }
+}
+
+.helpFooter {
+  margin-top: 2.4rem;
+  color: $green-dim;
+  font-size: 1.3rem;
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION 4 — TRACEROUTE / PROCESS
+   ═══════════════════════════════════════════════ */
+
+.tracerouteSection {
+  padding: 8rem 3.2rem;
+  max-width: 90rem;
+  margin: 0 auto;
+}
+
+.tracerouteBlock {
+  font-size: 1.35rem;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tracerouteHeader {
+  margin-bottom: 2rem;
+}
+
+.tracerouteCmd {
+  color: $green;
+  margin-bottom: 0.4rem;
+}
+
+.tracerouteInfo {
+  color: $green-dim;
+  font-size: 1.2rem;
+}
+
+.tracerouteHop {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  margin-bottom: 0.4rem;
+
+  &.tracerouteHopVisible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tracerouteHopMain {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: baseline;
+  white-space: pre;
+  overflow-x: auto;
+
+  @media (max-width: 600px) {
+    font-size: 1.1rem;
+  }
+}
+
+.tracerouteHopNum {
+  color: $cyan;
+  min-width: 3rem;
+  text-align: right;
+  margin-right: 0.4rem;
+  font-weight: 700;
+}
+
+.tracerouteHostname {
+  color: $green;
+}
+
+.tracerouteIp {
+  color: $green-dim;
+}
+
+.tracerouteLatency {
+  color: $amber;
+}
+
+.tracerouteDesc {
+  padding-left: 3.8rem;
+  color: rgba($white, 0.6);
+  font-size: 1.2rem;
+  font-style: italic;
+  margin-bottom: 1.2rem;
+
+  @media (max-width: 600px) {
+    padding-left: 2rem;
+  }
+}
+
+.tracerouteSummary {
+  margin-top: 2.4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba($green-dim, 0.2);
+  color: $green;
+  font-size: 1.3rem;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+
+  &.tracerouteSummaryVisible {
+    opacity: 1;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION 5 — CLIENTS / SQL TABLE
+   ═══════════════════════════════════════════════ */
+
+.clientsSection {
+  padding: 8rem 3.2rem;
+  max-width: 90rem;
+  margin: 0 auto;
+}
+
+.sqlBlock {
+  font-size: 1.4rem;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sqlQuery {
+  color: $amber;
+  margin-bottom: 1.6rem;
+}
+
+.sqlKeyword {
+  color: $cyan;
+  font-weight: 700;
+}
+
+.sqlTable {
+  white-space: pre;
+  font-size: 1.3rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  display: block;
+
+  @media (max-width: 600px) {
+    font-size: 1rem;
+  }
+}
+
+.sqlBorder {
+  color: $green-dim;
+}
+
+.sqlHeader {
+  color: $green;
+  font-weight: 700;
+}
+
+.sqlRow {
+  color: $white;
+}
+
+.sqlActive {
+  color: $green;
+  font-weight: 700;
+}
+
+.sqlRowCount {
+  color: $green-dim;
+  margin-top: 1.2rem;
+  font-size: 1.3rem;
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION 6 — CRONTAB / AUTOMATION
+   ═══════════════════════════════════════════════ */
+
+.crontabSection {
+  padding: 8rem 3.2rem;
+  max-width: 90rem;
+  margin: 0 auto;
+}
+
+.crontabBlock {
+  font-size: 1.3rem;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.crontabCmd {
+  color: $green;
+  margin-bottom: 1.6rem;
+  font-size: 1.4rem;
+}
+
+.crontabContent {
+  overflow-x: auto;
+}
+
+.crontabComment {
+  color: $green-dim;
+}
+
+.crontabCommentBold {
+  color: $green-dim;
+  font-weight: 700;
+}
+
+.crontabLine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  align-items: baseline;
+  white-space: nowrap;
+}
+
+.crontabSchedule {
+  color: $cyan;
+  min-width: 16rem;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+
+  @media (max-width: 600px) {
+    min-width: 12rem;
+  }
+}
+
+.crontabPath {
+  color: $green;
+}
+
+.crontabFlags {
+  color: $amber;
+}
+
+.crontabRunning {
+  color: $green;
+  margin-left: 1.2rem;
+  animation: pulse 1.5s ease-in-out infinite;
+  white-space: nowrap;
+}
+
+.crontabSummary {
+  margin-top: 2.4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba($green-dim, 0.2);
+  color: $green-dim;
+  font-size: 1.2rem;
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION 7 — PROOF / SYSTEM STATUS DASHBOARD
+   ═══════════════════════════════════════════════ */
+
+.proofSection {
+  padding: 8rem 3.2rem;
+  max-width: 90rem;
+  margin: 0 auto;
+}
+
+.dashBlock {
+  font-size: 1.4rem;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dashHeader {
+  margin-bottom: 2.4rem;
+}
+
+.dashTitle {
+  color: $green;
+  font-weight: 700;
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.dashHostname {
+  color: $green-dim;
+  font-size: 1.3rem;
+}
+
+.dashGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem 4rem;
+  margin-bottom: 3.2rem;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dashRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba($green-dim, 0.15);
+}
+
+.dashLabel {
+  color: $green-dim;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dashValue {
+  color: $green;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.dashValueAmber {
+  composes: dashValue;
+  color: $amber;
+}
+
+.dashValueCyan {
+  composes: dashValue;
+  color: $cyan;
+}
+
+.dashBarsTitle {
+  color: $green;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 1.3rem;
+  margin-bottom: 1.2rem;
+}
+
+.dashBar {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 0.6rem;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+}
+
+.dashBarLabel {
+  color: $green-dim;
+  min-width: 18rem;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+
+  @media (max-width: 600px) {
+    min-width: auto;
+  }
+}
+
+.dashBarTrack {
+  flex: 1;
+  height: 1.6rem;
+  background: rgba($green-dim, 0.15);
+  position: relative;
+  overflow: hidden;
+  min-width: 20rem;
+
+  @media (max-width: 600px) {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+.dashBarFill {
+  height: 100%;
+  background: $green;
+  transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: rgba($green, 0.8);
+    box-shadow: 0 0 8px $green;
+  }
+}
+
+.dashBarFillAmber {
+  composes: dashBarFill;
+  background: $amber;
+
+  &::after {
+    background: rgba($amber, 0.8);
+    box-shadow: 0 0 8px $amber;
+  }
+}
+
+.dashBarFillCyan {
+  composes: dashBarFill;
+  background: $cyan;
+
+  &::after {
+    background: rgba($cyan, 0.8);
+    box-shadow: 0 0 8px $cyan;
+  }
+}
+
+.dashBarPercent {
+  color: $white;
+  font-size: 1.3rem;
+  min-width: 4rem;
+  text-align: right;
+}
+
+.dashUptime {
+  margin-top: 2.4rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid rgba($green-dim, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.6rem;
+}
+
+.dashUptimeLabel {
+  color: $green-dim;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dashUptimeValue {
+  color: $green;
+  font-weight: 700;
+  font-size: 2rem;
+  text-shadow: 0 0 12px rgba($green, 0.5);
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION 8 — TAIL LOG / TESTIMONIALS
+   ═══════════════════════════════════════════════ */
+
+.tailSection {
+  padding: 8rem 3.2rem;
+  max-width: 90rem;
+  margin: 0 auto;
+}
+
+.tailBlock {
+  font-size: 1.3rem;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tailCmd {
+  color: $green;
+  margin-bottom: 1.6rem;
+  font-size: 1.4rem;
+}
+
+.tailLog {
+  overflow-x: auto;
+}
+
+.tailLine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  white-space: nowrap;
+  opacity: 0;
+  animation: logSlideIn 0.4s ease forwards;
+
+  @media (max-width: 600px) {
+    font-size: 1.1rem;
+  }
+}
+
+.tailTimestamp {
+  color: rgba($green-dim, 0.7);
+}
+
+.tailInfo {
+  color: $green;
+  font-weight: 700;
+}
+
+.tailWarn {
+  color: $amber;
+  font-weight: 700;
+}
+
+.tailClient {
+  color: $cyan;
+}
+
+.tailMsg {
+  color: $white;
+}
+
+.tailCursor {
+  margin-top: 0.4rem;
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION 9 — CTA / COMMAND PROMPT
+   ═══════════════════════════════════════════════ */
+
+.ctaSection {
+  padding: 12rem 3.2rem 16rem;
+  max-width: 90rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.ctaBlock {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ctaBox {
+  border: 1px solid $green-dim;
+  padding: 4rem 4.8rem;
+  position: relative;
+  text-align: left;
+  max-width: 70rem;
+
+  @media (max-width: 600px) {
+    padding: 2.4rem 2rem;
+  }
+}
+
+.ctaBoxTitle {
+  position: absolute;
+  top: -0.8rem;
+  left: 1.6rem;
+  background: $black;
+  padding: 0 0.8rem;
+  color: $green-dim;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.ctaCommand {
+  font-size: 2rem;
+  font-weight: 700;
+  color: $green;
+  margin-bottom: 2.4rem;
+  text-shadow: 0 0 12px rgba($green, 0.4);
+  white-space: pre-wrap;
+  word-break: break-all;
+
+  @media (max-width: 600px) {
+    font-size: 1.4rem;
+  }
+}
+
+.ctaOutput {
+  color: $white;
+  font-size: 1.4rem;
+  line-height: 2;
+  margin-bottom: 2.4rem;
+}
+
+.ctaOutputLine {
+  display: block;
+}
+
+.ctaCheck {
+  color: $green;
+  margin-right: 0.8rem;
+}
+
+.ctaPrompt {
+  font-size: 1.6rem;
+  margin-top: 2.4rem;
+}
+
+.ctaEnter {
+  display: inline-block;
+  color: $black;
+  background: $green;
+  padding: 0.8rem 2.4rem;
+  font-family: $font;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  border: none;
+  margin-top: 1.6rem;
+
+  &:hover {
+    background: $amber;
+    color: $black;
+    box-shadow: 0 0 20px rgba($amber, 0.4);
+  }
+}
+
+.ctaEmail {
+  display: block;
+  margin-top: 1.6rem;
+  color: $green-dim;
+  font-size: 1.3rem;
+
+  a {
+    color: $cyan;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $green;
+      text-shadow: 0 0 8px rgba($green, 0.5);
+    }
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════ */
+
+.footer {
+  padding: 4rem 3.2rem;
+  text-align: center;
+  color: $green-dim;
+  font-size: 1.3rem;
+  letter-spacing: 0.05em;
+  border-top: 1px solid rgba($green-dim, 0.2);
+  line-height: 2;
+}
+
+.footerEof {
+  color: $green-dim;
+  margin-bottom: 1.2rem;
+}
+
+.footerDisconnect {
+  color: $white;
+  margin-bottom: 0.4rem;
+}
+
+.footerLogout {
+  color: $green-dim;
+  margin-bottom: 1.6rem;
+}
+
+.footerHint {
+  color: $green-mid;
+  font-size: 1.2rem;
+}
