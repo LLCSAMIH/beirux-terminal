@@ -1,8 +1,7 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useRef, useState, useEffect, useMemo, useCallback } from 'react';
 import { useInView } from '@/hooks/useInView';
-import { useStickyScroll } from '@/hooks/useStickyScroll';
 import s from './d4.module.scss';
 
 /* ─── data ─── */
@@ -18,6 +17,17 @@ const SERVICES = [
   { name: 'Automation', stat: '0 manual steps' },
 ];
 
+const PILL_POSITIONS: Array<{ top: string; left: string; rotate: string }> = [
+  { top: '8%',  left: '5%',  rotate: '-4deg' },
+  { top: '6%',  left: '55%', rotate: '3deg' },
+  { top: '28%', left: '30%', rotate: '-2deg' },
+  { top: '32%', left: '68%', rotate: '5deg' },
+  { top: '52%', left: '8%',  rotate: '2deg' },
+  { top: '48%', left: '52%', rotate: '-3deg' },
+  { top: '72%', left: '20%', rotate: '4deg' },
+  { top: '70%', left: '62%', rotate: '-5deg' },
+];
+
 const PILL_COLORS = [
   'pillViolet', 'pillSky', 'pillPink', 'pillMint',
   'pillPeach', 'pillLavender', 'pillLemon', 'pillRose',
@@ -31,52 +41,84 @@ const CLIENTS = [
   { name: 'Key Vision LLC', type: 'Web Platform', result: 'Data visualization platform with client portals and API integrations.' },
 ];
 
+const CLIENT_ANGLES = [-8, -3, 2, 6, -5];
+const CLIENT_OFFSETS = [
+  { x: -60, y: 20 },
+  { x: -20, y: -30 },
+  { x: 30, y: 10 },
+  { x: 70, y: -20 },
+  { x: 10, y: 40 },
+];
+
 const MANIFESTO_WORDS = 'Every project starts from first principles. Your business is not a template. We don\'t hand off and disappear. We build with you, ship for real, and stay.'.split(' ');
 
 const BUBBLES = [
   { label: '12 Projects', size: 200 },
-  { label: '4 AI Agents', size: 150 },
-  { label: '5 Clients', size: 150 },
-  { label: '92% Satisfaction', size: 120 },
-  { label: '0 Templates', size: 110 },
+  { label: '4 AI Agents', size: 160 },
+  { label: '5 Clients', size: 155 },
+  { label: '92% Satisfaction', size: 130 },
+  { label: '0 Templates', size: 115 },
 ];
 
-/* ─── sections ─── */
+const BUBBLE_POSITIONS = [
+  { top: '12%', left: '22%' },
+  { top: '8%',  left: '65%' },
+  { top: '45%', left: '12%' },
+  { top: '42%', left: '72%' },
+  { top: '72%', left: '42%' },
+];
 
-function FloatingHero() {
+const CARD_COUNT = 6;
+
+/* ─── dot nav ─── */
+
+function DotNav({ active }: { active: number }) {
   return (
-    <section className={s.hero}>
+    <div className={s.dotNav}>
+      {Array.from({ length: CARD_COUNT }).map((_, i) => (
+        <div
+          key={i}
+          className={`${s.dot} ${i === active ? s.dotActive : ''}`}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* ─── card 1: hero ─── */
+
+function HeroCard() {
+  return (
+    <section className={`${s.card} ${s.cardHero}`}>
       <div className={s.blobField}>
         <div className={`${s.blob} ${s.blob1}`} />
         <div className={`${s.blob} ${s.blob2}`} />
         <div className={`${s.blob} ${s.blob3}`} />
         <div className={`${s.blob} ${s.blob4}`} />
       </div>
-      <div className={s.heroContent}>
-        <h1 className={s.heroTitle}>
-          <span className={s.wordWe}>We</span>{' '}
-          <span className={s.wordBuild}>build</span>{' '}
-          <span className={s.wordBeautiful}>beautiful</span>{' '}
-          <span className={s.wordThings}>things.</span>
-        </h1>
-        <p className={s.heroTagline}>
-          AI agency + web design from Miami. Four agents. Five clients. Twelve projects shipped.
-        </p>
-      </div>
+      <h1 className={s.heroTitle}>BEIRUX</h1>
     </section>
   );
 }
 
-function PillServices() {
-  const { ref, isVisible } = useInView({ threshold: 0.15 });
+/* ─── card 2: services ─── */
+
+function ServicesCard() {
+  const { ref, isVisible } = useInView({ threshold: 0.3 });
+
   return (
-    <section ref={ref} className={s.pills}>
-      <div className={s.pillsWrap}>
+    <section ref={ref} className={`${s.card} ${s.cardServices}`}>
+      <div className={s.servicesField}>
         {SERVICES.map((svc, i) => (
           <div
             key={svc.name}
-            className={`${s.pill} ${s[PILL_COLORS[i % PILL_COLORS.length]]} ${isVisible ? s.pillVisible : ''}`}
-            style={{ transitionDelay: isVisible ? `${i * 70}ms` : '0ms' }}
+            className={`${s.pill} ${s[PILL_COLORS[i]]} ${isVisible ? s.pillVisible : ''}`}
+            style={{
+              top: PILL_POSITIONS[i].top,
+              left: PILL_POSITIONS[i].left,
+              transform: `rotate(${PILL_POSITIONS[i].rotate})`,
+              transitionDelay: isVisible ? `${i * 90}ms` : '0ms',
+            }}
           >
             <span className={s.pillName}>{svc.name}</span>
             <span className={s.pillStat}>{svc.stat}</span>
@@ -87,84 +129,81 @@ function PillServices() {
   );
 }
 
-function StackedCards() {
-  const { wrapperRef, progress } = useStickyScroll();
+/* ─── card 3: manifesto ─── */
+
+function ManifestoCard() {
+  const { ref, isVisible } = useInView({ threshold: 0.4 });
+  const [wordCount, setWordCount] = useState(0);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let count = 0;
+    const total = MANIFESTO_WORDS.length;
+    const interval = setInterval(() => {
+      count += 1;
+      setWordCount(count);
+      if (count >= total) clearInterval(interval);
+    }, 80);
+
+    return () => clearInterval(interval);
+  }, [isVisible]);
 
   return (
-    <div ref={wrapperRef} className={s.cardsWrapper}>
-      <div className={s.cardsSticky}>
-        <h2 className={s.cardsHeading}>Client stories</h2>
-        <div className={s.cardsDeck}>
-          {CLIENTS.map((client, i) => {
-            const total = CLIENTS.length;
-            const cardStart = i / total;
-            const cardEnd = (i + 1) / total;
-            const cardProgress = Math.max(0, Math.min(1, (progress - cardStart) / (cardEnd - cardStart)));
-
-            const baseRotation = (i - Math.floor(total / 2)) * 3;
-            const rotation = baseRotation * (1 - cardProgress);
-            const yOffset = (total - 1 - i) * 8 * (1 - cardProgress);
-            const scale = 0.95 + 0.05 * cardProgress;
-            const spreadX = (i - Math.floor(total / 2)) * 80 * cardProgress;
-
-            return (
-              <div
-                key={client.name}
-                className={s.card}
-                style={{
-                  transform: `translate(${spreadX}px, ${-yOffset}px) rotate(${rotation}deg) scale(${scale})`,
-                  zIndex: i,
-                }}
-              >
-                <span className={s.cardType}>{client.type}</span>
-                <h3 className={s.cardName}>{client.name}</h3>
-                <p className={s.cardResult}>{client.result}</p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </div>
+    <section ref={ref} className={`${s.card} ${s.cardManifesto}`}>
+      <div className={s.manifestoGlow} />
+      <p className={s.manifestoText}>
+        {MANIFESTO_WORDS.map((word, i) => (
+          <span
+            key={i}
+            className={`${s.manifestoWord} ${i < wordCount ? s.manifestoWordVisible : ''}`}
+          >
+            {word}{' '}
+          </span>
+        ))}
+      </p>
+    </section>
   );
 }
 
-function GradientManifesto() {
-  const { wrapperRef, progress } = useStickyScroll();
+/* ─── card 4: client stories ─── */
 
-  const visibleCount = Math.floor(progress * (MANIFESTO_WORDS.length + 4));
+function ClientsCard() {
+  const { ref, isVisible } = useInView({ threshold: 0.3 });
 
   return (
-    <div ref={wrapperRef} className={s.manifestoWrapper}>
-      <div className={s.manifestoSticky}>
-        <div className={s.manifestoGradient} />
-        <p className={s.manifestoText}>
-          {MANIFESTO_WORDS.map((word, i) => (
-            <span
-              key={i}
-              className={`${s.manifestoWord} ${i < visibleCount ? s.manifestoWordVisible : ''}`}
-            >
-              {word}{' '}
-            </span>
-          ))}
-        </p>
+    <section ref={ref} className={`${s.card} ${s.cardClients}`}>
+      <h2 className={s.clientsHeading}>Client stories</h2>
+      <div className={s.clientsFan}>
+        {CLIENTS.map((client, i) => (
+          <div
+            key={client.name}
+            className={`${s.clientCard} ${isVisible ? s.clientCardVisible : ''}`}
+            style={{
+              transform: isVisible
+                ? `translate(${CLIENT_OFFSETS[i].x}px, ${CLIENT_OFFSETS[i].y}px) rotate(${CLIENT_ANGLES[i]}deg)`
+                : 'translate(0, 40px) rotate(0deg)',
+              zIndex: CLIENTS.length - i,
+              transitionDelay: isVisible ? `${i * 80}ms` : '0ms',
+            }}
+          >
+            <span className={s.clientType}>{client.type}</span>
+            <h3 className={s.clientName}>{client.name}</h3>
+            <p className={s.clientResult}>{client.result}</p>
+          </div>
+        ))}
       </div>
-    </div>
+    </section>
   );
 }
 
-function MetricBubbles() {
-  const { ref, isVisible } = useInView({ threshold: 0.15 });
+/* ─── card 5: metric bubbles ─── */
 
-  const positions = useMemo(() => [
-    { top: '10%', left: '50%', translateX: '-50%' },
-    { top: '35%', left: '15%', translateX: '0' },
-    { top: '30%', left: '75%', translateX: '0' },
-    { top: '65%', left: '30%', translateX: '0' },
-    { top: '60%', left: '68%', translateX: '0' },
-  ], []);
+function BubblesCard() {
+  const { ref, isVisible } = useInView({ threshold: 0.3 });
 
   return (
-    <section ref={ref} className={s.bubbles}>
+    <section ref={ref} className={`${s.card} ${s.cardBubbles}`}>
       <div className={s.bubblesField}>
         {BUBBLES.map((bubble, i) => (
           <div
@@ -173,9 +212,8 @@ function MetricBubbles() {
             style={{
               width: bubble.size,
               height: bubble.size,
-              top: positions[i].top,
-              left: positions[i].left,
-              transform: `translateX(${positions[i].translateX})`,
+              top: BUBBLE_POSITIONS[i].top,
+              left: BUBBLE_POSITIONS[i].left,
               transitionDelay: isVisible ? `${i * 120}ms` : '0ms',
             }}
           >
@@ -187,25 +225,18 @@ function MetricBubbles() {
   );
 }
 
-function SoftCTA() {
-  const { ref, isVisible } = useInView({ threshold: 0.2 });
+/* ─── card 6: contact ─── */
+
+function ContactCard() {
+  const { ref, isVisible } = useInView({ threshold: 0.3 });
 
   return (
-    <section ref={ref} className={`${s.cta} ${isVisible ? s.ctaVisible : ''}`}>
-      <div className={s.ctaOrbs}>
-        {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className={`${s.ctaOrb} ${s[`ctaOrb${i}`]}`} />
-        ))}
-      </div>
-      <h2 className={s.ctaTitle}>Let&apos;s make something.</h2>
-      <div className={s.ctaInput}>
-        <span className={s.ctaEmail}>samih@beirux.com</span>
-        <span className={s.ctaArrow}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12" />
-            <polyline points="12 5 19 12 12 19" />
-          </svg>
-        </span>
+    <section ref={ref} className={`${s.card} ${s.cardContact}`}>
+      <div className={`${s.contactOrb} ${isVisible ? s.contactOrbVisible : ''}`} />
+      <div className={`${s.contactContent} ${isVisible ? s.contactContentVisible : ''}`}>
+        <a href="mailto:samih@beirux.com" className={s.contactEmail}>
+          samih@beirux.com
+        </a>
       </div>
     </section>
   );
@@ -214,14 +245,34 @@ function SoftCTA() {
 /* ─── page ─── */
 
 export default function D4Page() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [activeCard, setActiveCard] = useState(0);
+
+  const handleScroll = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const scrollTop = container.scrollTop;
+    const cardHeight = container.clientHeight;
+    const index = Math.round(scrollTop / cardHeight);
+    setActiveCard(Math.min(index, CARD_COUNT - 1));
+  }, []);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
+
   return (
-    <main className={s.page}>
-      <FloatingHero />
-      <PillServices />
-      <StackedCards />
-      <GradientManifesto />
-      <MetricBubbles />
-      <SoftCTA />
-    </main>
+    <div ref={containerRef} className={s.snapContainer}>
+      <DotNav active={activeCard} />
+      <HeroCard />
+      <ServicesCard />
+      <ManifestoCard />
+      <ClientsCard />
+      <BubblesCard />
+      <ContactCard />
+    </div>
   );
 }

@@ -1,0 +1,521 @@
+/* --- tokens --- */
+
+$bg: #111113;
+$surface: #1c1c1e;
+$border: #2a2a2c;
+$border-hover: #3a3a3c;
+$text: #ffffff;
+$text-muted: #888;
+$text-dim: #555;
+$accent: #8b5cf6;
+$accent-blue: #6366f1;
+$radius: 12px;
+$radius-sm: 8px;
+
+/* --- page --- */
+
+.page {
+  min-height: 100vh;
+  background: $bg;
+  color: $text;
+  overflow-x: hidden;
+}
+
+/* --- hero --- */
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 80px 24px 120px;
+  position: relative;
+}
+
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 640px;
+  width: 100%;
+  text-align: center;
+}
+
+.heroBrand {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $accent;
+  margin: 0;
+}
+
+.heroHeadline {
+  font-family: var(--font-sora), sans-serif;
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+  color: $text;
+}
+
+.heroSub {
+  font-size: 16px;
+  line-height: 1.6;
+  color: $text-muted;
+  margin: 0 0 12px;
+  max-width: 480px;
+}
+
+/* --- command palette --- */
+
+.palette {
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+  margin-top: 8px;
+}
+
+.paletteGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba($accent, 0.15) 0%, rgba($accent-blue, 0.05) 40%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.4s ease;
+  opacity: 0.6;
+}
+
+.paletteFocused .paletteGlow {
+  opacity: 1;
+}
+
+.paletteInner {
+  position: relative;
+  z-index: 1;
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.paletteFocused .paletteInner {
+  border-color: $border-hover;
+  box-shadow: 0 0 0 1px rgba($accent, 0.15), 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.paletteInputRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid $border;
+}
+
+.paletteIcon {
+  font-size: 16px;
+  color: $text-dim;
+  flex-shrink: 0;
+}
+
+.paletteInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+  font-size: 14px;
+  color: $text;
+  caret-color: $accent;
+
+  &::placeholder {
+    color: $text-dim;
+  }
+}
+
+.paletteKbd {
+  font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+  font-size: 11px;
+  color: $text-dim;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid $border;
+  border-radius: 4px;
+  padding: 2px 6px;
+  flex-shrink: 0;
+}
+
+.paletteList {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+}
+
+.paletteItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+}
+
+.paletteItemActive {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.paletteItemIcon {
+  font-size: 14px;
+  color: $text-dim;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.paletteItemText {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.paletteItemLabel {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: $text;
+}
+
+.paletteItemDesc {
+  font-size: 12px;
+  color: $text-dim;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.paletteItemShortcut {
+  font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+  font-size: 11px;
+  color: $text-dim;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid $border;
+  border-radius: 4px;
+  padding: 2px 6px;
+  flex-shrink: 0;
+}
+
+.paletteEmpty {
+  padding: 20px 12px;
+  text-align: center;
+  color: $text-dim;
+  font-size: 13px;
+}
+
+/* --- sections --- */
+
+.section {
+  position: relative;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 120px 24px;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.sectionVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.sectionShortcut {
+  position: absolute;
+  top: 120px;
+  right: 24px;
+
+  kbd {
+    font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+    font-size: 11px;
+    color: $text-dim;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid $border;
+    border-radius: 4px;
+    padding: 3px 7px;
+  }
+}
+
+.sectionTitle {
+  font-family: var(--font-sora), sans-serif;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: $text;
+}
+
+.sectionSubtitle {
+  font-size: 15px;
+  color: $text-muted;
+  margin: 0 0 48px;
+}
+
+/* --- services --- */
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.serviceCard {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: 24px;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: $border-hover;
+  }
+}
+
+.serviceCardName {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: $text;
+}
+
+.serviceCardDetail {
+  font-size: 13px;
+  line-height: 1.6;
+  color: $text-muted;
+  margin: 0;
+}
+
+/* --- projects --- */
+
+.projectsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.projectRow {
+  display: grid;
+  grid-template-columns: 40px 1fr 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid $border;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.projectIndex {
+  font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+  font-size: 12px;
+  color: $text-dim;
+}
+
+.projectInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.projectName {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: $text;
+}
+
+.projectType {
+  font-size: 12px;
+  color: $text-dim;
+}
+
+.projectSummary {
+  font-size: 13px;
+  color: $text-muted;
+  margin: 0;
+  text-align: right;
+}
+
+/* --- stack --- */
+
+.stackGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.stackCard {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: 24px;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: $border-hover;
+  }
+}
+
+.stackCategory {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $accent;
+  margin: 0 0 10px;
+}
+
+.stackTools {
+  font-size: 14px;
+  line-height: 1.6;
+  color: $text-muted;
+  margin: 0;
+}
+
+/* --- about --- */
+
+.aboutContent {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.aboutText {
+  font-size: 16px;
+  line-height: 1.8;
+  color: $text-muted;
+  margin: 0;
+  max-width: 640px;
+}
+
+.aboutStats {
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.aboutStat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.aboutStatValue {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: $text;
+}
+
+.aboutStatLabel {
+  font-size: 13px;
+  color: $text-dim;
+}
+
+/* --- contact --- */
+
+.contactContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contactLink {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: $accent;
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: $accent-blue;
+  }
+}
+
+.contactNote {
+  font-size: 14px;
+  color: $text-dim;
+  margin: 0;
+}
+
+.inlineKbd {
+  font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+  font-size: 12px;
+  color: $text-muted;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid $border;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+/* --- footer --- */
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+  border-top: 1px solid $border;
+}
+
+.footerBrand {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: $text-dim;
+}
+
+.footerYear {
+  font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+  font-size: 12px;
+  color: $text-dim;
+}
+
+/* --- responsive --- */
+
+@media (max-width: 640px) {
+  .projectRow {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .projectSummary {
+    text-align: left;
+  }
+
+  .projectIndex {
+    display: none;
+  }
+
+  .aboutStats {
+    gap: 32px;
+  }
+
+  .sectionShortcut {
+    display: none;
+  }
+}

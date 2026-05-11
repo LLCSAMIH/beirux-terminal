@@ -1,0 +1,301 @@
+/* --- D7: Sticky Reveal Cinema --- */
+
+$black: #000000;
+$white: #ffffff;
+$blue: #0071e3;
+$grey: #888888;
+
+/* --- Page --- */
+
+.page {
+  font-family: var(--font-sora), sans-serif;
+  background: $black;
+  color: $white;
+  overflow-x: hidden;
+}
+
+/* --- Shared: section wrapper + sticky inner --- */
+
+.sectionWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.stickyInner {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* --- Section 1: Hero (letter reveal) --- */
+
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.heroTitle {
+  font-size: clamp(4rem, 10vw, 12rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  white-space: nowrap;
+  will-change: transform, opacity;
+}
+
+.heroLetter {
+  display: inline-block;
+  will-change: opacity, transform;
+}
+
+.heroTagline {
+  font-size: clamp(1.4rem, 2vw, 2.4rem);
+  font-weight: 300;
+  color: $grey;
+  margin-top: 2.4rem;
+  will-change: opacity, transform;
+}
+
+/* --- Section 2: Orb zoom --- */
+
+.orbScene {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 40% 40%,
+    $blue 0%,
+    color-mix(in srgb, $blue 60%, $black) 50%,
+    $black 100%
+  );
+  will-change: width, height;
+  flex-shrink: 0;
+}
+
+.orbContent {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 700px;
+  padding: 0 2.4rem;
+  will-change: opacity, transform;
+}
+
+.orbHeadline {
+  font-size: clamp(2.4rem, 4vw, 5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 1.6rem;
+}
+
+.orbSub {
+  font-size: clamp(1.4rem, 1.8vw, 2rem);
+  font-weight: 300;
+  color: rgba($white, 0.7);
+  line-height: 1.5;
+}
+
+/* --- Section 3: Services fly-in --- */
+
+.servicesScene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 4rem;
+}
+
+.servicesLabel {
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $blue;
+  margin-bottom: 4rem;
+  will-change: opacity;
+}
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 3vw, 4rem) clamp(4rem, 8vw, 12rem);
+  max-width: 900px;
+}
+
+.serviceWord {
+  font-size: clamp(1.8rem, 3vw, 3.6rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  will-change: opacity, transform, text-shadow;
+  transition: text-shadow 0.3s ease;
+}
+
+/* --- Section 4: Stats counter --- */
+
+.statsScene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 4rem;
+}
+
+.statsLabel {
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $blue;
+  margin-bottom: 6rem;
+  will-change: opacity;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(4rem, 6vw, 8rem) clamp(6rem, 10vw, 14rem);
+  max-width: 900px;
+}
+
+.statCell {
+  text-align: center;
+  will-change: opacity, transform;
+}
+
+.statValue {
+  display: block;
+  font-size: clamp(4rem, 8vw, 10rem);
+  font-weight: 900;
+  line-height: 1;
+  color: $blue;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.statLabel {
+  display: block;
+  font-size: clamp(1.1rem, 1.4vw, 1.4rem);
+  font-weight: 400;
+  color: $grey;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 1.2rem;
+}
+
+/* --- Section 5: CTA --- */
+
+.ctaScene {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 4rem;
+}
+
+.ctaGlow {
+  position: absolute;
+  width: 60vmin;
+  height: 60vmin;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, $blue 30%, transparent) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.ctaHeadline {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(3rem, 6vw, 7rem);
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  will-change: opacity, transform;
+}
+
+.ctaEmail {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+  font-weight: 300;
+  color: $white;
+  margin-top: 3.2rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  will-change: opacity, transform;
+
+  &:hover {
+    color: $blue;
+  }
+}
+
+.ctaLocation {
+  position: relative;
+  z-index: 1;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: $grey;
+  margin-top: 1.2rem;
+  will-change: opacity, transform;
+}
+
+/* --- Responsive --- */
+
+@media (max-width: 768px) {
+  .servicesGrid {
+    grid-template-columns: 1fr;
+    gap: 2.4rem;
+    text-align: center;
+  }
+
+  .statsGrid {
+    gap: 4rem 6rem;
+  }
+
+  .heroTitle {
+    font-size: clamp(3.6rem, 14vw, 8rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+
+  .servicesGrid {
+    gap: 2rem;
+  }
+
+  .serviceWord {
+    font-size: clamp(1.6rem, 6vw, 2.8rem);
+  }
+}

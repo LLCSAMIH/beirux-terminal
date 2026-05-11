@@ -1,256 +1,74 @@
-/* ─── D6: Swiss Razor ─── */
+/* D6: Swiss Razor */
 
-$white: #ffffff;
-$black: #000000;
 $blue: #0055ff;
-$grey: #888888;
-
-/* ─── PAGE ─── */
 
 .page {
   font-family: var(--font-sora), sans-serif;
-  background: $white;
-  color: $black;
-  overflow-x: hidden;
-}
-
-/* ─── 1. GRID HERO ─── */
-
-.hero {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  min-height: 600px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 6rem 4rem;
-  overflow: hidden;
-}
-
-.heroGrid {
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0.04) 0px,
-    rgba(0, 0, 0, 0.04) 1px,
-    transparent 1px,
-    transparent calc(100% / 12)
-  );
-  animation: gridFade 3s ease-out forwards;
-}
-
-@keyframes gridFade {
-  0% { opacity: 1; }
-  60% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-.heroTitle {
-  font-size: clamp(6rem, 12vw, 16rem);
-  font-weight: 900;
-  line-height: 0.9;
-  letter-spacing: -0.03em;
-}
-
-.heroRule {
-  width: 66.66%;
-  margin-left: 16.66%;
-  height: 2px;
-  background: $blue;
-  margin-top: auto;
-  margin-bottom: auto;
-}
-
-.heroSubtitle {
-  font-size: clamp(1.8rem, 2.5vw, 3.2rem);
-  font-weight: 300;
-  text-align: right;
-  align-self: flex-end;
-}
-
-/* ─── 2. INDEX (Services) ─── */
-
-.index {
-  padding: 12rem 4rem;
-}
-
-.indexLabel {
-  font-size: 1.1rem;
-  font-weight: 400;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: $grey;
-  margin-bottom: 6rem;
-}
-
-.indexList {
-  list-style: none;
-}
-
-.indexRow {
-  display: grid;
-  grid-template-columns: 6rem 1fr auto;
-  align-items: center;
-  padding: 2.4rem 0;
-  border-top: 1px solid $black;
-  cursor: default;
-  transition: background 0.2s ease, color 0.2s ease;
-
-  &:last-child {
-    border-bottom: 1px solid $black;
-  }
-
-  &:hover {
-    background: $blue;
-    color: $white;
-  }
-}
-
-.indexNumber {
-  font-size: 1.4rem;
-  font-weight: 400;
-  letter-spacing: 0.1em;
-  font-variant-numeric: tabular-nums;
-}
-
-.indexName {
-  font-size: clamp(1.8rem, 2.5vw, 3rem);
-  font-weight: 600;
-  text-align: center;
-}
-
-.indexMetric {
-  font-size: 1.4rem;
-  font-weight: 400;
-  color: $grey;
-  text-align: right;
-  transition: color 0.2s ease;
-
-  .indexRow:hover & {
-    color: rgba(255, 255, 255, 0.7);
-  }
-}
-
-/* ─── 3. STATEMENT ─── */
-
-.statement {
+  background: #fff;
+  color: #000;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
-  min-height: 500px;
-  padding: 4rem;
-  text-align: center;
-  opacity: 0;
-  transition: opacity 0.8s ease;
-
-  &.visible {
-    opacity: 1;
-  }
-}
-
-.statementText {
-  font-size: clamp(3rem, 5vw, 6rem);
-  font-weight: 500;
-  line-height: 1.1;
-}
-
-.statementSub {
-  font-size: clamp(1.4rem, 1.8vw, 2rem);
-  font-weight: 400;
-  color: $grey;
-  margin-top: 2.4rem;
-}
-
-/* ─── 4. CLIENT REGISTER ─── */
-
-.register {
-  padding: 12rem 4rem;
-}
-
-.registerInner {
-  max-width: 900px;
-  margin-left: 8.33%;
-}
-
-.registerLabel {
-  font-size: 1.1rem;
-  font-weight: 400;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: $grey;
-  margin-bottom: 4rem;
-}
-
-.registerList {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.registerItem {
-  font-size: clamp(1.6rem, 2vw, 2.2rem);
-  line-height: 1.4;
-  display: flex;
-  align-items: baseline;
-  gap: 0;
-  flex-wrap: wrap;
-}
-
-.registerDot {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: $blue;
-  flex-shrink: 0;
-  margin-right: 1.6rem;
-  position: relative;
-  top: -0.15em;
-}
-
-.registerClientName {
-  font-weight: 700;
-}
-
-.registerDash {
-  margin: 0 0.8rem;
-  color: $grey;
-}
-
-.registerType {
-  font-weight: 400;
-}
-
-.registerYear {
-  font-weight: 400;
-  color: $grey;
-}
-
-/* ─── 5. NUMBERS ─── */
-
-.numbers {
-  padding: 14rem 4rem;
-}
-
-.numbersGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(6rem, 10vw, 14rem);
-  max-width: 1000px;
+  padding: 200px 24px 160px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
-.numberCell {
-  text-align: center;
+/* ── fade-in animation ── */
+
+.fadeIn {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  width: 100%;
+  margin-bottom: 200px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.fadeInVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── elements ── */
+
+.name {
+  font-size: clamp(4rem, 10vw, 8rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.description {
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+.rule {
+  border: none;
+  height: 2px;
+  background: $blue;
+  width: 100%;
+}
+
+.service {
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.number {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .numberValue {
-  font-size: clamp(5rem, 10vw, 12rem);
+  font-size: clamp(4rem, 10vw, 8rem);
   font-weight: 900;
   line-height: 1;
   color: $blue;
@@ -258,118 +76,33 @@ $grey: #888888;
 }
 
 .numberLabel {
-  font-size: 1.3rem;
+  font-size: 1rem;
   font-weight: 400;
-  color: $grey;
-  letter-spacing: 0.12em;
+  color: #888;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  margin-top: 1.2rem;
 }
 
-/* ─── 6. CONTACT ─── */
-
-.contact {
-  background: $black;
-  color: $white;
-  padding: 10rem 4rem;
-  text-align: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.contactEmail {
-  font-size: clamp(2rem, 3vw, 2.4rem);
+.email {
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
   font-weight: 300;
-  letter-spacing: 0.02em;
+  color: #000;
+  text-decoration: none;
+  transition: color 0.2s ease;
 
-  a {
-    color: $white;
-    text-decoration: none;
-    transition: color 0.2s ease;
-
-    &:hover {
-      color: $blue;
-    }
+  &:hover {
+    color: $blue;
   }
 }
 
-.contactLocation {
-  font-size: 1.3rem;
-  font-weight: 400;
-  color: $grey;
-  margin-top: 1.6rem;
-}
+/* ── mobile ── */
 
-/* ─── RESPONSIVE ─── */
-
-@media (max-width: 768px) {
-  .hero {
-    padding: 4rem 2.4rem;
+@media (max-width: 640px) {
+  .page {
+    padding: 120px 20px 100px;
   }
 
-  .heroRule {
-    width: 80%;
-    margin-left: 10%;
-  }
-
-  .index {
-    padding: 8rem 2.4rem;
-  }
-
-  .indexRow {
-    grid-template-columns: 4rem 1fr auto;
-    padding: 2rem 0;
-  }
-
-  .indexName {
-    text-align: left;
-  }
-
-  .register {
-    padding: 8rem 2.4rem;
-  }
-
-  .registerInner {
-    margin-left: 0;
-  }
-
-  .numbers {
-    padding: 8rem 2.4rem;
-  }
-
-  .numbersGrid {
-    gap: clamp(4rem, 8vw, 8rem);
-  }
-
-  .contact {
-    padding: 8rem 2.4rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .indexRow {
-    grid-template-columns: 1fr;
-    gap: 0.4rem;
-  }
-
-  .indexNumber {
-    font-size: 1.2rem;
-  }
-
-  .indexMetric {
-    text-align: left;
-  }
-
-  .numbersGrid {
-    grid-template-columns: 1fr;
-    gap: 6rem;
-  }
-
-  .registerItem {
-    flex-direction: column;
-    gap: 0.2rem;
-  }
-
-  .registerDash {
-    display: none;
+  .fadeIn {
+    margin-bottom: 140px;
   }
 }

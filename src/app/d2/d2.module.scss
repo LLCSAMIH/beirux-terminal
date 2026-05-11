@@ -1,404 +1,292 @@
 /* ═══════════════════════════════════════════════════
-   D2 — Editorial Broadsheet
+   D2 -- Editorial Broadsheet (Horizontal Scroll)
    ═══════════════════════════════════════════════════ */
 
-$newsprint: #faf6f1;
+$cream: #f5f0e8;
 $ink: #1a1a1a;
-$red: #c62828;
+$red: #c41e1e;
 $divider: #d4cfc7;
-$light-grey: #f0ebe3;
-$dark-cream: #f3ede4;
+$dark-cream: #ece5d9;
 
 $serif: var(--font-playfair), 'Playfair Display', Georgia, serif;
-$body: var(--font-urbanist), 'Urbanist', sans-serif;
-$editorial: var(--font-source-serif), 'Source Serif 4', Georgia, serif;
+$body-serif: var(--font-source-serif), 'Source Serif 4', Georgia, serif;
+$sans: var(--font-urbanist), 'Urbanist', var(--font-sora), 'Sora', sans-serif;
 $mono: var(--font-space-mono), 'Space Mono', monospace;
 
-/* ─── page ─── */
+/* ─── page shell ─── */
 
 .page {
-  background: $newsprint;
+  position: fixed;
+  inset: 0;
+  background: $cream;
   color: $ink;
-  min-height: 100vh;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
-/* ─── shared: reveal ─── */
+/* ─── horizontal scroll track ─── */
+
+.scrollTrack {
+  display: flex;
+  height: 100vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ─── each spread (column) ─── */
+
+.spread {
+  flex: 0 0 100vw;
+  width: 100vw;
+  height: 100vh;
+  scroll-snap-align: start;
+  overflow-y: auto;
+  scrollbar-width: none;
+  border-right: 1px solid $divider;
+  position: relative;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.spreadDark {
+  background: $ink;
+  color: rgba($cream, 0.9);
+}
+
+.spreadInner {
+  padding: 2.5rem 3.5rem 4rem;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 768px) {
+    padding: 2rem 1.5rem 3rem;
+  }
+}
+
+/* ─── shared: reveal animation ─── */
 
 .reveal {
   opacity: 0;
-  transform: translateY(2.5rem);
-  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateX(2rem);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .revealVisible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateX(0);
 }
 
-/* ─── shared: thin rule ─── */
+/* ─── shared: thin horizontal rule ─── */
 
 .rule {
   height: 1px;
   background: $divider;
   width: 0;
   transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-bottom: 1.5rem;
 }
 
 .ruleVisible {
   width: 100%;
 }
 
-/* ═══════════════════════════════════════════════════
-   1. MASTHEAD HERO
-   ═══════════════════════════════════════════════════ */
+/* ─── shared: column divider (vertical line) ─── */
 
-.masthead {
-  padding: 2rem 4rem 0;
-  max-width: 1400px;
-  margin: 0 auto;
+.columnDivider {
+  width: 1px;
+  background: $divider;
+  align-self: stretch;
+  flex-shrink: 0;
+}
 
-  @media (max-width: 768px) {
-    padding: 1.5rem 1.5rem 0;
+/* ─── shared: section label ─── */
+
+.sectionLabel {
+  font-family: $mono;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba($ink, 0.4);
+  margin-bottom: 1rem;
+}
+
+/* ─── shared: drop cap ─── */
+
+.dropCap::first-letter {
+  font-family: $serif;
+  font-weight: 700;
+  font-size: 3.6em;
+  float: left;
+  line-height: 0.8;
+  margin-right: 0.08em;
+  margin-top: 0.05em;
+  color: $red;
+}
+
+/* ─── bottom progress bar ─── */
+
+.progressBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba($ink, 0.08);
+  z-index: 100;
+}
+
+.progressFill {
+  height: 100%;
+  background: $red;
+  transition: width 0.15s ease-out;
+  will-change: width;
+}
+
+/* ─── spread indicator pips ─── */
+
+.spreadIndicator {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1.5rem;
+  z-index: 100;
+}
+
+.spreadPip {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: $serif;
+  font-size: 0.7rem;
+  font-style: italic;
+  color: rgba($ink, 0.3);
+  padding: 0.25rem 0.5rem;
+  transition: color 0.3s ease;
+  letter-spacing: 0.05em;
+
+  &:hover {
+    color: rgba($ink, 0.6);
+  }
+
+  .spreadDark & {
+    color: rgba($cream, 0.3);
+
+    &:hover {
+      color: rgba($cream, 0.6);
+    }
   }
 }
+
+.spreadPipActive {
+  color: $red;
+
+  &:hover {
+    color: $red;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════
+   SPREAD 1: MASTHEAD
+   ═══════════════════════════════════════════════════ */
 
 .mastheadTopLine {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-family: $mono;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba($ink, 0.5);
+  color: rgba($ink, 0.45);
   padding-bottom: 0.75rem;
-
-  @media (max-width: 600px) {
-    font-size: 0.6rem;
-  }
 }
 
-.mastheadRule {
-  height: 2px;
+.mastheadRuleThick {
+  height: 3px;
   background: $ink;
-  margin-bottom: 0.5rem;
+  margin-bottom: 2px;
 }
 
 .mastheadRuleThin {
   height: 1px;
   background: $ink;
+  margin-bottom: 1.5rem;
+}
+
+.mastheadTitle {
+  font-family: $serif;
+  font-weight: 900;
+  font-size: clamp(4rem, 10vw, 7rem);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  text-align: center;
+  padding: 0.5rem 0 0.75rem;
+}
+
+.mastheadSubtitle {
+  font-family: $serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.95rem;
+  text-align: center;
+  color: rgba($ink, 0.5);
   margin-bottom: 2rem;
+  letter-spacing: 0.1em;
+}
+
+.mastheadBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .mastheadHeadline {
   font-family: $serif;
   font-weight: 900;
-  font-size: clamp(3.5rem, 8vw, 8rem);
-  line-height: 0.95;
-  letter-spacing: -0.02em;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.015em;
   text-align: center;
-  padding: 2rem 0 2.5rem;
+  padding-bottom: 1.75rem;
   border-bottom: 1px solid $divider;
-  margin-bottom: 3rem;
-
-  @media (max-width: 768px) {
-    font-size: clamp(2.5rem, 10vw, 4rem);
-    padding: 1.5rem 0 2rem;
-    margin-bottom: 2rem;
-  }
+  margin-bottom: 1.75rem;
 }
 
 .mastheadColumns {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 2.5rem;
-  padding-bottom: 4rem;
-
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    padding-bottom: 2.5rem;
-  }
+  display: flex;
+  gap: 0;
+  flex: 1;
 }
 
 .mastheadCol {
-  font-family: $body;
-  font-size: 1rem;
-  line-height: 1.7;
-  color: rgba($ink, 0.75);
-  text-align: justify;
-
-  @media (max-width: 768px) {
-    font-size: 0.95rem;
-    text-align: left;
-  }
-}
-
-.dropCap::first-letter {
-  font-family: $serif;
-  font-weight: 700;
-  font-size: 3.8em;
-  float: left;
-  line-height: 0.8;
-  margin-right: 0.1em;
-  margin-top: 0.05em;
-  color: $red;
-}
-
-/* ═══════════════════════════════════════════════════
-   2. DATELINE FEATURE
-   ═══════════════════════════════════════════════════ */
-
-.dateline {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 4rem 5rem;
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  gap: 3rem;
-  align-items: start;
-
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-    padding: 0 1.5rem 3rem;
-    gap: 2rem;
-  }
-}
-
-.datelineImage {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  border-radius: 4px;
-  background: linear-gradient(135deg, #e8ddd0 0%, #d4c5b0 40%, #c9b89a 70%, #b8a68a 100%);
-  position: relative;
-}
-
-.datelineCaption {
-  font-family: $editorial;
-  font-style: italic;
-  font-size: 0.85rem;
-  color: rgba($ink, 0.5);
-  margin-top: 0.75rem;
-  padding-left: 0.25rem;
-}
-
-.datelineStory {
-  padding-top: 0.5rem;
-}
-
-.datelineByline {
-  font-family: $body;
-  font-weight: 700;
-  font-size: 0.8rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-}
-
-.datelineBody {
-  font-family: $editorial;
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: rgba($ink, 0.8);
+  flex: 1;
+  font-family: $body-serif;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: rgba($ink, 0.72);
   text-align: justify;
   hyphens: auto;
-
-  @media (max-width: 768px) {
-    font-size: 1rem;
-    text-align: left;
-  }
-}
-
-.datelineBody strong {
-  color: $ink;
-}
-
-.datelineLede {
-  font-size: 1.15rem;
-  color: $ink;
-  font-weight: 500;
-}
-
-/* ═══════════════════════════════════════════════════
-   3. SERVICES INDEX
-   ═══════════════════════════════════════════════════ */
-
-.servicesIndex {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 4rem 5rem;
-
-  @media (max-width: 768px) {
-    padding: 0 1.5rem 3rem;
-  }
-}
-
-.servicesIndexHeader {
-  font-family: $mono;
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba($ink, 0.4);
-  margin-bottom: 1.5rem;
-}
-
-.serviceRow {
-  display: grid;
-  grid-template-columns: 1fr 2fr auto;
-  align-items: baseline;
-  padding: 1.25rem 0;
-  border-top: 1px solid $divider;
-  cursor: default;
-  transition: background 0.3s ease;
-
-  &:last-child {
-    border-bottom: 1px solid $divider;
-  }
-
-  &:hover {
-    background: rgba($red, 0.03);
-  }
-
-  &:hover .servicePageRef {
-    color: $red;
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr auto;
-    gap: 0.5rem;
-  }
-}
-
-.serviceName {
-  font-family: $serif;
-  font-weight: 700;
-  font-size: 1.35rem;
-  letter-spacing: -0.01em;
-
-  @media (max-width: 768px) {
-    font-size: 1.1rem;
-  }
-}
-
-.serviceDesc {
-  font-family: $body;
-  font-size: 0.95rem;
-  color: rgba($ink, 0.6);
-  padding-right: 2rem;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-}
-
-.servicePageRef {
-  font-family: $mono;
-  font-size: 0.8rem;
-  color: rgba($ink, 0.35);
-  transition: color 0.3s ease;
-  white-space: nowrap;
-}
-
-/* ═══════════════════════════════════════════════════
-   4. PULL QUOTE DIVIDER
-   ═══════════════════════════════════════════════════ */
-
-.pullQuote {
-  background: $dark-cream;
-  padding: 5rem 4rem;
-  text-align: center;
-  position: relative;
-
-  @media (max-width: 768px) {
-    padding: 3rem 1.5rem;
-  }
-}
-
-.pullQuoteRule {
-  height: 1px;
-  background: $divider;
-  max-width: 1400px;
-  margin: 0 auto 3rem;
-
-  &:last-of-type {
-    margin: 3rem auto 0;
-  }
-}
-
-.pullQuoteText {
-  font-family: $serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: clamp(1.8rem, 4vw, 3.2rem);
-  line-height: 1.3;
-  max-width: 900px;
-  margin: 0 auto;
-  color: $ink;
-  letter-spacing: -0.01em;
-
-  @media (max-width: 768px) {
-    font-size: clamp(1.4rem, 5vw, 2rem);
-  }
-}
-
-.pullQuoteAttribution {
-  font-family: $body;
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba($ink, 0.4);
-  margin-top: 1.5rem;
-}
-
-/* ═══════════════════════════════════════════════════
-   5. CLIENT DOSSIER
-   ═══════════════════════════════════════════════════ */
-
-.dossier {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 5rem 4rem;
-
-  @media (max-width: 768px) {
-    padding: 3rem 1.5rem;
-  }
-}
-
-.dossierHeader {
-  font-family: $mono;
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba($ink, 0.4);
-  margin-bottom: 2rem;
-}
-
-.dossierGrid {
-  display: grid;
-  grid-template-columns: 1fr 1px 1fr 1px 1fr;
-  gap: 0;
-
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-}
-
-.dossierDivider {
-  background: $divider;
-  width: 1px;
-  align-self: stretch;
-
-  @media (max-width: 900px) {
-    display: none;
-  }
-}
-
-.dossierColumn {
-  padding: 0 2rem;
-  text-align: justify;
+  padding: 0 1.5rem;
 
   &:first-child {
     padding-left: 0;
@@ -407,24 +295,198 @@ $mono: var(--font-space-mono), 'Space Mono', monospace;
   &:last-child {
     padding-right: 0;
   }
+}
 
-  @media (max-width: 900px) {
-    padding: 0;
-    border-bottom: 1px solid $divider;
-    padding-bottom: 2rem;
 
-    &:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
+/* ═══════════════════════════════════════════════════
+   SPREAD 2: FEATURE STORY
+   ═══════════════════════════════════════════════════ */
+
+.featureHeadline {
+  font-family: $serif;
+  font-weight: 900;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  margin-bottom: 0.75rem;
+}
+
+.featureByline {
+  font-family: $sans;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  color: rgba($ink, 0.5);
+}
+
+.featureColumns {
+  display: flex;
+  gap: 0;
+  flex: 1;
+}
+
+.featureCol {
+  flex: 1;
+  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &:first-child {
+    padding-left: 0;
   }
+
+  &:last-child {
+    padding-right: 0;
+  }
+}
+
+.featureBody {
+  font-family: $body-serif;
+  font-size: 0.95rem;
+  line-height: 1.78;
+  color: rgba($ink, 0.75);
+  text-align: justify;
+  hyphens: auto;
+
+  strong {
+    color: $ink;
+    font-weight: 600;
+  }
+}
+
+.featureImage {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 2px;
+  background: linear-gradient(135deg, #e8ddd0 0%, #d4c5b0 40%, #c9b89a 70%, #b8a68a 100%);
+  margin-top: auto;
+}
+
+.featureCaption {
+  font-family: $body-serif;
+  font-style: italic;
+  font-size: 0.78rem;
+  color: rgba($ink, 0.45);
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}
+
+
+/* ═══════════════════════════════════════════════════
+   SPREAD 3: SERVICES INDEX
+   ═══════════════════════════════════════════════════ */
+
+.serviceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.75rem 0 0.25rem;
+}
+
+.serviceName {
+  font-family: $serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.serviceDots {
+  flex: 1;
+  border-bottom: 1px dotted $divider;
+  margin-bottom: 0.25em;
+}
+
+.servicePageRef {
+  font-family: $mono;
+  font-size: 0.72rem;
+  color: rgba($ink, 0.35);
+  white-space: nowrap;
+}
+
+.serviceDesc {
+  font-family: $body-serif;
+  font-size: 0.85rem;
+  color: rgba($ink, 0.55);
+  line-height: 1.6;
+  padding-bottom: 0.5rem;
+}
+
+.serviceRowDivider {
+  height: 1px;
+  background: $divider;
+  margin-bottom: 0.25rem;
+}
+
+/* Pull quote within services spread */
+
+.pullQuoteBlock {
+  margin-top: auto;
+  padding-top: 2rem;
+}
+
+.pullQuoteRuleH {
+  height: 1px;
+  background: $divider;
+
+  &:first-child {
+    margin-bottom: 1.5rem;
+  }
+
+  &:last-child {
+    margin-top: 1.5rem;
+  }
+}
+
+.pullQuoteText {
+  font-family: $serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+  line-height: 1.35;
+  color: $ink;
+  text-align: center;
+  letter-spacing: -0.01em;
+}
+
+.pullQuoteAttribution {
+  font-family: $sans;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba($ink, 0.35);
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+
+/* ═══════════════════════════════════════════════════
+   SPREAD 4: CLIENT DOSSIER + METRICS
+   ═══════════════════════════════════════════════════ */
+
+.dossierStack {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.dossierCard {
+  padding: 1rem 0;
+}
+
+.dossierCardDivider {
+  height: 1px;
+  background: $divider;
 }
 
 .dossierClientName {
   font-family: $serif;
   font-weight: 700;
-  font-size: 1.15rem;
-  margin-bottom: 0.25rem;
+  font-size: 1.1rem;
+  margin-bottom: 0.15rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -441,141 +503,97 @@ $mono: var(--font-space-mono), 'Space Mono', monospace;
 
 .dossierType {
   font-family: $mono;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba($ink, 0.45);
-  margin-bottom: 0.75rem;
-}
-
-.dossierNarrative {
-  font-family: $body;
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: rgba($ink, 0.7);
-
-  @media (max-width: 768px) {
-    text-align: left;
-  }
-}
-
-/* ═══════════════════════════════════════════════════
-   6. INFOGRAPHIC STRIP
-   ═══════════════════════════════════════════════════ */
-
-.infographic {
-  border-top: 1px solid $divider;
-  border-bottom: 1px solid $divider;
-  padding: 4rem 0;
-  overflow: hidden;
-}
-
-.infographicInner {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 4rem;
-  display: grid;
-  grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr;
-  align-items: center;
-
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr 1fr;
-    gap: 2.5rem 1.5rem;
-    padding: 0 1.5rem;
-  }
-
-  @media (max-width: 500px) {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-}
-
-.infographicDivider {
-  background: $divider;
-  width: 1px;
-  height: 5rem;
-  align-self: center;
-  justify-self: center;
-
-  @media (max-width: 900px) {
-    display: none;
-  }
-}
-
-.infographicItem {
-  text-align: center;
-  padding: 0 1.5rem;
-}
-
-.infographicNumber {
-  font-family: $serif;
-  font-weight: 900;
-  font-size: clamp(3rem, 5vw, 4.5rem);
-  line-height: 1;
-  letter-spacing: -0.03em;
-  color: $ink;
+  color: rgba($ink, 0.4);
   margin-bottom: 0.5rem;
 }
 
-.infographicLabel {
-  font-family: $body;
-  font-size: 0.85rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: rgba($ink, 0.45);
+.dossierNarrative {
+  font-family: $body-serif;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: rgba($ink, 0.65);
+  text-align: justify;
+  hyphens: auto;
 }
 
-/* counter animation */
-.infographicNumber {
-  transition: opacity 0.6s ease;
+/* Metrics row */
+
+.metricsRow {
+  margin-top: auto;
+  padding-top: 1.5rem;
 }
 
-/* ═══════════════════════════════════════════════════
-   7. CLASSIFIED CTA
-   ═══════════════════════════════════════════════════ */
+.metricsRuleH {
+  height: 1px;
+  background: $divider;
 
-.classified {
-  background: $ink;
-  color: rgba(#faf6f1, 0.3);
-  padding: 5rem 4rem;
-  position: relative;
-  overflow: hidden;
+  &:first-child {
+    margin-bottom: 1.5rem;
+  }
+
+  &:last-child {
+    margin-top: 1.5rem;
+  }
+}
+
+.metricsItem {
+  text-align: center;
+  padding: 0.5rem 0;
+  display: inline-block;
+  width: 24%;
+}
+
+.metricsDivider {
+  display: inline-block;
+  width: 1px;
+  height: 3rem;
+  background: $divider;
+  vertical-align: middle;
+  margin: 0 0.25rem;
 
   @media (max-width: 768px) {
-    padding: 3rem 1.5rem;
-  }
-}
-
-.classifiedInner {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1.2fr 1fr;
-  gap: 2rem;
-
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-}
-
-.classifiedColFiller {
-  font-family: $mono;
-  font-size: 0.7rem;
-  line-height: 1.9;
-  color: rgba(#faf6f1, 0.12);
-  overflow: hidden;
-
-  @media (max-width: 900px) {
     display: none;
   }
+}
+
+.metricsNumber {
+  font-family: $serif;
+  font-weight: 900;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.25rem;
+}
+
+.metricsLabel {
+  font-family: $sans;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba($ink, 0.4);
+}
+
+
+/* ═══════════════════════════════════════════════════
+   SPREAD 5: CLASSIFIED CTA
+   ═══════════════════════════════════════════════════ */
+
+.classifiedFiller {
+  font-family: $mono;
+  font-size: 0.65rem;
+  line-height: 1.9;
+  color: rgba($cream, 0.1);
+  overflow: hidden;
+  max-height: 8rem;
+  margin-bottom: 1.5rem;
 }
 
 .classifiedFeatured {
   border: 2px solid $red;
   padding: 2rem 2.5rem;
-  position: relative;
-  z-index: 2;
 
   @media (max-width: 768px) {
     padding: 1.5rem;
@@ -584,76 +602,69 @@ $mono: var(--font-space-mono), 'Space Mono', monospace;
 
 .classifiedFeaturedLabel {
   font-family: $mono;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: $red;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
 }
 
 .classifiedHeadline {
   font-family: $serif;
   font-weight: 700;
   font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-  color: #faf6f1;
-  line-height: 1.3;
-  margin-bottom: 1.25rem;
+  color: $cream;
+  line-height: 1.25;
+  margin-bottom: 1rem;
 }
 
 .classifiedDetails {
   font-family: $mono;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   line-height: 2;
-  color: rgba(#faf6f1, 0.6);
+  color: rgba($cream, 0.55);
 }
 
 .classifiedDetailLabel {
-  color: rgba(#faf6f1, 0.35);
+  color: rgba($cream, 0.3);
 }
 
 .classifiedDetailValue {
-  color: #faf6f1;
+  color: $cream;
 }
 
 .classifiedCta {
   display: inline-block;
   margin-top: 1.5rem;
   font-family: $mono;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: $ink;
   background: $red;
-  padding: 0.8rem 2rem;
+  padding: 0.75rem 2rem;
   text-decoration: none;
   transition: background 0.3s ease, transform 0.2s ease;
 
   &:hover {
-    background: #d32f2f;
+    background: #e02424;
     transform: translateY(-1px);
   }
 }
 
 .classifiedFooter {
-  max-width: 1400px;
-  margin: 3rem auto 0;
+  margin-top: auto;
   padding-top: 2rem;
-  border-top: 1px solid rgba(#faf6f1, 0.08);
+  border-top: 1px solid rgba($cream, 0.08);
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0.75rem;
-    text-align: center;
-  }
 }
 
 .classifiedFooterText {
   font-family: $mono;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(#faf6f1, 0.25);
+  color: rgba($cream, 0.2);
 }

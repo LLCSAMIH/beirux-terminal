@@ -1,6 +1,7 @@
 /* ═══════════════════════════════════════════
    D3 — Neon Architects
    BEIRUX Landing Page
+   Sticky Split Panel Layout
    ═══════════════════════════════════════════ */
 
 $bg: #0d1117;
@@ -26,7 +27,216 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   position: relative;
 }
 
-/* ─── SHARED ─── */
+/* ═══════════════════════════════════════════
+   SPLIT PANEL STRUCTURE
+   ═══════════════════════════════════════════ */
+
+.splitLayout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.leftPanel {
+  width: 40%;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.rightPanel {
+  width: 60%;
+  flex-grow: 1;
+  min-height: 100vh;
+}
+
+/* ═══════════════════════════════════════════
+   BLUEPRINT LEFT PANEL
+   ═══════════════════════════════════════════ */
+
+.blueprint {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: $bg;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* blueprint grid overlay */
+.blueprintGrid {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, $grid-line 0px, $grid-line 1px, transparent 1px, transparent 40px),
+    repeating-linear-gradient(90deg, $grid-line 0px, $grid-line 1px, transparent 1px, transparent 40px),
+    repeating-linear-gradient(0deg, $grid-line-strong 0px, $grid-line-strong 1px, transparent 1px, transparent 200px),
+    repeating-linear-gradient(90deg, $grid-line-strong 0px, $grid-line-strong 1px, transparent 1px, transparent 200px);
+  pointer-events: none;
+}
+
+.blueprintHeader {
+  position: absolute;
+  top: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  z-index: 2;
+}
+
+.blueprintTitle {
+  font-family: $display;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: transparent;
+  -webkit-text-stroke: 1px $neon;
+  text-shadow: 0 0 30px rgba(0, 255, 204, 0.2);
+}
+
+.blueprintSubtitle {
+  font-family: $mono;
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  color: $dim;
+  text-transform: uppercase;
+}
+
+/* SVG schematic */
+.blueprintSvg {
+  width: 80%;
+  max-height: 65vh;
+  z-index: 1;
+}
+
+.svgLine {
+  stroke: rgba(0, 255, 204, 0.15);
+  stroke-width: 0.3;
+  fill: none;
+}
+
+.svgDiamond {
+  fill: transparent;
+  stroke: rgba(0, 255, 204, 0.25);
+  stroke-width: 0.3;
+  transition: fill 0.4s ease, stroke 0.4s ease;
+}
+
+.svgDiamondActive {
+  fill: rgba(0, 255, 204, 0.15);
+  stroke: $neon;
+  stroke-width: 0.5;
+}
+
+.svgDiamondPast {
+  fill: rgba(0, 255, 204, 0.05);
+  stroke: rgba(0, 255, 204, 0.4);
+  stroke-width: 0.3;
+}
+
+.svgGlow {
+  fill: none;
+  stroke: $neon;
+  stroke-width: 0.2;
+  opacity: 0.5;
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+.svgCoord {
+  font-family: $mono;
+  font-size: 2.2px;
+  fill: rgba(201, 209, 217, 0.3);
+  letter-spacing: 0.15px;
+  transition: fill 0.4s ease;
+}
+
+.svgCoordActive {
+  fill: $neon;
+}
+
+.svgLabel {
+  font-family: $mono;
+  font-size: 2px;
+  fill: rgba(201, 209, 217, 0.2);
+  letter-spacing: 0.12px;
+  transition: fill 0.4s ease;
+}
+
+.svgLabelActive {
+  fill: $fg;
+}
+
+.svgBracket {
+  stroke: $neon;
+  stroke-width: 0.4;
+  fill: none;
+  transition: y1 0.4s ease, y2 0.4s ease;
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    opacity: 0.3;
+    r: 5;
+  }
+  50% {
+    opacity: 0.7;
+    r: 6;
+  }
+}
+
+.blueprintFooter {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2rem;
+  z-index: 2;
+}
+
+.blueprintStatus {
+  font-family: $mono;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: $neon;
+  opacity: 0.6;
+}
+
+.blueprintZone {
+  font-family: $mono;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: $dim;
+}
+
+/* vertical separator between panels */
+.leftPanel::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 255, 204, 0.2) 20%,
+    rgba(0, 255, 204, 0.2) 80%,
+    transparent 100%
+  );
+}
+
+/* ═══════════════════════════════════════════
+   RIGHT PANEL SHARED
+   ═══════════════════════════════════════════ */
 
 .section {
   opacity: 0;
@@ -51,12 +261,19 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   gap: 0.6rem;
 }
 
+.labelCoord {
+  font-family: $mono;
+  font-size: 0.65rem;
+  color: $dim;
+  letter-spacing: 0.12em;
+}
+
 .labelSlash {
   color: $dim;
 }
 
 /* ═══════════════════════════════════════════
-   1. BLUEPRINT HERO
+   1. HERO / ORIGIN
    ═══════════════════════════════════════════ */
 
 .hero {
@@ -68,15 +285,12 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   overflow: hidden;
 }
 
-/* blueprint grid background */
 .heroGrid {
   position: absolute;
   inset: 0;
   background:
     repeating-linear-gradient(0deg, $grid-line 0px, $grid-line 1px, transparent 1px, transparent 60px),
-    repeating-linear-gradient(90deg, $grid-line 0px, $grid-line 1px, transparent 1px, transparent 60px),
-    repeating-linear-gradient(0deg, $grid-line-strong 0px, $grid-line-strong 1px, transparent 1px, transparent 300px),
-    repeating-linear-gradient(90deg, $grid-line-strong 0px, $grid-line-strong 1px, transparent 1px, transparent 300px);
+    repeating-linear-gradient(90deg, $grid-line 0px, $grid-line 1px, transparent 1px, transparent 60px);
   pointer-events: none;
 }
 
@@ -92,7 +306,7 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 
 .heroTitle {
   font-family: $display;
-  font-size: clamp(5rem, 14vw, 12rem);
+  font-size: clamp(3rem, 8vw, 7rem);
   font-weight: 800;
   letter-spacing: 0.06em;
   line-height: 1;
@@ -104,32 +318,9 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   animation: heroFadeIn 1.2s ease both;
 }
 
-/* neon lines extending from title */
-.heroLineLeft,
-.heroLineRight {
-  position: absolute;
-  top: 50%;
-  height: 1px;
-  animation: lineExtend 1.8s ease 0.6s both;
-}
-
-.heroLineLeft {
-  right: calc(50% + clamp(3rem, 8vw, 7rem));
-  width: 40vw;
-  background: linear-gradient(90deg, transparent, $neon);
-  transform-origin: right center;
-}
-
-.heroLineRight {
-  left: calc(50% + clamp(3rem, 8vw, 7rem));
-  width: 40vw;
-  background: linear-gradient(-90deg, transparent, $neon);
-  transform-origin: left center;
-}
-
 .heroSub {
   font-family: $mono;
-  font-size: clamp(0.85rem, 1.4vw, 1.1rem);
+  font-size: clamp(0.75rem, 1.2vw, 1rem);
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: $fg;
@@ -139,13 +330,10 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 
 .heroCoords {
   font-family: $mono;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   letter-spacing: 0.15em;
   color: $dim;
-  position: absolute;
-  bottom: 3rem;
-  left: 50%;
-  transform: translateX(-50%);
+  margin-top: 2rem;
   animation: heroFadeIn 1.2s ease 0.8s both;
 }
 
@@ -160,23 +348,12 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   }
 }
 
-@keyframes lineExtend {
-  from {
-    scale: 0 1;
-    opacity: 0;
-  }
-  to {
-    scale: 1 1;
-    opacity: 1;
-  }
-}
-
 /* ═══════════════════════════════════════════
    2. SCHEMATIC SERVICES
    ═══════════════════════════════════════════ */
 
 .servicesSection {
-  padding: 8rem 6vw;
+  padding: 8rem 5vw;
 }
 
 .nodesGrid {
@@ -187,7 +364,6 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   position: relative;
 }
 
-/* thin line connecting nodes */
 .nodesConnector {
   position: absolute;
   top: 50%;
@@ -201,12 +377,11 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 .node {
   position: relative;
   z-index: 1;
-  width: 180px;
-  height: 180px;
+  width: 150px;
+  height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* diamond rotation */
   transform: rotate(45deg) scale(0.9);
   opacity: 0;
   transition: none;
@@ -228,24 +403,23 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 }
 
 .nodeInner {
-  /* counter-rotate so content is upright */
   transform: rotate(-45deg);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   text-align: center;
 }
 
 .nodeIcon {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: $neon;
   line-height: 1;
 }
 
 .nodeName {
   font-family: $mono;
-  font-size: 0.72rem;
+  font-size: 0.65rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: $fg;
@@ -254,7 +428,7 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 
 .nodeStat {
   font-family: $mono;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   color: $neon;
   letter-spacing: 0.08em;
 }
@@ -286,22 +460,22 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
    ═══════════════════════════════════════════ */
 
 .clientsSection {
-  padding: 8rem 6vw;
+  padding: 8rem 5vw;
 }
 
 .clientsGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 0;
 }
 
 .clientCell {
-  padding: 2.5rem 2rem;
+  padding: 2rem 1.5rem;
   opacity: 0;
   transform: translateY(16px);
   transition: none;
   position: relative;
-  min-height: 140px;
+  min-height: 120px;
 }
 
 .clientCellSpan {
@@ -328,20 +502,20 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 .clientCellInner {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
   height: 100%;
 }
 
 .clientIndex {
   font-family: $mono;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   color: $dim;
   letter-spacing: 0.1em;
 }
 
 .clientCellName {
   font-family: $display;
-  font-size: 1.3rem;
+  font-size: 1.15rem;
   font-weight: 600;
   color: $fg;
   letter-spacing: 0.02em;
@@ -349,7 +523,7 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 
 .clientType {
   font-family: $mono;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: $dim;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -360,11 +534,11 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   align-self: flex-start;
   margin-top: auto;
   font-family: $mono;
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   letter-spacing: 0.15em;
   color: $neon;
   border: 1px solid rgba(0, 255, 204, 0.3);
-  padding: 0.2rem 0.6rem;
+  padding: 0.15rem 0.5rem;
   background: rgba(0, 255, 204, 0.05);
 }
 
@@ -402,15 +576,13 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
    ═══════════════════════════════════════════ */
 
 .elevSection {
-  padding: 8rem 6vw;
+  padding: 8rem 5vw;
 }
 
 .elevStack {
   display: flex;
   flex-direction: column;
   gap: 0;
-  max-width: 800px;
-  margin: 0 auto;
 }
 
 .elevLayer {
@@ -440,23 +612,23 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   align-items: center;
   justify-content: space-between;
   flex: 1;
-  padding: 1.5rem 2rem;
-  gap: 2rem;
+  padding: 1.2rem 1.5rem;
+  gap: 1.5rem;
 }
 
 .elevLayerName {
   font-family: $mono;
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   letter-spacing: 0.15em;
   color: $neon;
   font-weight: 700;
   white-space: nowrap;
-  min-width: 180px;
+  min-width: 140px;
 }
 
 .elevLayerDesc {
   font-family: $mono;
-  font-size: 0.72rem;
+  font-size: 0.65rem;
   color: $dim;
   letter-spacing: 0.04em;
   line-height: 1.5;
@@ -479,13 +651,12 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
    ═══════════════════════════════════════════ */
 
 .specsSection {
-  padding: 8rem 6vw;
+  padding: 8rem 5vw;
   background: $surface;
 }
 
 .specsSheet {
-  max-width: 640px;
-  margin: 0 auto;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -494,7 +665,7 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 .specRow {
   display: flex;
   align-items: baseline;
-  padding: 1rem 0;
+  padding: 0.9rem 0;
   border-bottom: 1px solid $grid-line;
   opacity: 0;
   transform: translateX(-12px);
@@ -507,7 +678,7 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 
 .specParam {
   font-family: $mono;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   letter-spacing: 0.1em;
   color: $dim;
   white-space: nowrap;
@@ -524,7 +695,7 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 
 .specValue {
   font-family: $mono;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: $neon;
   letter-spacing: 0.06em;
@@ -548,7 +719,7 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 
 .signalSection {
   position: relative;
-  padding: 10rem 6vw;
+  padding: 8rem 5vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -577,23 +748,18 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 }
 
 .ring:nth-child(1) {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
 }
 
 .ring:nth-child(2) {
-  width: 240px;
-  height: 240px;
+  width: 200px;
+  height: 200px;
 }
 
 .ring:nth-child(3) {
-  width: 380px;
-  height: 380px;
-}
-
-.ring:nth-child(4) {
-  width: 540px;
-  height: 540px;
+  width: 320px;
+  height: 320px;
 }
 
 .signalVisible {
@@ -610,9 +776,6 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   .ring:nth-child(3) {
     animation-delay: 0.8s;
   }
-  .ring:nth-child(4) {
-    animation-delay: 1.2s;
-  }
 }
 
 .signalContent {
@@ -622,12 +785,12 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2.5rem;
+  gap: 2rem;
 }
 
 .signalTitle {
   font-family: $display;
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
   font-weight: 700;
   letter-spacing: 0.08em;
   color: $fg;
@@ -636,8 +799,8 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 .signalTerminal {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 1rem 2rem;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
   border: 1px solid rgba(0, 255, 204, 0.2);
   background: rgba(0, 255, 204, 0.03);
 }
@@ -645,12 +808,12 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 .termPrompt {
   color: $neon;
   font-family: $mono;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .termInput {
   font-family: $mono;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: $fg;
   text-decoration: none;
   letter-spacing: 0.04em;
@@ -662,8 +825,8 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 
 .termCursor {
   display: inline-block;
-  width: 8px;
-  height: 1.1em;
+  width: 7px;
+  height: 1em;
   background: $neon;
   animation: cursorBlink 1s steps(1) infinite;
   vertical-align: text-bottom;
@@ -699,10 +862,10 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 6vw;
+  padding: 2rem 5vw;
   border-top: 1px solid $grid-line;
   font-family: $mono;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   letter-spacing: 0.12em;
   color: $dim;
   text-transform: uppercase;
@@ -712,7 +875,46 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
    RESPONSIVE
    ═══════════════════════════════════════════ */
 
+@media (max-width: 1024px) {
+  .splitLayout {
+    flex-direction: column;
+  }
+
+  .leftPanel {
+    width: 100%;
+    height: 50vh;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .leftPanel::after {
+    /* switch from vertical to horizontal separator */
+    right: 0;
+    left: 0;
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(0, 255, 204, 0.2) 20%,
+      rgba(0, 255, 204, 0.2) 80%,
+      transparent 100%
+    );
+  }
+
+  .rightPanel {
+    width: 100%;
+  }
+}
+
 @media (max-width: 768px) {
+  .leftPanel {
+    height: 40vh;
+  }
+
   .clientsGrid {
     grid-template-columns: 1fr;
   }
@@ -726,15 +928,15 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   }
 
   .node {
-    width: 140px;
-    height: 140px;
+    width: 120px;
+    height: 120px;
   }
 
   .elevLayerContent {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
-    padding: 1rem 1.2rem;
+    padding: 1rem 1rem;
   }
 
   .elevLayerDesc {
@@ -751,8 +953,11 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
     padding: 5rem 4vw;
   }
 
-  .ring:nth-child(3),
-  .ring:nth-child(4) {
+  .ring:nth-child(3) {
     display: none;
+  }
+
+  .blueprintTitle {
+    font-size: 1rem;
   }
 }

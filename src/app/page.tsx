@@ -10,8 +10,14 @@ const VERSIONS = [
   { id: 'd2', name: 'Editorial Broadsheet', desc: 'Newspaper masthead, Playfair serif, 3-column layouts, classified CTA.' },
   { id: 'd3', name: 'Neon Architects', desc: 'Blueprint grid, neon cyan outlines, diamond nodes, spec sheets.' },
   { id: 'd4', name: 'Soft Machine', desc: 'Light, organic, pastel gradient blobs, floating pills, fanning cards.' },
-  { id: 'd5', name: 'Tape Deck', desc: 'VHS scanlines, Anton font, hot pink + green offsets, frequency bars.' },
-  { id: 'd6', name: 'Swiss Razor', desc: 'Ultra-minimal B&W + blue, radical negative space, zero decoration.' },
+  { id: 'd5', name: 'Tape Deck', desc: 'Scroll-hijack CRT frame, horizontal tape reel, VHS scanlines.' },
+  { id: 'd6', name: 'Swiss Razor', desc: 'No nav, single column, extreme negative space, radical reduction.' },
+  { id: 'd7', name: 'Apple Theatrical', desc: 'Sticky reveal cinema, pinned sections, scroll-driven sequences.' },
+  { id: 'd8', name: 'Stripe Gradient', desc: 'Layered parallax depth over animated mesh gradient background.' },
+  { id: 'd9', name: 'Linear Command', desc: 'Command palette (Cmd+K) as primary navigation, dark developer tool.' },
+  { id: 'd10', name: 'Neubrutalist Overlap', desc: 'Overlapping rotated panels, hard shadows, vivid flat colors.' },
+  { id: 'd11', name: 'Kinetic Statement', desc: 'One word per viewport, text IS the design, zero decoration.' },
+  { id: 'd12', name: 'Nothing Industrial', desc: 'Exposed dot-grid, content placed by coordinates, technical drawing.' },
   { id: 'joby', name: 'Joby Study', desc: 'Design language replica of jobyaviation.com. Reference only.' },
 ];
 
@@ -25,7 +31,7 @@ export default function Home() {
       padding: '8rem 4rem',
     }}>
       <h1 style={{ fontSize: 'clamp(3rem, 5vw, 5rem)', fontWeight: 700, marginBottom: '1rem', letterSpacing: '-0.03em' }}>
-        BEIRUX — 12 Directions
+        BEIRUX — 18 Directions
       </h1>
       <p style={{ fontSize: '1.6rem', opacity: 0.5, marginBottom: '6rem' }}>
         Pick a direction. Each is a complete landing page.

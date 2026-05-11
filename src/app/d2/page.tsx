@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { useInView } from '@/hooks/useInView';
 import s from './d2.module.scss';
 
@@ -41,7 +41,9 @@ const METRICS = [
 
 const CLASSIFIED_FILLER = `FOR SALE: One slightly used marketing strategy. Never deployed. $0 OBO. --- WANTED: Developer who can center a div. Must have 15 years React experience. --- LOST: Our patience for agencies that ship PDFs instead of products. If found, do not return. --- HELP WANTED: Business owner tired of waiting 6 months for a landing page. Apply within. --- FOR RENT: Premium server space. 99.9% uptime guaranteed. No shared hosting. --- NOTICE: All templates have been permanently retired. No exceptions. No refunds. No regrets. --- SEEKING: Founding clients for Q3 cohort. Only 2 slots remain. Serious inquiries only.`;
 
-/* ─── reveal wrapper ─── */
+const SPREAD_LABELS = ['I', 'II', 'III', 'IV', 'V'];
+
+/* ─── reveal wrapper (works for horizontal IntersectionObserver) ─── */
 
 function Reveal({
   children,
@@ -79,10 +81,10 @@ function Rule({ delay = 0 }: { delay?: number }) {
 }
 
 /* ═══════════════════════════════════════════════════
-   1. MASTHEAD HERO
+   SPREAD 1: MASTHEAD
    ═══════════════════════════════════════════════════ */
 
-function MastheadHero() {
+function SpreadMasthead() {
   const today = new Date();
   const dateStr = today.toLocaleDateString('en-US', {
     weekday: 'long',
@@ -92,217 +94,245 @@ function MastheadHero() {
   });
 
   return (
-    <section className={s.masthead}>
-      <Reveal>
-        <div className={s.mastheadTopLine}>
-          <span>Volume IV</span>
-          <span>Miami, FL</span>
-          <span>{dateStr}</span>
-        </div>
-      </Reveal>
-
-      <div className={s.mastheadRule} />
-      <div className={s.mastheadRuleThin} />
-
-      <Reveal delay={0.2}>
-        <h1 className={s.mastheadHeadline}>
-          We Build. We Ship.<br />
-          We Show the Work.
-        </h1>
-      </Reveal>
-
-      <div className={s.mastheadColumns}>
-        <Reveal delay={0.3}>
-          <p className={`${s.mastheadCol} ${s.dropCap}`}>
-            BEIRUX is a digital agency that operates on a simple premise: the work
-            speaks for itself. We do not sell decks. We do not pitch roadmaps that
-            stretch into next year. We build real products, deploy real systems,
-            and show you the dashboard on day one.
-          </p>
-        </Reveal>
-        <Reveal delay={0.45}>
-          <p className={s.mastheadCol}>
-            Every engagement starts from first principles. We study your business,
-            your customers, your numbers. Then we design systems that compound:
-            AI agents that work while you sleep, interfaces that convert because
-            they were engineered to, infrastructure that does not go down.
-          </p>
-        </Reveal>
-        <Reveal delay={0.6}>
-          <p className={s.mastheadCol}>
-            Based in Miami, working globally. Four AI agents on staff. Zero
-            templates in the archive. Twelve projects shipped and counting. We are
-            not the biggest agency. We are the one that ships.
-          </p>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════
-   2. DATELINE FEATURE
-   ═══════════════════════════════════════════════════ */
-
-function DatelineFeature() {
-  return (
-    <section className={s.dateline}>
-      <div>
+    <section className={s.spread}>
+      <div className={s.spreadInner}>
         <Reveal>
-          <div className={s.datelineImage} aria-label="BEIRUX workspace photography" />
-          <p className={s.datelineCaption}>
-            The BEIRUX operations floor, where four autonomous agents manage client
-            infrastructure around the clock. Miami, 2026.
+          <div className={s.mastheadTopLine}>
+            <span>Volume IV</span>
+            <span>Miami, FL</span>
+            <span>{dateStr}</span>
+          </div>
+        </Reveal>
+
+        <div className={s.mastheadRuleThick} />
+        <div className={s.mastheadRuleThin} />
+
+        <Reveal delay={0.15}>
+          <h1 className={s.mastheadTitle}>BEIRUX</h1>
+        </Reveal>
+
+        <div className={s.mastheadRuleThin} />
+
+        <Reveal delay={0.3}>
+          <p className={s.mastheadSubtitle}>
+            The Digital Broadsheet
           </p>
         </Reveal>
-      </div>
 
-      <div className={s.datelineStory}>
+        <div className={s.mastheadBody}>
+          <Reveal delay={0.4}>
+            <h2 className={s.mastheadHeadline}>
+              We Build. We Ship.<br />
+              We Show the Work.
+            </h2>
+          </Reveal>
+
+          <div className={s.mastheadColumns}>
+            <Reveal delay={0.5}>
+              <p className={`${s.mastheadCol} ${s.dropCap}`}>
+                BEIRUX is a digital agency that operates on a simple premise: the work
+                speaks for itself. We do not sell decks. We do not pitch roadmaps that
+                stretch into next year. We build real products, deploy real systems,
+                and show you the dashboard on day one.
+              </p>
+            </Reveal>
+            <div className={s.columnDivider} aria-hidden="true" />
+            <Reveal delay={0.6}>
+              <p className={s.mastheadCol}>
+                Every engagement starts from first principles. We study your business,
+                your customers, your numbers. Then we design systems that compound:
+                AI agents that work while you sleep, interfaces that convert because
+                they were engineered to, infrastructure that does not go down.
+              </p>
+            </Reveal>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   SPREAD 2: FEATURE STORY
+   ═══════════════════════════════════════════════════ */
+
+function SpreadFeature() {
+  return (
+    <section className={s.spread}>
+      <div className={s.spreadInner}>
+        <Reveal>
+          <p className={s.sectionLabel}>Feature Story</p>
+        </Reveal>
+        <Rule />
+
         <Reveal delay={0.15}>
-          <p className={s.datelineByline}>By Samih Mansour</p>
+          <h2 className={s.featureHeadline}>
+            The Agency Model<br />Is Broken. We Fixed It.
+          </h2>
         </Reveal>
-        <Reveal delay={0.3}>
-          <div className={s.datelineBody}>
-            <p className={s.datelineLede}>
-              <strong>MIAMI</strong> — The agency model is broken. Everyone knows it. Clients
-              pay for hours, not outcomes. Deliverables arrive late, over budget,
-              and underwhelming. The industry has optimized for billing, not building.
-            </p>
-            <br />
-            <p>
-              BEIRUX was founded on the opposite bet: that a small, technically
-              obsessive team could outship agencies ten times its size. The secret
-              is not hustle. It is architecture. Every project runs on custom
-              infrastructure, monitored by AI agents that catch problems before
-              clients notice them.
-            </p>
-            <br />
-            <p>
-              Bebe handles project management and client communication. Boba writes
-              and reviews code. Powell watches the money. Bubbles publishes content.
-              Four agents, zero ego, no meetings about meetings. The result is
-              a studio that moves at startup speed with enterprise-grade reliability.
-            </p>
+
+        <Reveal delay={0.25}>
+          <p className={s.featureByline}>By Samih Mansour, Founder</p>
+        </Reveal>
+
+        <div className={s.featureColumns}>
+          <div className={s.featureCol}>
+            <Reveal delay={0.3}>
+              <p className={`${s.featureBody} ${s.dropCap}`}>
+                <strong>MIAMI</strong> &mdash; The agency model is broken. Everyone knows it. Clients
+                pay for hours, not outcomes. Deliverables arrive late, over budget,
+                and underwhelming. The industry has optimized for billing, not building.
+              </p>
+            </Reveal>
+            <Reveal delay={0.4}>
+              <p className={s.featureBody}>
+                BEIRUX was founded on the opposite bet: that a small, technically
+                obsessive team could outship agencies ten times its size. The secret
+                is not hustle. It is architecture. Every project runs on custom
+                infrastructure, monitored by AI agents that catch problems before
+                clients notice them.
+              </p>
+            </Reveal>
           </div>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════
-   3. SERVICES INDEX
-   ═══════════════════════════════════════════════════ */
-
-function ServicesIndex() {
-  return (
-    <section className={s.servicesIndex}>
-      <Rule />
-      <Reveal>
-        <p className={s.servicesIndexHeader}>Section Index</p>
-      </Reveal>
-
-      {SERVICES.map((svc, i) => (
-        <Reveal key={svc.name} delay={0.1 * (i + 1)}>
-          <div className={s.serviceRow}>
-            <span className={s.serviceName}>{svc.name}</span>
-            <span className={s.serviceDesc}>{svc.desc}</span>
-            <span className={s.servicePageRef}>{svc.page}</span>
+          <div className={s.columnDivider} aria-hidden="true" />
+          <div className={s.featureCol}>
+            <Reveal delay={0.35}>
+              <p className={s.featureBody}>
+                Bebe handles project management and client communication. Boba writes
+                and reviews code. Powell watches the money. Bubbles publishes content.
+                Four agents, zero ego, no meetings about meetings.
+              </p>
+            </Reveal>
+            <Reveal delay={0.45}>
+              <p className={s.featureBody}>
+                The result is a studio that moves at startup speed with enterprise-grade
+                reliability. Based in Miami, working globally. Twelve projects shipped
+                and counting. We are not the biggest agency. We are the one that ships.
+              </p>
+            </Reveal>
+            <Reveal delay={0.5}>
+              <div className={s.featureImage} aria-label="BEIRUX workspace photography" />
+              <p className={s.featureCaption}>
+                The BEIRUX operations floor, where four autonomous agents manage client
+                infrastructure around the clock. Miami, 2026.
+              </p>
+            </Reveal>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   SPREAD 3: SERVICES INDEX + PULL QUOTE
+   ═══════════════════════════════════════════════════ */
+
+function SpreadServices() {
+  return (
+    <section className={s.spread}>
+      <div className={s.spreadInner}>
+        <Reveal>
+          <p className={s.sectionLabel}>Section Index</p>
         </Reveal>
-      ))}
-    </section>
-  );
-}
+        <Rule />
 
-/* ═══════════════════════════════════════════════════
-   4. PULL QUOTE DIVIDER
-   ═══════════════════════════════════════════════════ */
-
-function PullQuoteDivider() {
-  return (
-    <section className={s.pullQuote}>
-      <div className={s.pullQuoteRule} />
-      <Reveal>
-        <blockquote className={s.pullQuoteText}>
-          &ldquo;Every project starts from first principles.<br />
-          Your business is not a template.&rdquo;
-        </blockquote>
-      </Reveal>
-      <Reveal delay={0.2}>
-        <p className={s.pullQuoteAttribution}>Samih Mansour, Founder</p>
-      </Reveal>
-      <div className={s.pullQuoteRule} />
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════
-   5. CLIENT DOSSIER
-   ═══════════════════════════════════════════════════ */
-
-function ClientDossier() {
-  return (
-    <section className={s.dossier}>
-      <Reveal>
-        <p className={s.dossierHeader}>Client Dossier</p>
-      </Reveal>
-      <Rule />
-
-      <div className={s.dossierGrid}>
-        {CLIENTS.map((client, i) => (
-          <Fragment key={client.name}>
-            {i > 0 && <div className={s.dossierDivider} />}
-            <div className={s.dossierColumn}>
-              <Reveal delay={0.15 * (i + 1)}>
-                <p className={s.dossierClientName}>
-                  <span className={s.dossierRedDot} />
-                  {client.name}
-                </p>
-                <p className={s.dossierType}>{client.type}</p>
-                <p className={s.dossierNarrative}>{client.narrative}</p>
-              </Reveal>
+        {SERVICES.map((svc, i) => (
+          <Reveal key={svc.name} delay={0.1 * (i + 1)}>
+            <div className={s.serviceRow}>
+              <span className={s.serviceName}>{svc.name}</span>
+              <span className={s.serviceDots} aria-hidden="true" />
+              <span className={s.servicePageRef}>{svc.page}</span>
             </div>
-          </Fragment>
+            <p className={s.serviceDesc}>{svc.desc}</p>
+            {i < SERVICES.length - 1 && (
+              <div className={s.serviceRowDivider} />
+            )}
+          </Reveal>
         ))}
+
+        <div className={s.pullQuoteBlock}>
+          <div className={s.pullQuoteRuleH} />
+          <Reveal delay={0.2}>
+            <blockquote className={s.pullQuoteText}>
+              &ldquo;Every project starts from first principles.
+              Your business is not a template.&rdquo;
+            </blockquote>
+          </Reveal>
+          <Reveal delay={0.35}>
+            <p className={s.pullQuoteAttribution}>
+              &mdash; Samih Mansour, Founder
+            </p>
+          </Reveal>
+          <div className={s.pullQuoteRuleH} />
+        </div>
       </div>
     </section>
   );
 }
 
 /* ═══════════════════════════════════════════════════
-   6. INFOGRAPHIC STRIP
+   SPREAD 4: CLIENT DOSSIER + METRICS
    ═══════════════════════════════════════════════════ */
 
-function InfographicStrip() {
+function SpreadDossier() {
   return (
-    <section className={s.infographic}>
-      <div className={s.infographicInner}>
-        {METRICS.map((metric, i) => (
-          <Fragment key={metric.label}>
-            {i > 0 && <div className={s.infographicDivider} />}
-            <div className={s.infographicItem}>
-              <Reveal delay={0.15 * (i + 1)}>
-                <div className={s.infographicNumber}>{metric.number}</div>
-                <div className={s.infographicLabel}>{metric.label}</div>
-              </Reveal>
-            </div>
-          </Fragment>
-        ))}
+    <section className={s.spread}>
+      <div className={s.spreadInner}>
+        <Reveal>
+          <p className={s.sectionLabel}>Client Dossier</p>
+        </Reveal>
+        <Rule />
+
+        <div className={s.dossierStack}>
+          {CLIENTS.map((client, i) => (
+            <Fragment key={client.name}>
+              <div className={s.dossierCard}>
+                <Reveal delay={0.12 * (i + 1)}>
+                  <p className={s.dossierClientName}>
+                    <span className={s.dossierRedDot} />
+                    {client.name}
+                  </p>
+                  <p className={s.dossierType}>{client.type}</p>
+                  <p className={s.dossierNarrative}>{client.narrative}</p>
+                </Reveal>
+              </div>
+              {i < CLIENTS.length - 1 && (
+                <div className={s.dossierCardDivider} />
+              )}
+            </Fragment>
+          ))}
+        </div>
+
+        <div className={s.metricsRow}>
+          <div className={s.metricsRuleH} />
+          {METRICS.map((metric, i) => (
+            <Fragment key={metric.label}>
+              {i > 0 && <div className={s.metricsDivider} aria-hidden="true" />}
+              <div className={s.metricsItem}>
+                <Reveal delay={0.15 * (i + 1)}>
+                  <div className={s.metricsNumber}>{metric.number}</div>
+                  <div className={s.metricsLabel}>{metric.label}</div>
+                </Reveal>
+              </div>
+            </Fragment>
+          ))}
+          <div className={s.metricsRuleH} />
+        </div>
       </div>
     </section>
   );
 }
 
 /* ═══════════════════════════════════════════════════
-   7. CLASSIFIED CTA
+   SPREAD 5: CLASSIFIED CTA
    ═══════════════════════════════════════════════════ */
 
-function ClassifiedCta() {
+function SpreadClassified() {
   return (
-    <section className={s.classified}>
-      <div className={s.classifiedInner}>
-        <div className={s.classifiedColFiller}>
+    <section className={`${s.spread} ${s.spreadDark}`}>
+      <div className={s.spreadInner}>
+        <div className={s.classifiedFiller}>
           {CLASSIFIED_FILLER}
         </div>
 
@@ -332,37 +362,131 @@ function ClassifiedCta() {
           </div>
         </Reveal>
 
-        <div className={s.classifiedColFiller}>
+        <div className={s.classifiedFiller}>
           {CLASSIFIED_FILLER}
         </div>
-      </div>
 
-      <div className={s.classifiedFooter}>
-        <span className={s.classifiedFooterText}>
-          &copy; {new Date().getFullYear()} BEIRUX
-        </span>
-        <span className={s.classifiedFooterText}>
-          Miami, FL &middot; All Rights Reserved
-        </span>
+        <div className={s.classifiedFooter}>
+          <span className={s.classifiedFooterText}>
+            &copy; {new Date().getFullYear()} BEIRUX
+          </span>
+          <span className={s.classifiedFooterText}>
+            Miami, FL &middot; All Rights Reserved
+          </span>
+        </div>
       </div>
     </section>
   );
 }
 
 /* ═══════════════════════════════════════════════════
-   PAGE
+   HORIZONTAL SCROLL PAGE
    ═══════════════════════════════════════════════════ */
 
 export default function D2Page() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+  const [activeSpread, setActiveSpread] = useState(0);
+  const totalSpreads = 5;
+
+  /* Translate vertical wheel into horizontal scroll */
+  const onWheel = useCallback((e: WheelEvent) => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    // Prevent Lenis/body from capturing this
+    e.preventDefault();
+    e.stopPropagation();
+
+    container.scrollLeft += e.deltaY + e.deltaX;
+  }, []);
+
+  /* Track scroll progress */
+  const onScroll = useCallback(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const maxScroll = container.scrollWidth - container.clientWidth;
+    if (maxScroll <= 0) return;
+
+    const pct = container.scrollLeft / maxScroll;
+    setProgress(pct);
+
+    // Determine active spread from snap position
+    const spreadWidth = container.scrollWidth / totalSpreads;
+    const idx = Math.round(container.scrollLeft / spreadWidth);
+    setActiveSpread(Math.min(idx, totalSpreads - 1));
+  }, [totalSpreads]);
+
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    container.addEventListener('wheel', onWheel, { passive: false });
+    container.addEventListener('scroll', onScroll, { passive: true });
+
+    return () => {
+      container.removeEventListener('wheel', onWheel);
+      container.removeEventListener('scroll', onScroll);
+    };
+  }, [onWheel, onScroll]);
+
+  /* Keyboard navigation */
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      const container = scrollRef.current;
+      if (!container) return;
+
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        container.scrollLeft += window.innerWidth * 0.8;
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        container.scrollLeft -= window.innerWidth * 0.8;
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
+
   return (
-    <main className={s.page}>
-      <MastheadHero />
-      <DatelineFeature />
-      <ServicesIndex />
-      <PullQuoteDivider />
-      <ClientDossier />
-      <InfographicStrip />
-      <ClassifiedCta />
-    </main>
+    <div className={s.page}>
+      {/* Horizontal scroll track */}
+      <div ref={scrollRef} className={s.scrollTrack}>
+        <SpreadMasthead />
+        <SpreadFeature />
+        <SpreadServices />
+        <SpreadDossier />
+        <SpreadClassified />
+      </div>
+
+      {/* Bottom progress bar */}
+      <div className={s.progressBar}>
+        <div
+          className={s.progressFill}
+          style={{ width: `${progress * 100}%` }}
+        />
+      </div>
+
+      {/* Spread indicator pips */}
+      <div className={s.spreadIndicator}>
+        {SPREAD_LABELS.map((label, i) => (
+          <button
+            key={label}
+            className={`${s.spreadPip} ${i === activeSpread ? s.spreadPipActive : ''}`}
+            onClick={() => {
+              const container = scrollRef.current;
+              if (!container) return;
+              const targetScroll = (container.scrollWidth / totalSpreads) * i;
+              container.scrollTo({ left: targetScroll, behavior: 'smooth' });
+            }}
+            aria-label={`Go to spread ${label}`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+    </div>
   );
 }

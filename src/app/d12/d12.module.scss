@@ -1,0 +1,496 @@
+/* ------------------------------------------------
+   D12 -- Nothing Phone / Exposed Grid Coordinate
+   ------------------------------------------------ */
+
+$bg: #fafafa;
+$fg: #1a1a1a;
+$red: #ff0000;
+$gray-dot: #d4d4d4;
+$gray-line: #e0e0e0;
+$gray-muted: #999;
+$grid-gap: 28px;
+
+/* ----- dot-grid background ----- */
+
+.page {
+  position: relative;
+  min-height: 100vh;
+  background-color: $bg;
+  background-image: radial-gradient(circle, $gray-dot 1px, transparent 1px);
+  background-size: $grid-gap $grid-gap;
+  color: $fg;
+  font-family: var(--font-sora), sans-serif;
+  overflow-x: hidden;
+}
+
+/* ----- coordinate index (top-right legend) ----- */
+
+.coordIndex {
+  position: fixed;
+  top: 32px;
+  right: 32px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  color: $gray-muted;
+  background: rgba($bg, 0.85);
+  backdrop-filter: blur(6px);
+  padding: 14px 16px;
+  border: 1px solid $gray-line;
+
+  @media (max-width: 768px) {
+    top: 16px;
+    right: 16px;
+    font-size: 10px;
+    padding: 10px 12px;
+  }
+}
+
+.coordRow {
+  display: flex;
+  gap: 8px;
+}
+
+.coordLabel {
+  color: $red;
+  min-width: 24px;
+}
+
+.coordDesc {
+  color: $gray-muted;
+}
+
+/* ----- section shell ----- */
+
+.section {
+  position: relative;
+  padding: 100px 60px;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+
+  @media (max-width: 768px) {
+    padding: 64px 24px;
+  }
+}
+
+.sectionVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ----- coordinate tag (visible label per block) ----- */
+
+.coordTag {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 12px;
+  color: $red;
+  letter-spacing: 0.04em;
+  user-select: none;
+
+  @media (max-width: 768px) {
+    top: 12px;
+    left: 12px;
+    font-size: 11px;
+  }
+}
+
+/* ----- dimension label (width/height annotations) ----- */
+
+.dimLabel {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 10px;
+  color: $gray-muted;
+  letter-spacing: 0.06em;
+}
+
+/* ----- connecting lines between sections ----- */
+
+.connectorVertical {
+  width: 1px;
+  height: 60px;
+  background: $gray-line;
+  margin: 0 auto;
+}
+
+.connectorHorizontal {
+  height: 1px;
+  background: $gray-line;
+  flex: 1;
+}
+
+/* ===== SECTION A: Hero / Identity ===== */
+
+.heroWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 800px;
+}
+
+.heroDimWrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.heroDimLine {
+  width: 1px;
+  height: 100%;
+  min-height: 80px;
+  background: $gray-line;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: -3px;
+    width: 7px;
+    height: 1px;
+    background: $gray-line;
+  }
+
+  &::before { top: 0; }
+  &::after { bottom: 0; }
+}
+
+.heroTitle {
+  font-family: var(--font-sora), sans-serif;
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: $fg;
+}
+
+.heroSub {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 14px;
+  color: $gray-muted;
+  max-width: 480px;
+  line-height: 1.6;
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
+}
+
+.heroCoords {
+  display: flex;
+  gap: 24px;
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 11px;
+  color: $gray-muted;
+  margin-top: 8px;
+}
+
+.heroCoordItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: $red;
+    display: inline-block;
+  }
+}
+
+/* ===== SECTION B: Services Grid ===== */
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2px;
+  max-width: 1100px;
+}
+
+.serviceNode {
+  position: relative;
+  border: 1px solid $gray-line;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: $red;
+  }
+}
+
+.serviceCoord {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 11px;
+  color: $red;
+  letter-spacing: 0.04em;
+}
+
+.serviceName {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: $fg;
+}
+
+.serviceDesc {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 12px;
+  color: $gray-muted;
+  line-height: 1.5;
+}
+
+.serviceStatus {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 10px;
+  color: $gray-muted;
+  margin-top: auto;
+
+  &::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: $red;
+  }
+}
+
+/* service node connector lines */
+
+.serviceConnectorRow {
+  display: flex;
+  align-items: center;
+  max-width: 1100px;
+  gap: 0;
+  margin: -1px 0;
+}
+
+.serviceConnectorDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid $red;
+  background: $bg;
+  flex-shrink: 0;
+}
+
+/* ===== SECTION C: Clients ===== */
+
+.clientsWrap {
+  max-width: 900px;
+}
+
+.clientsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 32px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid $gray-line;
+}
+
+.clientsTitle {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: $fg;
+}
+
+.clientsCount {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 11px;
+  color: $gray-muted;
+}
+
+.clientRow {
+  display: grid;
+  grid-template-columns: 80px 1fr 140px 100px;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid $gray-line;
+  font-size: 14px;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba($red, 0.02);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 60px 1fr 100px;
+    font-size: 13px;
+  }
+}
+
+.clientCode {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 11px;
+  color: $red;
+  letter-spacing: 0.06em;
+}
+
+.clientName {
+  font-family: var(--font-sora), sans-serif;
+  font-weight: 600;
+  color: $fg;
+}
+
+.clientType {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 11px;
+  color: $gray-muted;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.clientStatus {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 10px;
+  color: $gray-muted;
+  text-align: right;
+}
+
+/* ===== SECTION D: Contact ===== */
+
+.contactWrap {
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.contactPoint {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.contactDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: $red;
+  flex-shrink: 0;
+}
+
+.contactLabel {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: $fg;
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
+}
+
+.contactMeta {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 12px;
+  color: $gray-muted;
+  line-height: 1.7;
+}
+
+.contactLink {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 14px;
+  color: $fg;
+  text-decoration: none;
+  border-bottom: 1px solid $red;
+  transition: color 0.2s ease;
+  display: inline-block;
+  padding-bottom: 2px;
+
+  &:hover {
+    color: $red;
+  }
+}
+
+.contactCoordMeta {
+  display: flex;
+  gap: 16px;
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 10px;
+  color: $gray-muted;
+  margin-top: 8px;
+}
+
+/* ----- alignment guide decorations ----- */
+
+.alignGuide {
+  position: absolute;
+  background: rgba($red, 0.08);
+}
+
+.alignGuideH {
+  composes: alignGuide;
+  height: 1px;
+  left: 0;
+  right: 0;
+}
+
+.alignGuideV {
+  composes: alignGuide;
+  width: 1px;
+  top: 0;
+  bottom: 0;
+}
+
+/* ----- padding markers ----- */
+
+.paddingMarker {
+  position: absolute;
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 9px;
+  color: rgba($red, 0.3);
+  user-select: none;
+}
+
+.paddingTop {
+  composes: paddingMarker;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.paddingLeft {
+  composes: paddingMarker;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+}
+
+/* ----- footer ----- */
+
+.footer {
+  padding: 40px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid $gray-line;
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 10px;
+  color: $gray-muted;
+
+  @media (max-width: 768px) {
+    padding: 24px;
+    flex-direction: column;
+    gap: 8px;
+  }
+}

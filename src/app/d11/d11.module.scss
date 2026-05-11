@@ -1,0 +1,59 @@
+.page {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.wrapper {
+  height: 250vh;
+  position: relative;
+}
+
+.frame {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.dark {
+  background: #000;
+  color: #fff;
+}
+
+.light {
+  background: #fff;
+  color: #000;
+}
+
+.word {
+  font-family: var(--font-sora), sans-serif;
+  font-size: clamp(6rem, 15vw, 20rem);
+  font-weight: 800;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  will-change: transform, opacity, filter;
+  text-decoration: none;
+  color: inherit;
+  user-select: none;
+  padding: 0 1rem;
+}
+
+.dot {
+  font-size: clamp(8rem, 20vw, 28rem);
+  font-weight: 900;
+}
+
+a.word {
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.7 !important;
+  }
+}
