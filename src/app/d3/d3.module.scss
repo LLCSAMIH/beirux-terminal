@@ -1,0 +1,758 @@
+/* ═══════════════════════════════════════════
+   D3 — Neon Architects
+   BEIRUX Landing Page
+   ═══════════════════════════════════════════ */
+
+$bg: #0d1117;
+$surface: #161b22;
+$fg: #c9d1d9;
+$neon: #00ffcc;
+$coral: #ff3d71;
+$grid-line: rgba(0, 255, 204, 0.06);
+$grid-line-strong: rgba(0, 255, 204, 0.12);
+$dim: rgba(201, 209, 217, 0.35);
+
+$mono: var(--font-space-mono), 'Courier New', monospace;
+$display: var(--font-sora), 'Helvetica Neue', sans-serif;
+
+/* ─── PAGE SHELL ─── */
+
+.page {
+  background: $bg;
+  color: $fg;
+  min-height: 100vh;
+  font-family: $mono;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ─── SHARED ─── */
+
+.section {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.sectionLabel {
+  font-family: $mono;
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  color: $neon;
+  margin-bottom: 3.5rem;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.labelSlash {
+  color: $dim;
+}
+
+/* ═══════════════════════════════════════════
+   1. BLUEPRINT HERO
+   ═══════════════════════════════════════════ */
+
+.hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* blueprint grid background */
+.heroGrid {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, $grid-line 0px, $grid-line 1px, transparent 1px, transparent 60px),
+    repeating-linear-gradient(90deg, $grid-line 0px, $grid-line 1px, transparent 1px, transparent 60px),
+    repeating-linear-gradient(0deg, $grid-line-strong 0px, $grid-line-strong 1px, transparent 1px, transparent 300px),
+    repeating-linear-gradient(90deg, $grid-line-strong 0px, $grid-line-strong 1px, transparent 1px, transparent 300px);
+  pointer-events: none;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.heroTitle {
+  font-family: $display;
+  font-size: clamp(5rem, 14vw, 12rem);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px $neon;
+  text-shadow:
+    0 0 40px rgba(0, 255, 204, 0.15),
+    0 0 80px rgba(0, 255, 204, 0.05);
+  animation: heroFadeIn 1.2s ease both;
+}
+
+/* neon lines extending from title */
+.heroLineLeft,
+.heroLineRight {
+  position: absolute;
+  top: 50%;
+  height: 1px;
+  animation: lineExtend 1.8s ease 0.6s both;
+}
+
+.heroLineLeft {
+  right: calc(50% + clamp(3rem, 8vw, 7rem));
+  width: 40vw;
+  background: linear-gradient(90deg, transparent, $neon);
+  transform-origin: right center;
+}
+
+.heroLineRight {
+  left: calc(50% + clamp(3rem, 8vw, 7rem));
+  width: 40vw;
+  background: linear-gradient(-90deg, transparent, $neon);
+  transform-origin: left center;
+}
+
+.heroSub {
+  font-family: $mono;
+  font-size: clamp(0.85rem, 1.4vw, 1.1rem);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: $fg;
+  margin-top: 1.8rem;
+  animation: heroFadeIn 1.2s ease 0.4s both;
+}
+
+.heroCoords {
+  font-family: $mono;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: $dim;
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: heroFadeIn 1.2s ease 0.8s both;
+}
+
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lineExtend {
+  from {
+    scale: 0 1;
+    opacity: 0;
+  }
+  to {
+    scale: 1 1;
+    opacity: 1;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   2. SCHEMATIC SERVICES
+   ═══════════════════════════════════════════ */
+
+.servicesSection {
+  padding: 8rem 6vw;
+}
+
+.nodesGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  position: relative;
+}
+
+/* thin line connecting nodes */
+.nodesConnector {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: $grid-line-strong;
+  z-index: 0;
+}
+
+.node {
+  position: relative;
+  z-index: 1;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* diamond rotation */
+  transform: rotate(45deg) scale(0.9);
+  opacity: 0;
+  transition: none;
+}
+
+.nodeBorder {
+  position: absolute;
+  inset: 0;
+  border: 1px solid transparent;
+  transition: none;
+}
+
+.nodeVisible {
+  animation: nodeReveal 0.7s ease forwards;
+
+  .nodeBorder {
+    animation: borderDraw 0.8s ease forwards;
+  }
+}
+
+.nodeInner {
+  /* counter-rotate so content is upright */
+  transform: rotate(-45deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.nodeIcon {
+  font-size: 1.5rem;
+  color: $neon;
+  line-height: 1;
+}
+
+.nodeName {
+  font-family: $mono;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: $fg;
+  font-weight: 700;
+}
+
+.nodeStat {
+  font-family: $mono;
+  font-size: 0.65rem;
+  color: $neon;
+  letter-spacing: 0.08em;
+}
+
+@keyframes nodeReveal {
+  from {
+    opacity: 0;
+    transform: rotate(45deg) scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(45deg) scale(0.9);
+  }
+}
+
+@keyframes borderDraw {
+  0% {
+    clip-path: polygon(50% 0%, 50% 0%, 50% 0%, 50% 0%);
+    border-color: $neon;
+  }
+  100% {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    border-color: $neon;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   3. WIRE GRID CLIENTS
+   ═══════════════════════════════════════════ */
+
+.clientsSection {
+  padding: 8rem 6vw;
+}
+
+.clientsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.clientCell {
+  padding: 2.5rem 2rem;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: none;
+  position: relative;
+  min-height: 140px;
+}
+
+.clientCellSpan {
+  grid-column: span 2;
+}
+
+.clientCellVisible {
+  animation: cellReveal 0.6s ease forwards;
+
+  &::before {
+    animation: cellBorderDraw 0.9s ease forwards;
+  }
+}
+
+.clientCell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid $neon;
+  opacity: 0.4;
+  clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+}
+
+.clientCellInner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 100%;
+}
+
+.clientIndex {
+  font-family: $mono;
+  font-size: 0.65rem;
+  color: $dim;
+  letter-spacing: 0.1em;
+}
+
+.clientCellName {
+  font-family: $display;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: $fg;
+  letter-spacing: 0.02em;
+}
+
+.clientType {
+  font-family: $mono;
+  font-size: 0.7rem;
+  color: $dim;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.clientBadge {
+  display: inline-flex;
+  align-self: flex-start;
+  margin-top: auto;
+  font-family: $mono;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: $neon;
+  border: 1px solid rgba(0, 255, 204, 0.3);
+  padding: 0.2rem 0.6rem;
+  background: rgba(0, 255, 204, 0.05);
+}
+
+@keyframes cellReveal {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cellBorderDraw {
+  0% {
+    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+  }
+  25% {
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+  }
+  50% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 0);
+  }
+  75% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+  100% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   4. ELEVATION VIEW
+   ═══════════════════════════════════════════ */
+
+.elevSection {
+  padding: 8rem 6vw;
+}
+
+.elevStack {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.elevLayer {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid $grid-line-strong;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: none;
+}
+
+.elevLayerVisible {
+  animation: elevSlideUp 0.6s ease forwards;
+}
+
+.elevLayerBar {
+  width: 4px;
+  min-height: 70px;
+  flex-shrink: 0;
+  background: $neon;
+  opacity: calc(var(--intensity) / 100);
+  box-shadow: 0 0 12px rgba(0, 255, 204, calc(var(--intensity) / 200));
+}
+
+.elevLayerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  padding: 1.5rem 2rem;
+  gap: 2rem;
+}
+
+.elevLayerName {
+  font-family: $mono;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  color: $neon;
+  font-weight: 700;
+  white-space: nowrap;
+  min-width: 180px;
+}
+
+.elevLayerDesc {
+  font-family: $mono;
+  font-size: 0.72rem;
+  color: $dim;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  text-align: right;
+}
+
+@keyframes elevSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   5. SPEC SHEET
+   ═══════════════════════════════════════════ */
+
+.specsSection {
+  padding: 8rem 6vw;
+  background: $surface;
+}
+
+.specsSheet {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.specRow {
+  display: flex;
+  align-items: baseline;
+  padding: 1rem 0;
+  border-bottom: 1px solid $grid-line;
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: none;
+}
+
+.specRowVisible {
+  animation: specSlide 0.5s ease forwards;
+}
+
+.specParam {
+  font-family: $mono;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  color: $dim;
+  white-space: nowrap;
+}
+
+.specDots {
+  flex: 1;
+  margin: 0 1rem;
+  border-bottom: 1px dotted rgba(0, 255, 204, 0.2);
+  min-width: 2rem;
+  align-self: center;
+  height: 0;
+}
+
+.specValue {
+  font-family: $mono;
+  font-size: 1rem;
+  font-weight: 700;
+  color: $neon;
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+}
+
+@keyframes specSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   6. SIGNAL CTA
+   ═══════════════════════════════════════════ */
+
+.signalSection {
+  position: relative;
+  padding: 10rem 6vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #0a0e14;
+  min-height: 80vh;
+}
+
+.signalRings {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid $neon;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+.ring:nth-child(1) {
+  width: 120px;
+  height: 120px;
+}
+
+.ring:nth-child(2) {
+  width: 240px;
+  height: 240px;
+}
+
+.ring:nth-child(3) {
+  width: 380px;
+  height: 380px;
+}
+
+.ring:nth-child(4) {
+  width: 540px;
+  height: 540px;
+}
+
+.signalVisible {
+  .ring {
+    animation: ringPulse 3s ease-in-out infinite;
+  }
+
+  .ring:nth-child(1) {
+    animation-delay: 0s;
+  }
+  .ring:nth-child(2) {
+    animation-delay: 0.4s;
+  }
+  .ring:nth-child(3) {
+    animation-delay: 0.8s;
+  }
+  .ring:nth-child(4) {
+    animation-delay: 1.2s;
+  }
+}
+
+.signalContent {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.signalTitle {
+  font-family: $display;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: $fg;
+}
+
+.signalTerminal {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 2rem;
+  border: 1px solid rgba(0, 255, 204, 0.2);
+  background: rgba(0, 255, 204, 0.03);
+}
+
+.termPrompt {
+  color: $neon;
+  font-family: $mono;
+  font-size: 1rem;
+}
+
+.termInput {
+  font-family: $mono;
+  font-size: 1rem;
+  color: $fg;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+
+  &:hover {
+    color: $neon;
+  }
+}
+
+.termCursor {
+  display: inline-block;
+  width: 8px;
+  height: 1.1em;
+  background: $neon;
+  animation: cursorBlink 1s steps(1) infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes cursorBlink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ringPulse {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  30% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.3);
+  }
+}
+
+/* ─── FOOTER ─── */
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 6vw;
+  border-top: 1px solid $grid-line;
+  font-family: $mono;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: $dim;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .clientsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .clientCellSpan {
+    grid-column: span 1;
+  }
+
+  .nodesGrid {
+    gap: 1.2rem;
+  }
+
+  .node {
+    width: 140px;
+    height: 140px;
+  }
+
+  .elevLayerContent {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1rem 1.2rem;
+  }
+
+  .elevLayerDesc {
+    text-align: left;
+  }
+
+  .specsSection {
+    padding: 5rem 4vw;
+  }
+
+  .servicesSection,
+  .clientsSection,
+  .elevSection {
+    padding: 5rem 4vw;
+  }
+
+  .ring:nth-child(3),
+  .ring:nth-child(4) {
+    display: none;
+  }
+}

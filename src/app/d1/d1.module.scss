@@ -1,0 +1,785 @@
+/* ─── tokens ─── */
+$bg: #0a0e1a;
+$surface: rgba(255, 255, 255, 0.04);
+$surface-border: rgba(255, 255, 255, 0.08);
+$text: #e0e6ed;
+$text-dim: rgba(224, 230, 237, 0.5);
+$cyan: #00d4ff;
+$orange: #ff6b35;
+$green: #00ff88;
+$purple: #a855f7;
+
+/* ─── page ─── */
+.page {
+  background: $bg;
+  color: $text;
+  min-height: 100vh;
+  font-family: var(--font-jetbrains), monospace;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════
+   1. STATUS BAR HERO
+   ═══════════════════════════════════════ */
+
+.hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0 4rem;
+  overflow: hidden;
+}
+
+.heroGrid {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(255, 255, 255, 0.02) 59px, rgba(255, 255, 255, 0.02) 60px),
+    repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(255, 255, 255, 0.02) 59px, rgba(255, 255, 255, 0.02) 60px);
+  pointer-events: none;
+}
+
+/* --- status bar --- */
+.statusBar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.6rem 0;
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $text-dim;
+  border-bottom: 1px solid $surface-border;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: $green;
+  box-shadow: 0 0 6px $green, 0 0 12px rgba($green, 0.4);
+  animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.statusText {
+  color: $green;
+  font-weight: 700;
+}
+
+.statusTime {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- center title --- */
+.heroCenter {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.heroTitle {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: clamp(6rem, 14vw, 16rem);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  line-height: 1;
+  background: linear-gradient(180deg, $text 40%, rgba($cyan, 0.6));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.heroSub {
+  font-family: var(--font-sora), sans-serif;
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: $text-dim;
+  margin-top: 1.2rem;
+}
+
+/* --- stat row --- */
+.statRow {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding-bottom: 4rem;
+  flex-wrap: wrap;
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1.6rem 2.4rem;
+  background: $surface;
+  border: 1px solid $surface-border;
+  border-radius: 8px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 20px rgba($cyan, 0.04), inset 0 0 20px rgba(255, 255, 255, 0.02);
+  min-width: 12rem;
+}
+
+.statValue {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: $cyan;
+  font-variant-numeric: tabular-nums;
+}
+
+.statLabel {
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: $text-dim;
+}
+
+/* ═══════════════════════════════════════
+   2. ORBITAL TIMELINE
+   ═══════════════════════════════════════ */
+
+.timeline {
+  position: relative;
+  padding: 12rem 4rem;
+  overflow: hidden;
+}
+
+.timelineRadial {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80rem;
+  height: 80rem;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba($cyan, 0.03) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.sectionLabel {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 1.2rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $cyan;
+  margin-bottom: 6rem;
+  text-align: center;
+}
+
+.timelineTrack {
+  position: relative;
+  max-width: 90rem;
+  margin: 0 auto;
+}
+
+.timelineLine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, transparent 0%, $cyan 10%, $cyan 90%, transparent 100%);
+  opacity: 0.3;
+  transform: translateX(-50%);
+}
+
+/* --- node --- */
+.timelineNode {
+  position: relative;
+  display: flex;
+  padding: 2.4rem 0;
+  opacity: 0;
+  transform: translateY(3rem);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+
+  &.left {
+    justify-content: flex-start;
+    padding-right: calc(50% + 3rem);
+
+    .nodeContent { text-align: right; }
+  }
+
+  &.right {
+    justify-content: flex-end;
+    padding-left: calc(50% + 3rem);
+
+    .nodeContent { text-align: left; }
+  }
+}
+
+.nodeVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nodeDot {
+  position: absolute;
+  left: 50%;
+  top: 3.2rem;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: $bg;
+  border: 2px solid $cyan;
+  box-shadow: 0 0 8px rgba($cyan, 0.5);
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.nodeContent {
+  max-width: 36rem;
+}
+
+.nodeDate {
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  color: $cyan;
+  text-transform: uppercase;
+}
+
+.nodeTitle {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-top: 0.4rem;
+  color: $text;
+}
+
+.nodeDesc {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  color: $text-dim;
+  margin-top: 0.6rem;
+}
+
+/* ═══════════════════════════════════════
+   3. AGENT ROSTER
+   ═══════════════════════════════════════ */
+
+.roster {
+  padding: 10rem 4rem;
+}
+
+.rosterGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.4rem;
+  max-width: 84rem;
+  margin: 0 auto;
+}
+
+.agentCard {
+  padding: 3.2rem;
+  background: $surface;
+  border: 1px solid $surface-border;
+  border-radius: 12px;
+  backdrop-filter: blur(16px);
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.agentVisible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* accent borders per agent */
+.agent_cyan  { border-color: rgba($cyan, 0.2);   box-shadow: inset 0 1px 0 rgba($cyan, 0.15); }
+.agent_green { border-color: rgba($green, 0.2);  box-shadow: inset 0 1px 0 rgba($green, 0.15); }
+.agent_orange { border-color: rgba($orange, 0.2); box-shadow: inset 0 1px 0 rgba($orange, 0.15); }
+.agent_purple { border-color: rgba($purple, 0.2); box-shadow: inset 0 1px 0 rgba($purple, 0.15); }
+
+.agentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.agentName {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.agentStatus {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  color: $text-dim;
+}
+
+.agentDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: blink 2s ease-in-out infinite;
+}
+
+.dot_cyan   { background: $cyan;   box-shadow: 0 0 6px $cyan; }
+.dot_green  { background: $green;  box-shadow: 0 0 6px $green; }
+.dot_orange { background: $orange; box-shadow: 0 0 6px $orange; }
+.dot_purple { background: $purple; box-shadow: 0 0 6px $purple; }
+
+.agentRole {
+  display: block;
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $text-dim;
+  margin-bottom: 1.6rem;
+}
+
+.agentStats {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 1.3rem;
+  color: rgba($text, 0.7);
+
+  li::before {
+    content: '> ';
+    color: $cyan;
+  }
+}
+
+/* ═══════════════════════════════════════
+   4. LIVE FEED
+   ═══════════════════════════════════════ */
+
+.feed {
+  padding: 10rem 4rem;
+}
+
+.feedPanel {
+  position: relative;
+  max-width: 90rem;
+  margin: 0 auto;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid $surface-border;
+  border-radius: 8px;
+  padding: 2.4rem;
+  overflow: hidden;
+}
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.008) 2px,
+    rgba(255, 255, 255, 0.008) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.feedRow {
+  display: flex;
+  gap: 1.2rem;
+  padding: 0.8rem 0;
+  font-size: 1.3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  opacity: 0;
+  transform: translateX(-2rem);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+
+  &:last-child { border-bottom: none; }
+}
+
+.feedRowVisible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.feedTime {
+  color: $text-dim;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.feedAgent {
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.feed_cyan   .feedAgent { color: $cyan; }
+.feed_green  .feedAgent { color: $green; }
+.feed_orange .feedAgent { color: $orange; }
+.feed_purple .feedAgent { color: $purple; }
+
+.feedMsg {
+  color: rgba($text, 0.8);
+}
+
+/* ═══════════════════════════════════════
+   5. SERVICES MATRIX
+   ═══════════════════════════════════════ */
+
+.matrix {
+  padding: 10rem 4rem;
+}
+
+.matrixTable {
+  max-width: 90rem;
+  margin: 0 auto;
+  border: 1px solid $surface-border;
+  border-radius: 2px;
+  font-size: 1.3rem;
+}
+
+.matrixHeaderRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 2fr;
+  padding: 1.4rem 2rem;
+  border-bottom: 1px solid $surface-border;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 1.1rem;
+  color: $text-dim;
+
+  /* box-drawing top border */
+  &::before {
+    content: '';
+    display: block;
+    grid-column: 1 / -1;
+    border-top: 1px dashed rgba($cyan, 0.15);
+    margin-bottom: 1rem;
+  }
+}
+
+.matrixRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 2fr;
+  padding: 1.4rem 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  opacity: 0;
+  transform: translateY(1rem);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+
+  &:last-child { border-bottom: none; }
+
+  /* row divider with box-drawing character feel */
+  &::after {
+    content: '';
+    display: block;
+    grid-column: 1 / -1;
+    border-bottom: 1px dashed rgba($cyan, 0.06);
+    margin-top: 0.2rem;
+  }
+}
+
+.matrixRowVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.matrixService {
+  font-weight: 600;
+  color: $text;
+}
+
+.matrixStatus {
+  color: $green;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  background: rgba($green, 0.1);
+  border: 1px solid rgba($green, 0.2);
+  border-radius: 3px;
+  padding: 0.2rem 0.8rem;
+  align-self: center;
+  justify-self: center;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.matrixDeployed {
+  text-align: center;
+  color: $cyan;
+  font-weight: 700;
+  align-self: center;
+}
+
+.matrixMetric {
+  color: $text-dim;
+  text-align: right;
+  align-self: center;
+}
+
+/* ═══════════════════════════════════════
+   6. TELEMETRY DASHBOARD
+   ═══════════════════════════════════════ */
+
+.telemetry {
+  padding: 10rem 4rem;
+}
+
+.telemetryBars {
+  max-width: 72rem;
+  margin: 0 auto 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+}
+
+.barGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.barLabelRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.3rem;
+}
+
+.barLabel {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $text-dim;
+}
+
+.barValue {
+  color: $cyan;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.barTrack {
+  height: 6px;
+  background: $surface;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  width: 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, $cyan, #33ddff);
+  box-shadow: 0 0 12px rgba($cyan, 0.4);
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.barFillActive {
+  width: var(--bar-target);
+}
+
+/* --- metric tiles --- */
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.6rem;
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.metricTile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 2.4rem;
+  background: $surface;
+  border: 1px solid $surface-border;
+  border-radius: 6px;
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.metricVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.metricTileValue {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: $text;
+}
+
+.metricTileLabel {
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $text-dim;
+}
+
+/* ═══════════════════════════════════════
+   7. TRANSMISSION CTA
+   ═══════════════════════════════════════ */
+
+.transmission {
+  padding: 10rem 4rem 12rem;
+  display: flex;
+  justify-content: center;
+}
+
+.transmissionBox {
+  max-width: 64rem;
+  width: 100%;
+  padding: 5.6rem;
+  border: 2px dashed rgba($cyan, 0.25);
+  border-radius: 4px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.transmissionVisible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.transmissionTitle {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin-bottom: 3.2rem;
+}
+
+.transmissionCommand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.8rem;
+  margin-bottom: 2.4rem;
+}
+
+.commandPrompt {
+  color: $green;
+  font-weight: 700;
+}
+
+.commandText {
+  color: $cyan;
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #40e0ff;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}
+
+.cursor {
+  display: inline-block;
+  width: 10px;
+  height: 1.8rem;
+  background: $cyan;
+  animation: cursorBlink 1s steps(1) infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.transmissionNote {
+  font-size: 1.3rem;
+  color: $text-dim;
+  letter-spacing: 0.05em;
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .hero { padding: 0 2rem; }
+
+  .statRow {
+    gap: 1rem;
+
+    .statCard {
+      min-width: 9rem;
+      padding: 1.2rem 1.6rem;
+    }
+  }
+
+  .timeline { padding: 8rem 2rem; }
+
+  .timelineLine { display: none; }
+
+  .timelineNode {
+    &.left,
+    &.right {
+      padding-left: 0;
+      padding-right: 0;
+      justify-content: flex-start;
+
+      .nodeContent { text-align: left; }
+    }
+  }
+
+  .nodeDot {
+    position: static;
+    transform: none;
+    flex-shrink: 0;
+    margin-top: 0.6rem;
+    margin-right: 1.2rem;
+  }
+
+  .rosterGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .roster,
+  .feed,
+  .matrix,
+  .telemetry,
+  .transmission {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .feedRow {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .matrixHeaderRow,
+  .matrixRow {
+    grid-template-columns: 1.5fr 1fr 0.8fr 1.5fr;
+    padding: 1rem 1.2rem;
+    font-size: 1.1rem;
+  }
+
+  .metricGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .transmissionBox {
+    padding: 3.2rem 2.4rem;
+  }
+}

@@ -1,0 +1,538 @@
+/* ─── TAPE DECK: VHS / cassette / retro-futuristic ─── */
+
+$bg:       #1a1a1a;
+$text:     #f5f5f5;
+$pink:     #ff3366;
+$green:    #00ff88;
+$yellow:   #ffcc00;
+$dim:      rgba(255, 255, 255, 0.35);
+
+/* ─── noise overlay (shared) ─── */
+@mixin noise {
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+    z-index: 1;
+  }
+}
+
+@mixin scanlines {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 2px,
+      rgba(0, 0, 0, 0.15) 2px,
+      rgba(0, 0, 0, 0.15) 4px
+    );
+    z-index: 2;
+  }
+}
+
+/* ─── page wrapper ─── */
+.page {
+  background: $bg;
+  color: $text;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════
+   1. VHS HERO
+   ═══════════════════════════════════════════ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem clamp(2rem, 6vw, 8rem);
+  @include noise;
+  @include scanlines;
+}
+
+.heroTitle {
+  position: relative;
+  z-index: 3;
+  line-height: 0.9;
+  margin-bottom: 2rem;
+}
+
+.heroGhost {
+  font-family: var(--font-anton);
+  font-size: clamp(8rem, 20vw, 24rem);
+  text-transform: uppercase;
+  color: $green;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  user-select: none;
+  z-index: 0;
+}
+
+.heroMain {
+  font-family: var(--font-anton);
+  font-size: clamp(8rem, 20vw, 24rem);
+  text-transform: uppercase;
+  color: $pink;
+  position: relative;
+  z-index: 1;
+}
+
+.heroTagline {
+  font-family: var(--font-space-mono);
+  font-size: clamp(1.2rem, 1.6vw, 2rem);
+  color: $text;
+  letter-spacing: 0.12em;
+  position: relative;
+  z-index: 3;
+  display: inline-block;
+  padding-bottom: 0.3em;
+  border-bottom: 3px solid $yellow;
+}
+
+.heroRec {
+  position: absolute;
+  bottom: 3rem;
+  right: clamp(2rem, 6vw, 8rem);
+  z-index: 3;
+  font-family: var(--font-space-mono);
+  font-size: 1.4rem;
+  color: $dim;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.recDot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: red;
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.recLabel {
+  color: red;
+  font-weight: 700;
+}
+
+.recYear {
+  color: $dim;
+}
+
+/* ═══════════════════════════════════════════
+   2. CHANNEL GRID
+   ═══════════════════════════════════════════ */
+.channels {
+  padding: clamp(6rem, 10vh, 12rem) clamp(2rem, 6vw, 8rem);
+  position: relative;
+}
+
+.channelsHeading {
+  font-family: var(--font-anton);
+  font-size: clamp(3rem, 5vw, 6rem);
+  text-transform: uppercase;
+  color: $text;
+  margin-bottom: 4rem;
+  letter-spacing: 0.04em;
+}
+
+.channelGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.4rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 560px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.channel {
+  position: relative;
+  background: #111;
+  border-radius: 12px;
+  padding: 2.8rem 2.4rem;
+  border: 2px solid;
+  overflow: hidden;
+  @include scanlines;
+
+  &::before {
+    border-radius: 12px;
+  }
+
+  &[data-accent='pink']   { border-color: $pink; }
+  &[data-accent='green']  { border-color: $green; }
+  &[data-accent='yellow'] { border-color: $yellow; }
+}
+
+/* static flash on enter */
+.channel.visible {
+  animation: staticFlash 0.35s ease-out;
+}
+
+@keyframes staticFlash {
+  0% {
+    background-position: 0 0;
+    filter: brightness(3) contrast(2);
+  }
+  30% {
+    filter: brightness(1.6) contrast(1.3);
+  }
+  100% {
+    filter: brightness(1) contrast(1);
+  }
+}
+
+.channelNumber {
+  font-family: var(--font-space-mono);
+  font-size: 1.2rem;
+  color: $dim;
+  margin-bottom: 1.2rem;
+  position: relative;
+  z-index: 3;
+}
+
+.channelName {
+  font-family: var(--font-anton);
+  font-size: clamp(2rem, 2.8vw, 3.2rem);
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+  position: relative;
+  z-index: 3;
+}
+
+.channelDesc {
+  font-family: var(--font-space-mono);
+  font-size: 1.2rem;
+  color: $dim;
+  line-height: 1.5;
+  position: relative;
+  z-index: 3;
+}
+
+/* ═══════════════════════════════════════════
+   3. MIXTAPE CLIENTS
+   ═══════════════════════════════════════════ */
+.mixtape {
+  padding: clamp(6rem, 10vh, 12rem) clamp(2rem, 6vw, 8rem);
+}
+
+.mixtapeHeading {
+  font-family: var(--font-anton);
+  font-size: clamp(3rem, 5vw, 6rem);
+  text-transform: uppercase;
+  color: $text;
+  margin-bottom: 0.4rem;
+}
+
+.mixtapeSub {
+  font-family: var(--font-space-mono);
+  font-size: 1.3rem;
+  color: $dim;
+  margin-bottom: 4rem;
+  letter-spacing: 0.1em;
+}
+
+.inlayCard {
+  border: 2px dotted rgba(255, 255, 255, 0.25);
+  padding: 3.2rem;
+  position: relative;
+
+  /* corner marks */
+  &::before,
+  &::after {
+    content: '+';
+    position: absolute;
+    font-family: var(--font-space-mono);
+    font-size: 1.4rem;
+    color: $dim;
+  }
+  &::before { top: 0.6rem; left: 1rem; }
+  &::after  { bottom: 0.6rem; right: 1rem; }
+}
+
+.track {
+  display: grid;
+  grid-template-columns: 4.8rem 1fr;
+  gap: 1.6rem;
+  padding: 1.8rem 0;
+  align-items: start;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+.trackNumber {
+  font-family: var(--font-space-mono);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: $yellow;
+}
+
+.trackClient {
+  font-family: var(--font-anton);
+  font-size: clamp(1.8rem, 2.2vw, 2.4rem);
+  text-transform: uppercase;
+}
+
+.trackType {
+  font-family: var(--font-space-mono);
+  font-size: 1.2rem;
+  color: $dim;
+  margin-left: 0.6rem;
+}
+
+.trackHook {
+  font-family: var(--font-space-mono);
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 0.3rem;
+}
+
+/* ═══════════════════════════════════════════
+   4. FREQUENCY BARS
+   ═══════════════════════════════════════════ */
+.frequency {
+  padding: clamp(6rem, 10vh, 12rem) clamp(2rem, 6vw, 8rem);
+  background: #222;
+  position: relative;
+  @include noise;
+}
+
+.frequencyHeading {
+  font-family: var(--font-anton);
+  font-size: clamp(3rem, 5vw, 6rem);
+  text-transform: uppercase;
+  color: $text;
+  margin-bottom: 6rem;
+}
+
+.eqContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 32rem;
+  gap: 2rem;
+  position: relative;
+  z-index: 3;
+
+  @media (max-width: 600px) {
+    height: 24rem;
+    gap: 1rem;
+  }
+}
+
+.eqCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.eqBar {
+  width: 100%;
+  max-width: 8rem;
+  border-radius: 4px 4px 0 0;
+  transition: height 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  height: 0;
+  background: linear-gradient(
+    to top,
+    $green 0%,
+    $yellow 50%,
+    $pink 100%
+  );
+  box-shadow: 0 0 20px rgba($green, 0.25), 0 0 40px rgba($pink, 0.15);
+  position: relative;
+}
+
+.eqBar.fill {
+  /* height set via inline style */
+}
+
+.eqValue {
+  font-family: var(--font-space-mono);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: $text;
+  margin-top: 1.2rem;
+}
+
+.eqLabel {
+  font-family: var(--font-space-mono);
+  font-size: 1.1rem;
+  color: $dim;
+  margin-top: 0.4rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ═══════════════════════════════════════════
+   5. BROADCAST MANIFESTO
+   ═══════════════════════════════════════════ */
+.manifesto {
+  background: $pink;
+  color: $bg;
+  padding: clamp(6rem, 10vh, 12rem) clamp(2rem, 6vw, 8rem);
+  position: relative;
+  overflow: hidden;
+}
+
+.manifestoTitle {
+  font-family: var(--font-anton);
+  font-size: clamp(4rem, 10vw, 14rem);
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 3rem;
+  animation: interference 4s ease-in-out infinite;
+}
+
+@keyframes interference {
+  0%, 100% { transform: translateX(0); }
+  10%      { transform: translateX(-1px); }
+  20%      { transform: translateX(1px); }
+  30%      { transform: translateX(0); }
+  /* stays still most of the time, jitters briefly */
+}
+
+.manifestoWord {
+  display: block;
+}
+
+.manifestoBody {
+  font-family: var(--font-space-mono);
+  font-size: clamp(1.4rem, 1.8vw, 2rem);
+  line-height: 1.6;
+  max-width: 60ch;
+  margin-bottom: 3rem;
+}
+
+.manifestoStars {
+  font-size: 2.4rem;
+  color: $yellow;
+  letter-spacing: 1.2rem;
+}
+
+/* ═══════════════════════════════════════════
+   6. STATIC CTA
+   ═══════════════════════════════════════════ */
+.cta {
+  padding: clamp(6rem, 10vh, 12rem) clamp(2rem, 6vw, 8rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.testCard {
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 0;
+  width: 100%;
+  max-width: 52rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.colorBars {
+  display: flex;
+  height: 8px;
+}
+
+.colorBar {
+  flex: 1;
+  &:nth-child(1) { background: $pink; }
+  &:nth-child(2) { background: $green; }
+  &:nth-child(3) { background: $yellow; }
+  &:nth-child(4) { background: #fff; }
+}
+
+.testCardInner {
+  padding: 4rem 3rem;
+}
+
+.ctaTitle {
+  font-family: var(--font-anton);
+  font-size: clamp(3rem, 5vw, 5rem);
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+.ctaEmail {
+  font-family: var(--font-space-mono);
+  font-size: clamp(1.4rem, 2vw, 1.8rem);
+  color: $dim;
+  margin-bottom: 3rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+}
+
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background: $green;
+  margin-left: 2px;
+  animation: cursorBlink 1s steps(1) infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.ctaButton {
+  font-family: var(--font-space-mono);
+  font-size: 1.6rem;
+  font-weight: 700;
+  background: $green;
+  color: $bg;
+  padding: 1.4rem 4rem;
+  border-radius: 0; /* intentionally sharp */
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: inline-block;
+  transition: background 0.2s, transform 0.2s;
+
+  &:hover {
+    background: lighten($green, 8%);
+    transform: scale(1.03);
+  }
+}
+
+.signalStatus {
+  font-family: var(--font-space-mono);
+  font-size: 1.1rem;
+  color: $dim;
+  margin-top: 2rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.signalStatus.connected {
+  color: $green;
+}
