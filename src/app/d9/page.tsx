@@ -170,7 +170,7 @@ function SectionShortcut({ shortcut }: { shortcut: string }) {
 }
 
 function ServicesSection() {
-  const { ref, isVisible } = useInView();
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
   return (
     <section id="section-services" ref={ref} className={`${s.section} ${isVisible ? s.sectionVisible : ''}`}>
       <SectionShortcut shortcut="1" />
@@ -189,7 +189,7 @@ function ServicesSection() {
 }
 
 function ProjectsSection() {
-  const { ref, isVisible } = useInView();
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
   return (
     <section id="section-projects" ref={ref} className={`${s.section} ${isVisible ? s.sectionVisible : ''}`}>
       <SectionShortcut shortcut="2" />
@@ -212,7 +212,7 @@ function ProjectsSection() {
 }
 
 function StackSection() {
-  const { ref, isVisible } = useInView();
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
   return (
     <section id="section-stack" ref={ref} className={`${s.section} ${isVisible ? s.sectionVisible : ''}`}>
       <SectionShortcut shortcut="3" />
@@ -231,7 +231,7 @@ function StackSection() {
 }
 
 function AboutSection() {
-  const { ref, isVisible } = useInView();
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
   return (
     <section id="section-about" ref={ref} className={`${s.section} ${isVisible ? s.sectionVisible : ''}`}>
       <SectionShortcut shortcut="4" />
@@ -264,7 +264,7 @@ function AboutSection() {
 }
 
 function ContactSection() {
-  const { ref, isVisible } = useInView();
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
   return (
     <section id="section-contact" ref={ref} className={`${s.section} ${isVisible ? s.sectionVisible : ''}`}>
       <SectionShortcut shortcut="5" />

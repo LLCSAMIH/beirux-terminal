@@ -188,9 +188,9 @@ $surface: #ffffff;
   cursor: default;
   opacity: 0;
   transition:
-    opacity 0.5s ease,
-    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.35s ease;
+    opacity 0.25s ease,
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.25s ease;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
   animation: pillFloat 6s ease-in-out infinite;
   animation-play-state: paused;
@@ -286,9 +286,9 @@ $surface: #ffffff;
 .manifestoWord {
   display: inline-block;
   opacity: 0;
-  filter: blur(6px);
-  transform: translateY(8px);
-  transition: opacity 0.35s ease, filter 0.35s ease, transform 0.35s ease;
+  filter: blur(4px);
+  transform: translateY(4px);
+  transition: opacity 0.2s ease, filter 0.2s ease, transform 0.2s ease;
 }
 
 .manifestoWordVisible {
@@ -332,10 +332,10 @@ $surface: #ffffff;
   background: $surface;
   border-radius: 24px;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
-  opacity: 0;
+  opacity: 0.3;
   transition:
-    opacity 0.6s ease,
-    transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    opacity 0.25s ease,
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .clientCardVisible {
@@ -389,11 +389,11 @@ $surface: #ffffff;
   align-items: center;
   justify-content: center;
   text-align: center;
-  opacity: 0;
-  transform: scale(0.5);
+  opacity: 0.3;
+  transform: scale(0.7);
   transition:
-    opacity 0.6s ease,
-    transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    opacity 0.25s ease,
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
   will-change: transform;
 }
 
@@ -477,9 +477,9 @@ $surface: #ffffff;
   border-radius: 50%;
   background: linear-gradient(135deg, rgba($violet, 0.18), rgba($pink, 0.12), rgba($sky, 0.1));
   filter: blur(60px);
-  opacity: 0;
-  transform: scale(0.6);
-  transition: opacity 1s ease, transform 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  opacity: 0.3;
+  transform: scale(0.8);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   pointer-events: none;
 }
 
@@ -498,9 +498,9 @@ $surface: #ffffff;
 .contactContent {
   position: relative;
   z-index: 1;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.7s ease 0.3s, transform 0.7s ease 0.3s;
+  opacity: 0.3;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
 }
 
 .contactContentVisible {

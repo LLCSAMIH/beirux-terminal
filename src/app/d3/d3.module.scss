@@ -126,7 +126,7 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   fill: transparent;
   stroke: rgba(0, 255, 204, 0.25);
   stroke-width: 0.3;
-  transition: fill 0.4s ease, stroke 0.4s ease;
+  transition: fill 0.25s ease, stroke 0.25s ease;
 }
 
 .svgDiamondActive {
@@ -154,7 +154,7 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   font-size: 2.2px;
   fill: rgba(201, 209, 217, 0.3);
   letter-spacing: 0.15px;
-  transition: fill 0.4s ease;
+  transition: fill 0.25s ease;
 }
 
 .svgCoordActive {
@@ -166,7 +166,7 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   font-size: 2px;
   fill: rgba(201, 209, 217, 0.2);
   letter-spacing: 0.12px;
-  transition: fill 0.4s ease;
+  transition: fill 0.25s ease;
 }
 
 .svgLabelActive {
@@ -239,9 +239,9 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
    ═══════════════════════════════════════════ */
 
 .section {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  opacity: 0.3;
+  transform: translateY(12px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .visible {
@@ -315,7 +315,7 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   text-shadow:
     0 0 40px rgba(0, 255, 204, 0.15),
     0 0 80px rgba(0, 255, 204, 0.05);
-  animation: heroFadeIn 1.2s ease both;
+  animation: heroFadeIn 0.4s ease both;
 }
 
 .heroSub {
@@ -325,7 +325,7 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   text-transform: uppercase;
   color: $fg;
   margin-top: 1.8rem;
-  animation: heroFadeIn 1.2s ease 0.4s both;
+  animation: heroFadeIn 0.4s ease 0.1s both;
 }
 
 .heroCoords {
@@ -334,13 +334,13 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   letter-spacing: 0.15em;
   color: $dim;
   margin-top: 2rem;
-  animation: heroFadeIn 1.2s ease 0.8s both;
+  animation: heroFadeIn 0.4s ease 0.2s both;
 }
 
 @keyframes heroFadeIn {
   from {
-    opacity: 0;
-    transform: translateY(12px);
+    opacity: 0.3;
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -395,10 +395,10 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 }
 
 .nodeVisible {
-  animation: nodeReveal 0.7s ease forwards;
+  animation: nodeReveal 0.3s ease forwards;
 
   .nodeBorder {
-    animation: borderDraw 0.8s ease forwards;
+    animation: borderDraw 0.3s ease forwards;
   }
 }
 
@@ -435,8 +435,8 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 
 @keyframes nodeReveal {
   from {
-    opacity: 0;
-    transform: rotate(45deg) scale(0.6);
+    opacity: 0.3;
+    transform: rotate(45deg) scale(0.8);
   }
   to {
     opacity: 1;
@@ -471,8 +471,8 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 
 .clientCell {
   padding: 2rem 1.5rem;
-  opacity: 0;
-  transform: translateY(16px);
+  opacity: 0.3;
+  transform: translateY(8px);
   transition: none;
   position: relative;
   min-height: 120px;
@@ -483,10 +483,10 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 }
 
 .clientCellVisible {
-  animation: cellReveal 0.6s ease forwards;
+  animation: cellReveal 0.25s ease forwards;
 
   &::before {
-    animation: cellBorderDraw 0.9s ease forwards;
+    animation: cellBorderDraw 0.3s ease forwards;
   }
 }
 
@@ -544,8 +544,8 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 
 @keyframes cellReveal {
   from {
-    opacity: 0;
-    transform: translateY(16px);
+    opacity: 0.3;
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -589,13 +589,13 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   display: flex;
   align-items: stretch;
   border-bottom: 1px solid $grid-line-strong;
-  opacity: 0;
-  transform: translateY(20px);
+  opacity: 0.3;
+  transform: translateY(10px);
   transition: none;
 }
 
 .elevLayerVisible {
-  animation: elevSlideUp 0.6s ease forwards;
+  animation: elevSlideUp 0.25s ease forwards;
 }
 
 .elevLayerBar {
@@ -637,8 +637,8 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 
 @keyframes elevSlideUp {
   from {
-    opacity: 0;
-    transform: translateY(20px);
+    opacity: 0.3;
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -667,13 +667,13 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
   align-items: baseline;
   padding: 0.9rem 0;
   border-bottom: 1px solid $grid-line;
-  opacity: 0;
-  transform: translateX(-12px);
+  opacity: 0.3;
+  transform: translateX(-6px);
   transition: none;
 }
 
 .specRowVisible {
-  animation: specSlide 0.5s ease forwards;
+  animation: specSlide 0.25s ease forwards;
 }
 
 .specParam {
@@ -704,8 +704,8 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
 
 @keyframes specSlide {
   from {
-    opacity: 0;
-    transform: translateX(-12px);
+    opacity: 0.3;
+    transform: translateX(-6px);
   }
   to {
     opacity: 1;
@@ -771,10 +771,10 @@ $display: var(--font-sora), 'Helvetica Neue', sans-serif;
     animation-delay: 0s;
   }
   .ring:nth-child(2) {
-    animation-delay: 0.4s;
+    animation-delay: 0.15s;
   }
   .ring:nth-child(3) {
-    animation-delay: 0.8s;
+    animation-delay: 0.3s;
   }
 }
 

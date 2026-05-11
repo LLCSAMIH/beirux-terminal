@@ -54,7 +54,7 @@ function Reveal({
   className?: string;
   delay?: number;
 }) {
-  const { ref, isVisible } = useInView({ threshold: 0.1 });
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
   return (
     <div
       ref={ref}
@@ -69,7 +69,7 @@ function Reveal({
 /* ─── thin rule with animation ─── */
 
 function Rule({ delay = 0 }: { delay?: number }) {
-  const { ref, isVisible } = useInView({ threshold: 0.1 });
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
   return (
     <div
       ref={ref}
@@ -107,20 +107,20 @@ function SpreadMasthead() {
         <div className={s.mastheadRuleThick} />
         <div className={s.mastheadRuleThin} />
 
-        <Reveal delay={0.15}>
+        <Reveal delay={0.06}>
           <h1 className={s.mastheadTitle}>BEIRUX</h1>
         </Reveal>
 
         <div className={s.mastheadRuleThin} />
 
-        <Reveal delay={0.3}>
+        <Reveal delay={0.12}>
           <p className={s.mastheadSubtitle}>
             The Digital Broadsheet
           </p>
         </Reveal>
 
         <div className={s.mastheadBody}>
-          <Reveal delay={0.4}>
+          <Reveal delay={0.15}>
             <h2 className={s.mastheadHeadline}>
               We Build. We Ship.<br />
               We Show the Work.
@@ -128,7 +128,7 @@ function SpreadMasthead() {
           </Reveal>
 
           <div className={s.mastheadColumns}>
-            <Reveal delay={0.5}>
+            <Reveal delay={0.18}>
               <p className={`${s.mastheadCol} ${s.dropCap}`}>
                 BEIRUX is a digital agency that operates on a simple premise: the work
                 speaks for itself. We do not sell decks. We do not pitch roadmaps that
@@ -137,7 +137,7 @@ function SpreadMasthead() {
               </p>
             </Reveal>
             <div className={s.columnDivider} aria-hidden="true" />
-            <Reveal delay={0.6}>
+            <Reveal delay={0.24}>
               <p className={s.mastheadCol}>
                 Every engagement starts from first principles. We study your business,
                 your customers, your numbers. Then we design systems that compound:
@@ -165,26 +165,26 @@ function SpreadFeature() {
         </Reveal>
         <Rule />
 
-        <Reveal delay={0.15}>
+        <Reveal delay={0.06}>
           <h2 className={s.featureHeadline}>
             The Agency Model<br />Is Broken. We Fixed It.
           </h2>
         </Reveal>
 
-        <Reveal delay={0.25}>
+        <Reveal delay={0.1}>
           <p className={s.featureByline}>By Samih Mansour, Founder</p>
         </Reveal>
 
         <div className={s.featureColumns}>
           <div className={s.featureCol}>
-            <Reveal delay={0.3}>
+            <Reveal delay={0.12}>
               <p className={`${s.featureBody} ${s.dropCap}`}>
                 <strong>MIAMI</strong> &mdash; The agency model is broken. Everyone knows it. Clients
                 pay for hours, not outcomes. Deliverables arrive late, over budget,
                 and underwhelming. The industry has optimized for billing, not building.
               </p>
             </Reveal>
-            <Reveal delay={0.4}>
+            <Reveal delay={0.15}>
               <p className={s.featureBody}>
                 BEIRUX was founded on the opposite bet: that a small, technically
                 obsessive team could outship agencies ten times its size. The secret
@@ -196,21 +196,21 @@ function SpreadFeature() {
           </div>
           <div className={s.columnDivider} aria-hidden="true" />
           <div className={s.featureCol}>
-            <Reveal delay={0.35}>
+            <Reveal delay={0.12}>
               <p className={s.featureBody}>
                 Bebe handles project management and client communication. Boba writes
                 and reviews code. Powell watches the money. Bubbles publishes content.
                 Four agents, zero ego, no meetings about meetings.
               </p>
             </Reveal>
-            <Reveal delay={0.45}>
+            <Reveal delay={0.15}>
               <p className={s.featureBody}>
                 The result is a studio that moves at startup speed with enterprise-grade
                 reliability. Based in Miami, working globally. Twelve projects shipped
                 and counting. We are not the biggest agency. We are the one that ships.
               </p>
             </Reveal>
-            <Reveal delay={0.5}>
+            <Reveal delay={0.18}>
               <div className={s.featureImage} aria-label="BEIRUX workspace photography" />
               <p className={s.featureCaption}>
                 The BEIRUX operations floor, where four autonomous agents manage client
@@ -238,7 +238,7 @@ function SpreadServices() {
         <Rule />
 
         {SERVICES.map((svc, i) => (
-          <Reveal key={svc.name} delay={0.1 * (i + 1)}>
+          <Reveal key={svc.name} delay={0.04 * (i + 1)}>
             <div className={s.serviceRow}>
               <span className={s.serviceName}>{svc.name}</span>
               <span className={s.serviceDots} aria-hidden="true" />
@@ -253,13 +253,13 @@ function SpreadServices() {
 
         <div className={s.pullQuoteBlock}>
           <div className={s.pullQuoteRuleH} />
-          <Reveal delay={0.2}>
+          <Reveal delay={0.06}>
             <blockquote className={s.pullQuoteText}>
               &ldquo;Every project starts from first principles.
               Your business is not a template.&rdquo;
             </blockquote>
           </Reveal>
-          <Reveal delay={0.35}>
+          <Reveal delay={0.12}>
             <p className={s.pullQuoteAttribution}>
               &mdash; Samih Mansour, Founder
             </p>
@@ -288,7 +288,7 @@ function SpreadDossier() {
           {CLIENTS.map((client, i) => (
             <Fragment key={client.name}>
               <div className={s.dossierCard}>
-                <Reveal delay={0.12 * (i + 1)}>
+                <Reveal delay={0.05 * (i + 1)}>
                   <p className={s.dossierClientName}>
                     <span className={s.dossierRedDot} />
                     {client.name}
@@ -310,7 +310,7 @@ function SpreadDossier() {
             <Fragment key={metric.label}>
               {i > 0 && <div className={s.metricsDivider} aria-hidden="true" />}
               <div className={s.metricsItem}>
-                <Reveal delay={0.15 * (i + 1)}>
+                <Reveal delay={0.05 * (i + 1)}>
                   <div className={s.metricsNumber}>{metric.number}</div>
                   <div className={s.metricsLabel}>{metric.label}</div>
                 </Reveal>

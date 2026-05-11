@@ -19,7 +19,7 @@ const NUMBERS = [
 ];
 
 function FadeIn({ children }: { children: React.ReactNode }) {
-  const { ref, isVisible } = useInView({ threshold: 0.2 });
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
   return (
     <div
       ref={ref}

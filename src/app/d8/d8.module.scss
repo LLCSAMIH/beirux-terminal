@@ -129,9 +129,9 @@ $green: #00d4aa;
 /* ── fade-in ── */
 
 .fadeIn {
-  opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  opacity: 0.3;
+  transform: translateY(12px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .fadeInVisible {

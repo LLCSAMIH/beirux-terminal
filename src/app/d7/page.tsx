@@ -74,7 +74,7 @@ function SectionHero() {
                   className={s.heroLetter}
                   style={{
                     opacity: charOpacity,
-                    transform: `translateY(${lerp(40, 0, charOpacity)}px)`,
+                    transform: `translateY(${lerp(12, 0, charOpacity)}px)`,
                   }}
                 >
                   {char}
@@ -86,7 +86,7 @@ function SectionHero() {
             className={s.heroTagline}
             style={{
               opacity: clampUnit(letterProgress * 2 - 0.8) * (1 - exitProgress),
-              transform: `translateY(${lerp(20, 0, clampUnit(letterProgress * 2 - 0.8))}px)`,
+              transform: `translateY(${lerp(8, 0, clampUnit(letterProgress * 2 - 0.8))}px)`,
             }}
           >
             Digital agency. Zero templates.
@@ -124,7 +124,7 @@ function SectionOrb() {
             className={s.orbContent}
             style={{
               opacity: contentFade,
-              transform: `translateY(${lerp(30, 0, contentFade)}px)`,
+              transform: `translateY(${lerp(10, 0, contentFade)}px)`,
             }}
           >
             <p className={s.orbHeadline}>We build from first principles.</p>
@@ -160,10 +160,10 @@ function SectionServices() {
               const wordP = subProgress(progress, stagger * 0.4, stagger * 0.4 + 0.35);
 
               const offsets: Record<string, { x: number; y: number }> = {
-                left:   { x: -120, y: 0 },
-                right:  { x: 120,  y: 0 },
-                top:    { x: 0,    y: -100 },
-                bottom: { x: 0,    y: 100 },
+                left:   { x: -40, y: 0 },
+                right:  { x: 40,  y: 0 },
+                top:    { x: 0,   y: -30 },
+                bottom: { x: 0,   y: 30 },
               };
 
               const offset = offsets[svc.from];
@@ -225,7 +225,7 @@ function SectionStats() {
                   className={s.statCell}
                   style={{
                     opacity: fadeIn,
-                    transform: `translateY(${lerp(40, 0, fadeIn)}px)`,
+                    transform: `translateY(${lerp(12, 0, fadeIn)}px)`,
                   }}
                 >
                   <span className={s.statValue}>
@@ -259,7 +259,7 @@ function SectionCTA() {
             className={s.ctaHeadline}
             style={{
               opacity: fadeIn,
-              transform: `translateY(${lerp(60, 0, fadeIn)}px) scale(${lerp(0.9, 1, fadeIn)})`,
+              transform: `translateY(${lerp(16, 0, fadeIn)}px) scale(${lerp(0.95, 1, fadeIn)})`,
             }}
           >
             Let&apos;s build something real.
@@ -269,7 +269,7 @@ function SectionCTA() {
             className={s.ctaEmail}
             style={{
               opacity: emailFade,
-              transform: `translateY(${lerp(30, 0, emailFade)}px)`,
+              transform: `translateY(${lerp(10, 0, emailFade)}px)`,
             }}
           >
             samih@beirux.com
@@ -278,7 +278,7 @@ function SectionCTA() {
             className={s.ctaLocation}
             style={{
               opacity: emailFade,
-              transform: `translateY(${lerp(20, 0, emailFade)}px)`,
+              transform: `translateY(${lerp(8, 0, emailFade)}px)`,
             }}
           >
             New Jersey, USA

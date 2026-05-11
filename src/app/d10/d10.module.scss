@@ -50,8 +50,8 @@ $shadow: 8px 8px 0px $black;
   box-shadow: $shadow;
   padding: 48px 40px;
   max-width: 720px;
-  opacity: 0;
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  opacity: 0.3;
+  transition: opacity 0.3s ease, transform 0.3s ease;
   will-change: transform, opacity;
 }
 
@@ -63,19 +63,19 @@ $shadow: 8px 8px 0px $black;
 /* ── slide directions (start positions) ── */
 
 .slideFromLeft {
-  transform: translateX(-120px) rotate(var(--panel-rotate, 0deg));
+  transform: translateX(-16px) rotate(var(--panel-rotate, 0deg));
 }
 
 .slideFromRight {
-  transform: translateX(120px) rotate(var(--panel-rotate, 0deg));
+  transform: translateX(16px) rotate(var(--panel-rotate, 0deg));
 }
 
 .slideFromBottom {
-  transform: translateY(100px) rotate(var(--panel-rotate, 0deg));
+  transform: translateY(16px) rotate(var(--panel-rotate, 0deg));
 }
 
 .slideFromTop {
-  transform: translateY(-100px) rotate(var(--panel-rotate, 0deg));
+  transform: translateY(-16px) rotate(var(--panel-rotate, 0deg));
 }
 
 /* ── panel label (monospace tag) ── */

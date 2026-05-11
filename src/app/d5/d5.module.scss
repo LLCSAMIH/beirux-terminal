@@ -148,7 +148,6 @@ $dim:    rgba(255, 255, 255, 0.35);
   height: 100%;
   width: 500%; /* 5 frames at 100vw each */
   will-change: transform;
-  transition: transform 0.05s linear;
 }
 
 .frame {
@@ -399,7 +398,7 @@ $dim:    rgba(255, 255, 255, 0.35);
   padding: 1.6rem 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   text-align: left;
-  animation: creditFade 0.6s ease-out both;
+  animation: creditFade 0.25s ease-out both;
 
   @media (max-width: 600px) {
     grid-template-columns: 2.5rem 1fr;

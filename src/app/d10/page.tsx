@@ -35,7 +35,7 @@ function Panel({
   className?: string;
   direction?: 'left' | 'right' | 'bottom' | 'top';
 }) {
-  const { ref, isVisible } = useInView({ threshold: 0.15 });
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
 
   const dirClass = {
     left: s.slideFromLeft,

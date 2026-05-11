@@ -70,7 +70,7 @@ function Section({
   children: React.ReactNode;
   className?: string;
 }) {
-  const { ref, isVisible } = useInView({ threshold: 0.08 });
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
   return (
     <section
       ref={ref}
@@ -91,12 +91,12 @@ function SchematicNode({
   service: (typeof SERVICES)[number];
   index: number;
 }) {
-  const { ref, isVisible } = useInView({ threshold: 0.15 });
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
   return (
     <div
       ref={ref}
       className={`${s.node} ${isVisible ? s.nodeVisible : ''}`}
-      style={{ animationDelay: `${index * 150}ms` }}
+      style={{ animationDelay: `${index * 50}ms` }}
     >
       <div className={s.nodeBorder} />
       <div className={s.nodeInner}>
@@ -117,12 +117,12 @@ function ClientCell({
   client: (typeof CLIENTS)[number];
   index: number;
 }) {
-  const { ref, isVisible } = useInView({ threshold: 0.15 });
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
   return (
     <div
       ref={ref}
       className={`${s.clientCell} ${client.span ? s.clientCellSpan : ''} ${isVisible ? s.clientCellVisible : ''}`}
-      style={{ animationDelay: `${index * 120}ms` }}
+      style={{ animationDelay: `${index * 40}ms` }}
     >
       <div className={s.clientCellInner}>
         <span className={s.clientIndex}>
@@ -147,14 +147,14 @@ function ElevationLayer({
   index: number;
   total: number;
 }) {
-  const { ref, isVisible } = useInView({ threshold: 0.2 });
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
   const intensity = ((total - index) / total) * 100;
   return (
     <div
       ref={ref}
       className={`${s.elevLayer} ${isVisible ? s.elevLayerVisible : ''}`}
       style={{
-        animationDelay: `${(total - 1 - index) * 180}ms`,
+        animationDelay: `${(total - 1 - index) * 60}ms`,
         '--intensity': `${intensity}%`,
       } as React.CSSProperties}
     >
@@ -176,12 +176,12 @@ function SpecRow({
   spec: (typeof SPECS)[number];
   index: number;
 }) {
-  const { ref, isVisible } = useInView({ threshold: 0.2 });
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
   return (
     <div
       ref={ref}
       className={`${s.specRow} ${isVisible ? s.specRowVisible : ''}`}
-      style={{ animationDelay: `${index * 100}ms` }}
+      style={{ animationDelay: `${index * 30}ms` }}
     >
       <span className={s.specParam}>{spec.param}</span>
       <span className={s.specDots} />
@@ -312,7 +312,7 @@ export default function D3Page() {
     setCoords('25.7617° N, 80.1918° W');
   }, []);
 
-  const ctaView = useInView({ threshold: 0.2 });
+  const ctaView = useInView({ threshold: 0.05 });
 
   return (
     <div ref={wrapperRef} className={s.page}>

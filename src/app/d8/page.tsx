@@ -55,7 +55,7 @@ const CODE_LINES = [
 /* ── components ── */
 
 function FadeIn({ children, className }: { children: React.ReactNode; className?: string }) {
-  const { ref, isVisible } = useInView({ threshold: 0.15 });
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
   return (
     <div
       ref={ref}

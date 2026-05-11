@@ -43,9 +43,9 @@ $purple: #a855f7;
 
 /* ─── mount transition ─── */
 .dashboard > * {
-  opacity: 0;
+  opacity: 0.3;
   transform: translateY(4px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
 .mounted > * {
@@ -54,13 +54,13 @@ $purple: #a855f7;
 }
 
 /* stagger children for boot-up feel */
-.mounted > :nth-child(1) { transition-delay: 0.05s; }
-.mounted > :nth-child(2) { transition-delay: 0.12s; }
-.mounted > :nth-child(3) { transition-delay: 0.18s; }
-.mounted > :nth-child(4) { transition-delay: 0.24s; }
-.mounted > :nth-child(5) { transition-delay: 0.30s; }
-.mounted > :nth-child(6) { transition-delay: 0.36s; }
-.mounted > :nth-child(7) { transition-delay: 0.42s; }
+.mounted > :nth-child(1) { transition-delay: 0.02s; }
+.mounted > :nth-child(2) { transition-delay: 0.05s; }
+.mounted > :nth-child(3) { transition-delay: 0.08s; }
+.mounted > :nth-child(4) { transition-delay: 0.11s; }
+.mounted > :nth-child(5) { transition-delay: 0.14s; }
+.mounted > :nth-child(6) { transition-delay: 0.17s; }
+.mounted > :nth-child(7) { transition-delay: 0.20s; }
 
 /* ═══════════════════════════════════════
    TOP BAR
@@ -337,7 +337,7 @@ $purple: #a855f7;
   background: linear-gradient(90deg, $cyan, #33ddff);
   box-shadow: 0 0 8px rgba($cyan, 0.3);
   border-radius: 2px;
-  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .serviceLoad {

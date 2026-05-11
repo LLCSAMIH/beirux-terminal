@@ -17,9 +17,9 @@ $blue: #0055ff;
 /* ── fade-in animation ── */
 
 .fadeIn {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  opacity: 0.3;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
   width: 100%;
   margin-bottom: 200px;
 

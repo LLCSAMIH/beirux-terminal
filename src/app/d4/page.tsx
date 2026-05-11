@@ -104,7 +104,7 @@ function HeroCard() {
 /* ─── card 2: services ─── */
 
 function ServicesCard() {
-  const { ref, isVisible } = useInView({ threshold: 0.3 });
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
 
   return (
     <section ref={ref} className={`${s.card} ${s.cardServices}`}>
@@ -117,7 +117,7 @@ function ServicesCard() {
               top: PILL_POSITIONS[i].top,
               left: PILL_POSITIONS[i].left,
               transform: `rotate(${PILL_POSITIONS[i].rotate})`,
-              transitionDelay: isVisible ? `${i * 90}ms` : '0ms',
+              transitionDelay: isVisible ? `${i * 30}ms` : '0ms',
             }}
           >
             <span className={s.pillName}>{svc.name}</span>
@@ -132,7 +132,7 @@ function ServicesCard() {
 /* ─── card 3: manifesto ─── */
 
 function ManifestoCard() {
-  const { ref, isVisible } = useInView({ threshold: 0.4 });
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
   const [wordCount, setWordCount] = useState(0);
 
   useEffect(() => {
@@ -144,7 +144,7 @@ function ManifestoCard() {
       count += 1;
       setWordCount(count);
       if (count >= total) clearInterval(interval);
-    }, 80);
+    }, 40);
 
     return () => clearInterval(interval);
   }, [isVisible]);
@@ -169,7 +169,7 @@ function ManifestoCard() {
 /* ─── card 4: client stories ─── */
 
 function ClientsCard() {
-  const { ref, isVisible } = useInView({ threshold: 0.3 });
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
 
   return (
     <section ref={ref} className={`${s.card} ${s.cardClients}`}>
@@ -182,9 +182,9 @@ function ClientsCard() {
             style={{
               transform: isVisible
                 ? `translate(${CLIENT_OFFSETS[i].x}px, ${CLIENT_OFFSETS[i].y}px) rotate(${CLIENT_ANGLES[i]}deg)`
-                : 'translate(0, 40px) rotate(0deg)',
+                : 'translate(0, 12px) rotate(0deg)',
               zIndex: CLIENTS.length - i,
-              transitionDelay: isVisible ? `${i * 80}ms` : '0ms',
+              transitionDelay: isVisible ? `${i * 30}ms` : '0ms',
             }}
           >
             <span className={s.clientType}>{client.type}</span>
@@ -200,7 +200,7 @@ function ClientsCard() {
 /* ─── card 5: metric bubbles ─── */
 
 function BubblesCard() {
-  const { ref, isVisible } = useInView({ threshold: 0.3 });
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
 
   return (
     <section ref={ref} className={`${s.card} ${s.cardBubbles}`}>
@@ -214,7 +214,7 @@ function BubblesCard() {
               height: bubble.size,
               top: BUBBLE_POSITIONS[i].top,
               left: BUBBLE_POSITIONS[i].left,
-              transitionDelay: isVisible ? `${i * 120}ms` : '0ms',
+              transitionDelay: isVisible ? `${i * 40}ms` : '0ms',
             }}
           >
             <span className={s.bubbleLabel}>{bubble.label}</span>
@@ -228,7 +228,7 @@ function BubblesCard() {
 /* ─── card 6: contact ─── */
 
 function ContactCard() {
-  const { ref, isVisible } = useInView({ threshold: 0.3 });
+  const { ref, isVisible } = useInView({ threshold: 0.05 });
 
   return (
     <section ref={ref} className={`${s.card} ${s.cardContact}`}>

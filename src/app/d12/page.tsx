@@ -35,10 +35,10 @@ const COORD_INDEX = [
 /* --- component --- */
 
 export default function D12Page() {
-  const heroView = useInView();
-  const servicesView = useInView();
-  const clientsView = useInView();
-  const contactView = useInView();
+  const heroView = useInView({ threshold: 0.05 });
+  const servicesView = useInView({ threshold: 0.05 });
+  const clientsView = useInView({ threshold: 0.05 });
+  const contactView = useInView({ threshold: 0.05 });
 
   return (
     <div className={s.page}>
